@@ -1,0 +1,134 @@
+import React, { useState } from 'react';
+import { 
+  format, 
+  startOfMonth, 
+  endOfMonth, 
+  startOfWeek, 
+  endOfWeek, 
+  eachDayOfInterval, 
+  isSameMonth, 
+  isSameDay, 
+  addMonths, 
+  subMonths 
+} from 'date-fns';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { TechEvent } from '../types';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+interface CalendarProps {
+  events: TechEvent[];
+  onEventClick: (event: TechEvent) => void;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const monthStart = startOfMonth(currentDate);
+  const monthEnd = endOfMonth(monthStart);
+  const startDate = startOfWeek(monthStart);
+  const endDate = endOfWeek(monthEnd);
+
+  const days = eachDayOfInterval({ start: startDate, end: endDate });
+
+  const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+  const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const goToToday = () => setCurrentDate(new Date());
+
+  return (
+    <div className="glass-panel overflow-hidden border-white/[0.05]">
+      {/* Calendar Header */}
+      <div className="flex items-center justify-between p-8 border-b border-white/[0.05] bg-white/[0.02]">
+        <h2 className="text-3xl font-serif italic text-white">
+          {format(currentDate, 'MMMM yyyy')}
+        </h2>
+        <div className="flex items-center space-x-6">
+          <button 
+            onClick={goToToday}
+            className="text-sm font-medium text-white/50 hover:text-white transition-colors"
+          >
+            Today
+          </button>
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={prevMonth}
+              className="p-2 text-white/40 hover:text-white transition-colors"
+              aria-label="Previous month"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button 
+              onClick={nextMonth}
+              className="p-2 text-white/40 hover:text-white transition-colors"
+              aria-label="Next month"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Weekdays Header */}
+      <div className="calendar-grid bg-white/[0.01] border-b border-white/[0.05]">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+          <div key={day} className="py-4 text-center text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Days Grid */}
+      <div className="calendar-grid">
+        {days.map((day, idx) => {
+          const dayEvents = events.filter(event => isSameDay(new Date(event.startTime), day));
+          const isCurrentMonth = isSameMonth(day, monthStart);
+          const isToday = isSameDay(day, new Date());
+
+          return (
+            <div 
+              key={day.toString()} 
+              className={cn(
+                "min-h-[140px] p-4 border-b border-r border-white/[0.05] transition-all group",
+                !isCurrentMonth ? "bg-black/20" : "bg-transparent hover:bg-white/[0.02]",
+                idx % 7 === 6 && "border-r-0"
+              )}
+            >
+              <div className="flex justify-between items-center mb-3">
+                <span className={cn(
+                  "text-sm font-medium w-8 h-8 flex items-center justify-center rounded-full transition-all",
+                  isToday ? "bg-white text-black font-bold shadow-xl shadow-white/10" : 
+                  isCurrentMonth ? "text-white/80" : "text-white/20"
+                )}>
+                  {format(day, 'd')}
+                </span>
+              </div>
+              
+              <div className="space-y-1.5">
+                {dayEvents.slice(0, 3).map(event => (
+                  <button
+                    key={event.id}
+                    onClick={() => onEventClick(event)}
+                    className="w-full text-left px-2.5 py-1.5 text-[10px] leading-tight rounded-lg bg-primary/10 border border-primary/20 text-white/90 hover:bg-primary/20 transition-all truncate"
+                  >
+                    <span className="font-medium">{event.title}</span>
+                  </button>
+                ))}
+                {dayEvents.length > 3 && (
+                  <div className="text-[10px] text-white/30 pl-2 font-medium">
+                    + {dayEvents.length - 3} more
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Calendar;

@@ -11,6 +11,10 @@ export const generateICS = (event: TechEvent): string => {
   const startDate = new Date(event.startTime);
   const endDate = new Date(event.endTime);
   
+  const locationStr = event.location 
+    ? `${event.location.city}, ${event.location.country}`
+    : event.format === 'online' ? 'Online Event' : '';
+  
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
@@ -22,9 +26,9 @@ export const generateICS = (event: TechEvent): string => {
     `DTEND:${formatICalDate(endDate)}`,
     `DTSTAMP:${formatICalDate(new Date())}`,
     `SUMMARY:${event.title}`,
-    `DESCRIPTION:${event.description}\\n\\nOrganizer: ${event.organizer}\\n\\nMore info: ${event.link}`,
-    `LOCATION:${event.location}`,
-    `URL:${event.link}`,
+    `DESCRIPTION:${event.summary}\\n\\nOrganizer: ${event.organizer.name}\\n\\nMore info: ${event.links.officialSite}`,
+    `LOCATION:${locationStr}`,
+    `URL:${event.links.officialSite}`,
     `STATUS:CONFIRMED`,
     `SEQUENCE:0`,
     `UID:${event.id}@globaltechevents.com`,
@@ -53,12 +57,16 @@ export const getGoogleCalendarUrl = (event: TechEvent): string => {
   const startDate = format(new Date(event.startTime), "yyyyMMdd'T'HHmmss'Z'");
   const endDate = format(new Date(event.endTime), "yyyyMMdd'T'HHmmss'Z'");
   
+  const locationStr = event.location 
+    ? `${event.location.city}, ${event.location.country}`
+    : event.format === 'online' ? 'Online Event' : '';
+  
   const params = new URLSearchParams({
     action: 'TEMPLATE',
     text: event.title,
     dates: `${startDate}/${endDate}`,
-    details: `${event.description}\n\nOrganizer: ${event.organizer}\n\nMore info: ${event.link}`,
-    location: event.location,
+    details: `${event.summary}\n\nOrganizer: ${event.organizer.name}\n\nMore info: ${event.links.officialSite}`,
+    location: locationStr,
     sprop: 'website:globaltechevents.com'
   });
   
@@ -70,14 +78,18 @@ export const getOutlookUrl = (event: TechEvent): string => {
   const startDate = new Date(event.startTime).toISOString();
   const endDate = new Date(event.endTime).toISOString();
   
+  const locationStr = event.location 
+    ? `${event.location.city}, ${event.location.country}`
+    : event.format === 'online' ? 'Online Event' : '';
+  
   const params = new URLSearchParams({
     path: '/calendar/action/compose',
     rru: 'addevent',
     subject: event.title,
     startdt: startDate,
     enddt: endDate,
-    body: `${event.description}\n\nOrganizer: ${event.organizer}\n\nMore info: ${event.link}`,
-    location: event.location
+    body: `${event.summary}\n\nOrganizer: ${event.organizer.name}\n\nMore info: ${event.links.officialSite}`,
+    location: locationStr
   });
   
   return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;

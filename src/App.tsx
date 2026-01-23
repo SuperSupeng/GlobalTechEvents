@@ -42,7 +42,7 @@ const App: React.FC = () => {
     location: locationFilter,
   });
 
-  const { data: allLocations = [], isLoading: locationsLoading } = useLocations();
+  const { data: allLocations = [] } = useLocations();
 
   // 过滤逻辑已由 API 处理，直接使用返回的数据
   const filteredEvents = useMemo(() => {

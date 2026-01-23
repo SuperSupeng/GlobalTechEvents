@@ -1,6 +1,6 @@
 import React from 'react';
 import { TechEvent } from '../types';
-import { MapPin, Globe, ExternalLink } from 'lucide-react';
+import { MapPin, Globe, ExternalLink, Tag } from 'lucide-react';
 import { format } from 'date-fns';
 import { identifyTags, getTagColorClasses } from '../utils/tags';
 

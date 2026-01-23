@@ -6,6 +6,7 @@ export interface TechEvent {
   startTime: string; // ISO string
   endTime: string;   // ISO string
   timezone: string;
+  isAllDay?: boolean; // 是否为全天活动
   format: 'online' | 'offline' | 'hybrid';
   location?: {
     country: string;

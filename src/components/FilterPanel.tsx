@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, MapPin, Globe, ChevronDown } from 'lucide-react';
+import { ViewMode } from '../types';
 
 interface FilterPanelProps {
   searchQuery: string;
@@ -10,8 +11,8 @@ interface FilterPanelProps {
   locationFilter: string;
   onLocationChange: (location: string) => void;
   allLocations: string[];
-  viewMode: 'month' | 'list';
-  onViewModeChange: (mode: 'month' | 'list') => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -126,13 +127,19 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[56px] sm:h-[64px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
             <button 
               onClick={() => onViewModeChange('month')}
-              className={`px-6 sm:px-8 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
             >
-              Calendar
+              Month
+            </button>
+            <button 
+              onClick={() => onViewModeChange('week')}
+              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+            >
+              Week
             </button>
             <button 
               onClick={() => onViewModeChange('list')}
-              className={`px-6 sm:px-8 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
             >
               List
             </button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TechEvent } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Globe, User, ShieldCheck, ArrowUpRight, ChevronDown, Download, Info } from 'lucide-react';
+import { X, Calendar, MapPin, Globe, User, ShieldCheck, ArrowUpRight, ChevronDown, Download, Info, Link2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { 
   downloadICS, 
@@ -14,9 +14,10 @@ import { identifyTags, getTagColorClasses } from '../utils/tags';
 interface EventDetailProps {
   event: TechEvent | null;
   onClose: () => void;
+  onToast?: (message: string) => void;
 }
 
-const EventDetail: React.FC<EventDetailProps> = ({ event, onClose }) => {
+const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) => {
   const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
 
   if (!event) return null;
@@ -24,21 +25,40 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose }) => {
   const smartTags = identifyTags(event);
 
   const handleAddToCalendar = (type: 'google' | 'apple' | 'outlook' | 'ics') => {
+    let message = '';
     switch (type) {
       case 'google':
         window.open(getGoogleCalendarUrl(event), '_blank');
+        message = 'Opening Google Calendar...';
         break;
       case 'apple':
         addToAppleCalendar(event);
+        message = 'Calendar file downloaded!';
         break;
       case 'outlook':
         window.open(getOutlookUrl(event), '_blank');
+        message = 'Opening Outlook Calendar...';
         break;
       case 'ics':
         downloadICS(event);
+        message = 'Calendar file downloaded!';
         break;
     }
     setShowCalendarDropdown(false);
+    if (onToast) {
+      onToast(message);
+    }
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(event.links.officialSite);
+      if (onToast) {
+        onToast('Link copied to clipboard!');
+      }
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+    }
   };
 
   return (
@@ -150,16 +170,25 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose }) => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-                onClick={() => window.open(event.links.officialSite, '_blank')}
-                className="flex-1 btn-primary flex items-center justify-center gap-3 !py-5"
-              >
-                Official Website <ArrowUpRight size={20} />
-              </button>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => window.open(event.links.officialSite, '_blank')}
+                  className="flex-1 btn-primary flex items-center justify-center gap-3 !py-5"
+                >
+                  Official Website <ArrowUpRight size={20} />
+                </button>
+                
+                <button
+                  onClick={handleCopyLink}
+                  className="flex-1 sm:flex-none btn-secondary flex items-center justify-center gap-3 !py-5 sm:px-8"
+                >
+                  <Link2 size={20} /> Copy Link
+                </button>
+              </div>
               
               {/* Add to Calendar Dropdown */}
-              <div className="relative flex-1">
+              <div className="relative">
                 <button 
                   onClick={() => setShowCalendarDropdown(!showCalendarDropdown)}
                   className="w-full btn-secondary flex items-center justify-center gap-3 !py-5"
@@ -205,7 +234,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose }) => {
                 )}
               </div>
             </div>
-
+            
             <div className="mt-12 pt-8 border-t border-white/[0.05]">
               <div className="flex items-start gap-3 mb-4 text-[10px] text-white/30">
                 <Info size={14} className="flex-shrink-0 mt-0.5" />

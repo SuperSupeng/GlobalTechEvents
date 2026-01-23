@@ -211,5 +211,208 @@ export const mockEvents: TechEvent[] = [
       range: '€850 - €4,950'
     },
     status: 'upcoming'
+  },
+  // This week's events for testing Week View
+  {
+    id: '9',
+    title: 'GitHub Universe 2026',
+    summary: 'Join developers worldwide for product announcements, live demos, and hands-on workshops.',
+    startTime: '2026-01-27T00:00:00Z',
+    endTime: '2026-01-28T23:59:59Z',
+    timezone: 'America/Los_Angeles',
+    isAllDay: true,
+    format: 'hybrid',
+    location: {
+      country: 'USA',
+      city: 'San Francisco',
+      address: 'Yerba Buena Center'
+    },
+    tags: ['Git', 'DevTools', 'Open Source'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://githubuniverse.com',
+      source: 'GitHub Official'
+    },
+    organizer: {
+      name: 'GitHub',
+    },
+    price: {
+      type: 'paid',
+      range: '$399 - $1,299'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '10',
+    title: 'TypeScript Deep Dive Workshop',
+    summary: 'Advanced TypeScript patterns, generics, and type system tricks for production apps.',
+    startTime: '2026-01-27T14:00:00Z',
+    endTime: '2026-01-27T17:00:00Z',
+    timezone: 'UTC',
+    format: 'online',
+    tags: ['TypeScript', 'JavaScript', 'Programming'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://typescript-workshop.dev',
+      source: 'TypeScript Community'
+    },
+    organizer: {
+      name: 'TypeScript Community',
+    },
+    price: {
+      type: 'free'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '11',
+    title: 'AWS Re:Invent Recap',
+    summary: 'Live stream covering the major announcements and new services from AWS Re:Invent.',
+    startTime: '2026-01-28T18:00:00Z',
+    endTime: '2026-01-28T20:00:00Z',
+    timezone: 'UTC',
+    format: 'online',
+    tags: ['AWS', 'Cloud', 'Serverless'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://aws.amazon.com/events',
+      source: 'AWS'
+    },
+    organizer: {
+      name: 'Amazon Web Services',
+    },
+    price: {
+      type: 'free'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '12',
+    title: 'Python Data Science Bootcamp',
+    summary: 'Intensive hands-on training in pandas, NumPy, and scikit-learn for data analysis.',
+    startTime: '2026-01-29T09:00:00Z',
+    endTime: '2026-01-29T17:00:00Z',
+    timezone: 'Europe/London',
+    format: 'offline',
+    location: {
+      country: 'UK',
+      city: 'London',
+      address: 'CodeNode, Skills Matter'
+    },
+    tags: ['Python', 'Data Science', 'ML'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://python-bootcamp.io',
+      source: 'Python Training'
+    },
+    organizer: {
+      name: 'DataCamp',
+    },
+    price: {
+      type: 'paid',
+      range: '£299'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '13',
+    title: 'Rust for Systems Programming',
+    summary: 'Learn memory safety, concurrency, and performance optimization with Rust.',
+    startTime: '2026-01-29T15:00:00Z',
+    endTime: '2026-01-29T16:30:00Z',
+    timezone: 'UTC',
+    format: 'online',
+    tags: ['Rust', 'Systems', 'Performance'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://rust-lang.org/events',
+      source: 'Rust Foundation'
+    },
+    organizer: {
+      name: 'Rust Foundation',
+    },
+    price: {
+      type: 'free'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '14',
+    title: 'Mobile Dev Summit',
+    summary: 'Cross-platform mobile development with React Native, Flutter, and native technologies.',
+    startTime: '2026-01-30T00:00:00Z',
+    endTime: '2026-01-30T23:59:59Z',
+    timezone: 'America/New_York',
+    isAllDay: true,
+    format: 'offline',
+    location: {
+      country: 'USA',
+      city: 'New York',
+      address: 'Manhattan Center'
+    },
+    tags: ['Mobile', 'React Native', 'Flutter'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://mobiledevsummit.com',
+      source: 'Mobile Dev Community'
+    },
+    organizer: {
+      name: 'Mobile Dev Collective',
+    },
+    price: {
+      type: 'paid',
+      range: '$199 - $499'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '15',
+    title: 'GraphQL API Design Patterns',
+    summary: 'Best practices for schema design, resolvers, and performance optimization.',
+    startTime: '2026-01-31T13:00:00Z',
+    endTime: '2026-01-31T15:00:00Z',
+    timezone: 'UTC',
+    format: 'online',
+    tags: ['GraphQL', 'API', 'Backend'],
+    language: ['English'],
+    links: {
+      officialSite: 'https://graphql-workshop.io',
+      source: 'GraphQL Foundation'
+    },
+    organizer: {
+      name: 'GraphQL Foundation',
+    },
+    price: {
+      type: 'free'
+    },
+    status: 'upcoming'
+  },
+  {
+    id: '16',
+    title: 'Cybersecurity Hackathon',
+    summary: '24-hour security challenge focused on vulnerability discovery and ethical hacking.',
+    startTime: '2026-02-01T00:00:00Z',
+    endTime: '2026-02-01T23:59:59Z',
+    timezone: 'Europe/Berlin',
+    isAllDay: true,
+    format: 'offline',
+    location: {
+      country: 'Germany',
+      city: 'Berlin',
+      address: 'TU Berlin'
+    },
+    tags: ['Security', 'Hackathon', 'CTF'],
+    language: ['English', 'German'],
+    links: {
+      officialSite: 'https://cyber-hackathon.de',
+      source: 'Security Community'
+    },
+    organizer: {
+      name: 'CyberSec Berlin',
+    },
+    price: {
+      type: 'free'
+    },
+    status: 'upcoming'
   }
 ];

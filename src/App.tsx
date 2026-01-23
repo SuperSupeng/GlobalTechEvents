@@ -1,25 +1,30 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
 import { Calendar as CalendarIcon, Zap, ChevronDown } from 'lucide-react';
 import { mockEvents } from './data/mockEvents';
-import { TechEvent } from './types';
+import { TechEvent, ViewMode } from './types';
 import Calendar from './components/Calendar';
-import EventCard from './components/EventCard';
+import WeekView from './components/WeekView';
+import ListView from './components/ListView';
 import EventDetail from './components/EventDetail';
 import FilterPanel from './components/FilterPanel';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import EmptyState from './components/EmptyState';
 import ComingSoon from './components/ComingSoon';
+import Toast from './components/Toast';
+import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'month' | 'list'>('month');
+  const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [searchQuery, setSearchQuery] = useState('');
   const [formatFilter, setFormatFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
+  
+  // Toast notifications
+  const { toasts, removeToast, success } = useToast();
   
   // Refs for smooth scrolling
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -203,26 +208,45 @@ const App: React.FC = () => {
             onViewModeChange={setViewMode}
           />
 
-          {/* Main Content */}
+          {/* Main Content with View Transitions */}
           <div className="min-h-[300px] sm:min-h-[500px]">
-            {viewMode === 'month' ? (
-              <Calendar 
-                events={filteredEvents} 
-                onEventClick={setSelectedEvent} 
-              />
-            ) : (
-              <div className="grid grid-cols-1 gap-6">
-                {filteredEvents.length > 0 ? (
-                  filteredEvents.map(event => (
-                    <EventCard 
-                      key={event.id} 
-                      event={event} 
-                      onClick={setSelectedEvent} 
-                    />
-                  ))
-                ) : (
-                  <EmptyState 
-                    type={searchQuery ? 'search' : 'filter'}
+            <AnimatePresence mode="wait">
+              {viewMode === 'month' ? (
+                <motion.div
+                  key="month-view"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Calendar 
+                    events={filteredEvents} 
+                    onEventClick={setSelectedEvent} 
+                  />
+                </motion.div>
+              ) : viewMode === 'week' ? (
+                <motion.div
+                  key="week-view"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <WeekView 
+                    events={filteredEvents} 
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="list-view"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ListView
+                    events={filteredEvents}
+                    onEventClick={setSelectedEvent}
                     searchQuery={searchQuery}
                     onReset={() => {
                       setSearchQuery('');
@@ -230,9 +254,9 @@ const App: React.FC = () => {
                       setLocationFilter('all');
                     }}
                   />
-                )}
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </main>
@@ -257,8 +281,12 @@ const App: React.FC = () => {
       {/* Event Details Modal */}
       <EventDetail 
         event={selectedEvent} 
-        onClose={() => setSelectedEvent(null)} 
+        onClose={() => setSelectedEvent(null)}
+        onToast={success}
       />
+
+      {/* Toast Notifications */}
+      <Toast toasts={toasts} onRemove={removeToast} />
     </div>
   );
 };

@@ -18,13 +18,21 @@ import TermsOfService from './pages/TermsOfService';
 import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
+  // 根据 URL 路径确定初始页面
+  const getInitialPage = (): 'home' | 'privacy' | 'terms' => {
+    const path = window.location.pathname;
+    if (path === '/privacy') return 'privacy';
+    if (path === '/terms') return 'terms';
+    return 'home';
+  };
+
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [searchQuery, setSearchQuery] = useState('');
   const [formatFilter, setFormatFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms'>(getInitialPage());
   
   // Toast notifications
   const { toasts, removeToast, success } = useToast();
@@ -57,21 +65,43 @@ const App: React.FC = () => {
     return events;
   }, [events]);
 
-  // 处理页面导航
+  // 处理页面导航（更新 URL 和状态）
   const navigateToPrivacy = () => {
     setCurrentPage('privacy');
+    window.history.pushState({}, '', '/privacy');
     window.scrollTo(0, 0);
+    // 更新页面 meta 标签
+    document.title = 'Privacy Policy - GlobalTechEvents';
   };
 
   const navigateToTerms = () => {
     setCurrentPage('terms');
+    window.history.pushState({}, '', '/terms');
     window.scrollTo(0, 0);
+    // 更新页面 meta 标签
+    document.title = 'Terms of Service - GlobalTechEvents';
   };
 
   const navigateToHome = () => {
     setCurrentPage('home');
+    window.history.pushState({}, '', '/');
     window.scrollTo(0, 0);
+    // 恢复主页 title
+    document.title = 'GlobalTechEvents - Your Gateway to Tech Events Worldwide';
   };
+
+  // 处理浏览器前进/后退按钮
+  React.useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path === '/privacy') setCurrentPage('privacy');
+      else if (path === '/terms') setCurrentPage('terms');
+      else setCurrentPage('home');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const splitText = (text: string) => {
     return text.split(" ").map((word, wordIndex) => (

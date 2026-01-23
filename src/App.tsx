@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { Calendar as CalendarIcon, Zap, ChevronDown } from 'lucide-react';
-import { mockEvents } from './data/mockEvents';
+import { Calendar as CalendarIcon, Zap, ChevronDown, Loader2 } from 'lucide-react';
 import { TechEvent, ViewMode } from './types';
+import { useEvents, useLocations } from './hooks/useEvents';
 import Calendar from './components/Calendar';
 import WeekView from './components/WeekView';
 import ListView from './components/ListView';
@@ -35,35 +35,19 @@ const App: React.FC = () => {
     setViewMode('month'); // 确保显示日历视图
   };
 
-  // 获取所有唯一的地点
-  const allLocations = useMemo(() => {
-    return Array.from(new Set(
-      mockEvents
-        .filter(e => e.location)
-        .map(e => `${e.location!.city}, ${e.location!.country}`)
-    )).sort();
-  }, []);
+  // 🆕 使用 API 获取数据
+  const { data: events = [], isLoading: eventsLoading, error: eventsError } = useEvents({
+    search: searchQuery,
+    format: formatFilter as any,
+    location: locationFilter,
+  });
 
+  const { data: allLocations = [], isLoading: locationsLoading } = useLocations();
+
+  // 过滤逻辑已由 API 处理，直接使用返回的数据
   const filteredEvents = useMemo(() => {
-    return mockEvents.filter(event => {
-      const matchesSearch = 
-        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesFormat = 
-        formatFilter === 'all' || 
-        event.format === formatFilter || 
-        (formatFilter === 'offline' && event.format === 'hybrid');
-
-      const matchesLocation = 
-        locationFilter === 'all' || 
-        (locationFilter === 'online' && event.format === 'online') ||
-        (event.location && `${event.location.city}, ${event.location.country}` === locationFilter);
-
-      return matchesSearch && matchesFormat && matchesLocation;
-    });
-  }, [searchQuery, formatFilter, locationFilter]);
+    return events;
+  }, [events]);
 
   const splitText = (text: string) => {
     return text.split(" ").map((word, wordIndex) => (
@@ -210,7 +194,19 @@ const App: React.FC = () => {
 
           {/* Main Content with View Transitions */}
           <div className="min-h-[300px] sm:min-h-[500px]">
-            <AnimatePresence mode="wait">
+            {/* Loading State */}
+            {eventsLoading ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <Loader2 size={48} className="animate-spin text-primary mb-4" />
+                <p className="text-white/50 text-sm">Loading events...</p>
+              </div>
+            ) : eventsError ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="text-red-400 mb-4">⚠️ Failed to load events</div>
+                <p className="text-white/50 text-sm">Please check your internet connection and try again.</p>
+              </div>
+            ) : (
+              <AnimatePresence mode="wait">
               {viewMode === 'month' ? (
                 <motion.div
                   key="month-view"
@@ -257,6 +253,7 @@ const App: React.FC = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+            )}
           </div>
         </div>
       </main>

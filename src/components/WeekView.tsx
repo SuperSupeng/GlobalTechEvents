@@ -229,7 +229,7 @@ const WeekView: React.FC<WeekViewProps> = ({ events }) => {
       <div className="bg-[#0a0a0a]/70 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
         {/* Days Header */}
         <div className="grid grid-cols-8 border-b border-white/10 bg-white/5">
-          <div className="p-3 text-xs font-semibold text-white/50 border-r border-white/10">Time</div>
+          <div className="px-2 py-3 text-xs font-semibold text-white/50 border-r border-white/10 flex items-center">Time</div>
           {weekDays.map((day, index) => (
             <div
               key={index}

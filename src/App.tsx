@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { Calendar as CalendarIcon, Zap, ChevronDown, Loader2 } from 'lucide-react';
+import { Zap, ChevronDown, Loader2, MessageCircle } from 'lucide-react';
 import { TechEvent, ViewMode } from './types';
 import { useEvents, useLocations } from './hooks/useEvents';
 import Calendar from './components/Calendar';
@@ -33,6 +33,11 @@ const App: React.FC = () => {
   const scrollToCalendar = () => {
     calendarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setViewMode('month'); // 确保显示日历视图
+  };
+
+  // Open Discord community
+  const openDiscord = () => {
+    window.open('https://discord.gg/Cj7s7nt7', '_blank');
   };
 
   // 🆕 使用 API 获取数据
@@ -147,19 +152,20 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
           >
             <button 
               onClick={scrollToCalendar}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-2 w-full sm:w-auto"
             >
               Start Exploring <Zap size={18} />
             </button>
             <button 
-              onClick={scrollToCalendar}
-              className="btn-secondary flex items-center gap-2"
+              onClick={openDiscord}
+              className="btn-secondary flex items-center gap-2 w-full sm:w-auto group"
             >
-              View Calendar <CalendarIcon size={18} />
+              <MessageCircle size={18} className="group-hover:rotate-12 transition-transform" />
+              Join Discord
             </button>
           </motion.div>
           </div>
@@ -264,7 +270,7 @@ const App: React.FC = () => {
         onAPIClick={() => setComingSoonFeature('API Access')}
         onSubmitClick={() => setComingSoonFeature('Submit Event')}
         onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
-        onDiscordClick={() => setComingSoonFeature('Discord Community')}
+        onDiscordClick={openDiscord}
       />
       
       {/* Coming Soon Modal */}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Twitter, Github } from 'lucide-react';
 import Logo from './Logo';
 
 interface FooterProps {
@@ -53,22 +52,9 @@ const Footer: React.FC<FooterProps> = ({
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8 pt-6 sm:pt-10 border-t border-white/10 text-white/45 text-[10px] sm:text-[12px] uppercase tracking-widest font-sans">
-            <div className="flex items-center gap-2">
-              <span>© 2026 Global Tech Events. Indexing the future.</span>
-            </div>
-            <div className="flex items-center gap-6 sm:gap-8">
-              <button className="hover:text-white transition-colors opacity-50 cursor-not-allowed" disabled>Privacy</button>
-              <button className="hover:text-white transition-colors opacity-50 cursor-not-allowed" disabled>Terms</button>
-              <button className="hover:text-white transition-colors opacity-50 cursor-not-allowed" disabled>Legal</button>
-              <div className="h-4 w-px bg-white/20"></div>
-              <button className="p-1.5 hover:text-white transition-colors opacity-50 cursor-not-allowed" aria-label="Twitter" disabled>
-                <Twitter size={16} />
-              </button>
-              <button className="p-1.5 hover:text-white transition-colors opacity-50 cursor-not-allowed" aria-label="GitHub" disabled>
-                <Github size={16} />
-              </button>
-            </div>
+          <div className="flex flex-col items-center justify-center gap-2 pt-6 sm:pt-10 border-t border-white/10 text-white/45 text-xs sm:text-sm font-sans text-center">
+            <p>© 2026 GlobalTechEvents. Indexing the future of technology.</p>
+            <p className="text-white/30 text-[10px] sm:text-xs">Made with ❤️ for the global tech community</p>
           </div>
         </div>
       </footer>

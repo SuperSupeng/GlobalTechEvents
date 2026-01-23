@@ -14,12 +14,28 @@
 
 .shader-bg-container {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.shader-bg-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='120'%20viewBox='0%200%20120%20120'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='120'%20height='120'%20filter='url(%23n)'%20opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .glass-panel {
@@ -42,24 +58,44 @@
   @apply px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95;
 }
 
-.hero-text-glow {
-  text-shadow: 0 0 0px rgba(255, 255, 255, 0);
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+.hero-title {
+  --glow-x: 0px;
+  --glow-y: 0px;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  text-shadow:
+    calc(var(--glow-x) * 0.5) calc(var(--glow-y) * 0.5) 22px rgba(255, 122, 24, 0.45),
+    calc(var(--glow-x) * 0.3) calc(var(--glow-y) * 0.3) 48px rgba(219, 186, 149, 0.3),
+    0 0 1px rgba(255, 255, 255, 0.6);
+  transform: perspective(800px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: text-shadow 200ms ease, transform 200ms ease, letter-spacing 300ms ease;
+  will-change: text-shadow, transform, letter-spacing;
 }
 
-.hero-text-glow:hover {
-  text-shadow: 0 0 40px rgba(255, 80, 5, 0.3), 0 0 80px rgba(219, 186, 149, 0.1);
-  letter-spacing: 0.02em;
+.hero-title:hover {
+  letter-spacing: 0.015em;
+}
+
+.hero-accent {
+  color: #fff;
+  text-shadow:
+    0 0 18px rgba(255, 122, 24, 0.35),
+    0 0 40px rgba(219, 186, 149, 0.25);
 }
 
 .char-hover {
   display: inline-block;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  color: inherit;
 }
 
 .char-hover:hover {
-  transform: translateY(-8px) scale(1.05) rotate(2deg);
+  transform: translateY(-10px) scale(1.08) rotate(3deg);
   color: #fff;
+  text-shadow: 0 8px 24px rgba(255, 122, 24, 0.35);
 }
 
 ::-webkit-scrollbar {

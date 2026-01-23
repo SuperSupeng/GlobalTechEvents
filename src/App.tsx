@@ -32,9 +32,13 @@ const App: React.FC = () => {
   }, [searchQuery, formatFilter]);
 
   const splitText = (text: string) => {
-    return text.split("").map((char, i) => (
-      <span key={i} className="char-hover">
-        {char === " " ? "\u00A0" : char}
+    return text.split(" ").map((word, wordIndex) => (
+      <span key={`word-${wordIndex}`} className="inline-block mr-3 last:mr-0">
+        {word.split("").map((char, charIndex) => (
+          <span key={`char-${wordIndex}-${charIndex}`} className="char-hover">
+            {char}
+          </span>
+        ))}
       </span>
     ));
   };
@@ -43,28 +47,28 @@ const App: React.FC = () => {
     <div className="min-h-screen relative">
       {/* Shader Background */}
       <div className="shader-bg-container">
-        <ShaderGradientCanvas style={{ position: 'absolute', top: 0 }}>
+        <ShaderGradientCanvas style={{ position: 'fixed', inset: 0, width: '100%', height: '100%' }}>
           <ShaderGradient
             animate="on"
             axesHelper="off"
-            brightness={1.2}
+            brightness={1.55}
             cAzimuthAngle={180}
             cDistance={3.6}
             cPolarAngle={90}
             cameraZoom={1}
-            color1="#ff5005"
-            color2="#dbba95"
-            color3="#d0bce1"
+            color1="#ff7a18"
+            color2="#ffd8a8"
+            color3="#f2e7ff"
             destination="onCanvas"
             embedMode="off"
             envPreset="city"
             format="gif"
             fov={45}
-            frameRate={10}
+            frameRate={24}
             gizmoHelper="hide"
             grain="on"
             lightType="3d"
-            pixelDensity={1}
+            pixelDensity={0.9}
             positionX={-1.4}
             positionY={0}
             positionZ={0}
@@ -80,13 +84,13 @@ const App: React.FC = () => {
             uAmplitude={1}
             uDensity={1.3}
             uFrequency={5.5}
-            uSpeed={0.4}
+            uSpeed={0.28}
             uStrength={4}
             uTime={0}
             wireframe={false}
           />
         </ShaderGradientCanvas>
-        <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
       </div>
 
       {/* Navigation */}
@@ -121,7 +125,7 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 pt-40">
+      <main className="max-w-7xl mx-auto px-6 pt-40 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-24 max-w-4xl mx-auto">
           <motion.div 
@@ -131,10 +135,31 @@ const App: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium mb-8"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-              2026 全球科技大会现已开启订阅
+              2026 Global tech events now open for subscription
           </motion.div>
           
-          <h1 className="text-6xl md:text-8xl font-serif italic mb-8 leading-[1.1] text-white hero-text-glow">
+          <h1
+            className="hero-title text-5xl sm:text-6xl md:text-8xl font-serif italic mb-8 leading-[1.05] text-white relative z-10"
+            onMouseMove={(event) => {
+              const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+              const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+              const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+              event.currentTarget.style.setProperty('--glow-x', `${x * 30}px`);
+              event.currentTarget.style.setProperty('--glow-y', `${y * 30}px`);
+              event.currentTarget.style.setProperty('--tilt-x', `${y * -2}deg`);
+              event.currentTarget.style.setProperty('--tilt-y', `${x * 2}deg`);
+              event.currentTarget.style.setProperty('--mx', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+              event.currentTarget.style.setProperty('--my', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.setProperty('--glow-x', `0px`);
+              event.currentTarget.style.setProperty('--glow-y', `0px`);
+              event.currentTarget.style.setProperty('--tilt-x', `0deg`);
+              event.currentTarget.style.setProperty('--tilt-y', `0deg`);
+              event.currentTarget.style.setProperty('--mx', `50%`);
+              event.currentTarget.style.setProperty('--my', `50%`);
+            }}
+          >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -146,7 +171,7 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="gradient-text"
+              className="hero-accent block"
             >
               {splitText("Tech Events")} <span className="font-sans italic">{splitText("Matrix")}</span>
             </motion.div>
@@ -158,8 +183,8 @@ const App: React.FC = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12 font-sans"
           >
-            聚合全球顶尖开发者大会、黑客松与技术沙龙。
-            跨越时区，精准定位你的下一场技术盛宴。
+            Aggregate the world's top developer conferences, hackathons, and tech salons.
+            Across time zones, pinpoint your next technical gathering.
           </motion.p>
           
           <motion.div 
@@ -169,10 +194,10 @@ const App: React.FC = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-6"
           >
             <button className="btn-primary flex items-center gap-2">
-              开始探索 <Zap size={18} />
+              Start Exploring <Zap size={18} />
             </button>
             <button className="btn-secondary flex items-center gap-2">
-              查看日历 <CalendarIcon size={18} />
+              View Calendar <CalendarIcon size={18} />
             </button>
           </motion.div>
         </div>

@@ -8,10 +8,10 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#ff5005', // Orange from ShaderGradient
-          dark: '#e64500',
+          DEFAULT: '#ff7a18', // Brighter orange for contrast
+          dark: '#f06400',
         },
-        accent: '#dbba95', // Tan from ShaderGradient
+        accent: '#ffd8a8', // Lighter tan for glow accents
         background: '#030303',
         surface: 'rgba(255, 255, 255, 0.03)',
         'surface-light': 'rgba(255, 255, 255, 0.08)',

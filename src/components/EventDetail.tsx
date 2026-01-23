@@ -1,7 +1,7 @@
 import React from 'react';
 import { TechEvent } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Globe, ExternalLink, Tag, User, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { X, Calendar, MapPin, Globe, Tag, User, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface EventDetailProps {

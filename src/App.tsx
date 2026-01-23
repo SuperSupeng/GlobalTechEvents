@@ -49,45 +49,8 @@ const App: React.FC = () => {
       <div className="shader-bg-container">
         <ShaderGradientCanvas style={{ position: 'fixed', inset: 0, width: '100%', height: '100%' }}>
           <ShaderGradient
-            animate="on"
-            axesHelper="off"
-            brightness={1.55}
-            cAzimuthAngle={180}
-            cDistance={3.6}
-            cPolarAngle={90}
-            cameraZoom={1}
-            color1="#ff7a18"
-            color2="#ffd8a8"
-            color3="#f2e7ff"
-            destination="onCanvas"
-            embedMode="off"
-            envPreset="city"
-            format="gif"
-            fov={45}
-            frameRate={24}
-            gizmoHelper="hide"
-            grain="on"
-            lightType="3d"
-            pixelDensity={0.9}
-            positionX={-1.4}
-            positionY={0}
-            positionZ={0}
-            range="disabled"
-            rangeEnd={40}
-            rangeStart={0}
-            reflection={0.1}
-            rotationX={0}
-            rotationY={10}
-            rotationZ={50}
-            shader="defaults"
-            type="plane"
-            uAmplitude={1}
-            uDensity={1.3}
-            uFrequency={5.5}
-            uSpeed={0.28}
-            uStrength={4}
-            uTime={0}
-            wireframe={false}
+            control="query"
+            urlString="https://www.shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1.55&cAzimuthAngle=180&cDistance=3.6&cPolarAngle=90&cameraZoom=1&color1=%23ff7a18&color2=%23ffd8a8&color3=%23f2e7ff&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=45&frameRate=24&gizmoHelper=hide&grain=on&lightType=3d&pixelDensity=0.9&positionX=-1.4&positionY=0&positionZ=0&range=disabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=0&rotationY=10&rotationZ=50&shader=defaults&type=plane&uAmplitude=1&uDensity=1.3&uFrequency=5.5&uSpeed=0.28&uStrength=4&uTime=0&wireframe=false"
           />
         </ShaderGradientCanvas>
         <div className="absolute inset-0 bg-black/15 pointer-events-none" />

@@ -5,10 +5,21 @@
 @layer base {
   body {
     @apply bg-[#030303] text-slate-100 antialiased overflow-x-hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3 {
     @apply font-serif italic font-normal leading-tight;
+  }
+
+  /* 移动端优化 */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button, a {
+    -webkit-touch-callout: none;
   }
 }
 
@@ -33,9 +44,101 @@
   pointer-events: none;
 }
 
+/* 内容区域增强背景 - 从Hero底部开始自然过渡到深色背景 */
+.content-section {
+  position: relative;
+  margin-top: -100px; /* 让内容区域稍微向上，与Hero区域有重叠过渡 */
+  padding-top: 120px; /* 补偿margin，确保内容不被遮挡 */
+}
+
+.content-section::before {
+  content: "";
+  position: absolute;
+  top: 60px;  /* 从Hero底部开始渐变 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%; /* 与内容区域等高，避免在尾部形成断层 */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 20%,
+    rgba(3, 3, 3, 0.15) 30%,
+    rgba(3, 3, 3, 0.35) 45%,
+    rgba(3, 3, 3, 0.6) 60%,
+    rgba(3, 3, 3, 0.75) 75%,
+    rgba(3, 3, 3, 0.65) 85%,
+    rgba(3, 3, 3, 0.48) 92%,   /* 更平缓地降低 */
+    rgba(3, 3, 3, 0.38) 96%,   /* 接近footer起始值 */
+    rgba(3, 3, 3, 0.3) 100%    /* 与footer顶部平滑衔接 */
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.content-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer区域 - 让shader背景逐渐显现，与Hero区域呼应 */
+.footer-section {
+  position: relative;
+  margin-top: 0; /* 不使用负margin，自然衔接 */
+  padding-top: 0;
+  overflow: visible; /* 允许过渡层超出边界 */
+}
+
+/* Footer过渡层 - 放置在footer内部，从上到下逐渐淡出黑色遮罩 */
+.footer-transition-overlay {
+  position: absolute;
+  top: 60px;  /* 轻微向上延伸，与content层有少量重叠确保无缝衔接 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw; /* 全屏宽度 */
+  height: 550px; /* 延长过渡距离，创建更自然平滑的渐变 */
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 3, 3, 0.3) 0%,     /* 与content底部值一致，确保平滑衔接 */
+    rgba(3, 3, 3, 0.28) 8%,    /* 起始段变化极缓慢 */
+    rgba(3, 3, 3, 0.25) 15%,
+    rgba(3, 3, 3, 0.2) 25%,
+    rgba(3, 3, 3, 0.15) 38%,
+    rgba(3, 3, 3, 0.1) 52%,
+    rgba(3, 3, 3, 0.06) 68%,
+    rgba(3, 3, 3, 0.03) 82%,
+    rgba(3, 3, 3, 0.01) 93%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.footer-section > .max-w-7xl {
+  position: relative;
+  z-index: 2; /* 确保footer内容在过渡层上方 */
+}
+
+/* Footer 文字阴影增强 - 提升可读性 */
+.footer-section h4,
+.footer-section p,
+.footer-section a,
+.footer-section span {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6),
+               0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+/* 移动端日历优化 */
+@media (max-width: 640px) {
+  .calendar-grid > div {
+    min-height: 100px !important;
+    padding: 0.5rem !important;
+  }
 }
 
 .glass-panel {
@@ -46,16 +149,37 @@
   @apply border-white/[0.15] bg-white/[0.05];
 }
 
+/* 内容区域的glass-panel增强对比度 */
+.content-section .glass-panel {
+  @apply bg-[#0a0a0a]/60 backdrop-blur-2xl;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.85) 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.content-section .glass-panel:hover {
+  @apply bg-[#0a0a0a]/75;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40;
 }
 
 .btn-primary {
-  @apply px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-medium transition-all duration-300 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95;
+  @apply px-6 sm:px-8 py-3 sm:py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-medium transition-all duration-300 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 text-sm sm:text-base;
 }
 
 .btn-secondary {
-  @apply px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95;
+  @apply px-6 sm:px-8 py-3 sm:py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-medium transition-all duration-300 hover:scale-105 active:scale-95 text-sm sm:text-base;
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary {
+    min-height: 48px; /* 确保触摸目标足够大 */
+  }
 }
 
 .hero-title {

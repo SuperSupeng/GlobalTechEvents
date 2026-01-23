@@ -1,7 +1,8 @@
 import React from 'react';
 import { TechEvent } from '../types';
-import { MapPin, Globe, ExternalLink, Tag } from 'lucide-react';
+import { MapPin, Globe, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
+import { identifyTags, getTagColorClasses } from '../utils/tags';
 
 interface EventCardProps {
   event: TechEvent;
@@ -9,6 +10,8 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
+  const smartTags = identifyTags(event);
+  
   return (
     <div 
       onClick={() => onClick(event)}
@@ -46,10 +49,33 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
             {event.title}
           </h3>
           
-          <p className="text-[14px] text-white/50 line-clamp-2 mb-5 font-sans leading-relaxed">
+          <p className="text-[14px] text-white/50 line-clamp-2 mb-4 font-sans leading-relaxed">
             {event.summary}
           </p>
-
+          
+          {/* Smart Tags */}
+          {smartTags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {smartTags.slice(0, 4).map((tag, idx) => {
+                const colors = getTagColorClasses(tag.color);
+                return (
+                  <span
+                    key={idx}
+                    className={`flex items-center gap-1.5 text-[10px] font-medium ${colors.text} ${colors.bg} px-2.5 py-1 rounded-lg border ${colors.border}`}
+                  >
+                    <span>{tag.icon}</span>
+                    {tag.label}
+                  </span>
+                );
+              })}
+              {smartTags.length > 4 && (
+                <span className="text-[10px] text-white/40 px-2 py-1">
+                  +{smartTags.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+          
           <div className="flex flex-wrap gap-2">
             {event.tags.map(tag => (
               <span key={tag} className="flex items-center gap-1.5 text-[10px] font-medium text-white/60 bg-white/[0.03] px-3 py-1.5 rounded-xl border border-white/[0.05]">

@@ -1,19 +1,43 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
+import { Calendar as CalendarIcon, Zap, ChevronDown } from 'lucide-react';
+import { mockEvents } from './data/mockEvents';
+import { TechEvent } from './types';
 import Calendar from './components/Calendar';
 import EventCard from './components/EventCard';
 import EventDetail from './components/EventDetail';
 import FilterPanel from './components/FilterPanel';
-import { mockEvents } from './data/mockEvents';
-import { TechEvent } from './types';
-import { Calendar as CalendarIcon, Zap, Github, Twitter } from 'lucide-react';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import EmptyState from './components/EmptyState';
+import ComingSoon from './components/ComingSoon';
 
 const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<'month' | 'list'>('month');
   const [searchQuery, setSearchQuery] = useState('');
   const [formatFilter, setFormatFilter] = useState('all');
+  const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
+  const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
+  
+  // Refs for smooth scrolling
+  const calendarRef = useRef<HTMLDivElement>(null);
+  
+  // Smooth scroll to calendar
+  const scrollToCalendar = () => {
+    calendarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setViewMode('month'); // 确保显示日历视图
+  };
+
+  // 获取所有唯一的地点
+  const allLocations = useMemo(() => {
+    return Array.from(new Set(
+      mockEvents
+        .filter(e => e.location)
+        .map(e => `${e.location!.city}, ${e.location!.country}`)
+    )).sort();
+  }, []);
 
   const filteredEvents = useMemo(() => {
     return mockEvents.filter(event => {
@@ -27,9 +51,14 @@ const App: React.FC = () => {
         event.format === formatFilter || 
         (formatFilter === 'offline' && event.format === 'hybrid');
 
-      return matchesSearch && matchesFormat;
+      const matchesLocation = 
+        locationFilter === 'all' || 
+        (locationFilter === 'online' && event.format === 'online') ||
+        (event.location && `${event.location.city}, ${event.location.country}` === locationFilter);
+
+      return matchesSearch && matchesFormat && matchesLocation;
     });
-  }, [searchQuery, formatFilter]);
+  }, [searchQuery, formatFilter, locationFilter]);
 
   const splitText = (text: string) => {
     return text.split(" ").map((word, wordIndex) => (
@@ -46,8 +75,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen relative">
       {/* Shader Background */}
-      <div className="shader-bg-container">
-        <ShaderGradientCanvas style={{ position: 'fixed', inset: 0, width: '100%', height: '100%' }}>
+      <div className="shader-bg-container" style={{ pointerEvents: 'none' }}>
+        <ShaderGradientCanvas style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
           <ShaderGradient
             control="query"
             urlString="https://www.shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1.55&cAzimuthAngle=180&cDistance=3.6&cPolarAngle=90&cameraZoom=1&color1=%23ff7a18&color2=%23ffd8a8&color3=%23f2e7ff&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=45&frameRate=24&gizmoHelper=hide&grain=on&lightType=3d&pixelDensity=0.9&positionX=-1.4&positionY=0&positionZ=0&range=disabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=0&rotationY=10&rotationZ=50&shader=defaults&type=plane&uAmplitude=1&uDensity=1.3&uFrequency=5.5&uSpeed=0.28&uStrength=4&uTime=0&wireframe=false"
@@ -57,40 +86,16 @@ const App: React.FC = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-4 glass-panel !rounded-full">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-              <Zap className="text-white fill-current" size={18} />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white font-sans">
-              GlobalTech<span className="text-primary-light">Events</span>
-            </span>
-          </div>
-          
-          <div className="hidden md:flex items-center gap-10 text-[13px] font-medium tracking-wide uppercase text-white/60">
-            <a href="#" className="text-white hover:text-white transition-colors">Explore</a>
-            <a href="#" className="hover:text-white transition-colors">Resources</a>
-            <a href="#" className="hover:text-white transition-colors">Submit Event</a>
-          </div>
+      <Navbar 
+        onExploreClick={scrollToCalendar}
+        onResourcesClick={() => setComingSoonFeature('Resources')}
+        onSubmitClick={() => setComingSoonFeature('Submit Event')}
+      />
 
-          <div className="flex items-center gap-4">
-            <a href="#" className="p-2 text-white/40 hover:text-white transition-colors">
-              <Twitter size={18} />
-            </a>
-            <a href="#" className="p-2 text-white/40 hover:text-white transition-colors">
-              <Github size={18} />
-            </a>
-            <button className="ml-2 px-6 py-2 rounded-full bg-white text-black text-sm font-semibold hover:bg-slate-200 transition-all">
-              Sign In
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto px-6 pt-40 relative z-10">
-        {/* Hero Section */}
-        <div className="text-center mb-24 max-w-4xl mx-auto">
+      <main className="relative z-10">
+        {/* Hero Section - 占满首屏 */}
+        <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 relative z-10">
+          <div className="text-center max-w-4xl mx-auto w-full px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,7 +107,7 @@ const App: React.FC = () => {
           </motion.div>
           
           <h1
-            className="hero-title text-5xl sm:text-6xl md:text-8xl font-serif italic mb-8 leading-[1.05] text-white relative z-10"
+            className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif italic mb-6 sm:mb-8 leading-[1.05] text-white relative z-10"
             onMouseMove={(event) => {
               const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
               const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -144,7 +149,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12 font-sans"
+            className="text-base sm:text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4"
           >
             Aggregate the world's top developer conferences, hackathons, and tech salons.
             Across time zones, pinpoint your next technical gathering.
@@ -156,28 +161,50 @@ const App: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6"
           >
-            <button className="btn-primary flex items-center gap-2">
+            <button 
+              onClick={scrollToCalendar}
+              className="btn-primary flex items-center gap-2"
+            >
               Start Exploring <Zap size={18} />
             </button>
-            <button className="btn-secondary flex items-center gap-2">
+            <button 
+              onClick={scrollToCalendar}
+              className="btn-secondary flex items-center gap-2"
+            >
               View Calendar <CalendarIcon size={18} />
             </button>
           </motion.div>
-        </div>
+          </div>
+
+          {/* 滚动指示器 */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.2, repeat: Infinity, repeatType: "reverse" }}
+            className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 hover:text-white/60 transition-colors cursor-pointer"
+            onClick={scrollToCalendar}
+          >
+            <span className="text-xs font-medium uppercase tracking-widest mb-2">Explore Events</span>
+            <ChevronDown size={24} className="animate-bounce" />
+          </motion.div>
+        </section>
 
         {/* Filter & Search */}
-        <div className="relative z-10">
+        <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-32 sm:pb-40">
           <FilterPanel 
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             formatFilter={formatFilter}
             onFormatChange={setFormatFilter}
+            locationFilter={locationFilter}
+            onLocationChange={setLocationFilter}
+            allLocations={allLocations}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
           />
 
           {/* Main Content */}
-          <div className="min-h-[500px] mb-20">
+          <div className="min-h-[300px] sm:min-h-[500px]">
             {viewMode === 'month' ? (
               <Calendar 
                 events={filteredEvents} 
@@ -194,13 +221,15 @@ const App: React.FC = () => {
                     />
                   ))
                 ) : (
-                  <div className="glass-panel p-32 text-center border-dashed border-white/10">
-                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-white/20">
-                      <CalendarIcon size={40} />
-                    </div>
-                    <h3 className="text-2xl font-serif italic mb-2 text-white">No events found</h3>
-                    <p className="text-white/40">Try adjusting your filters or search terms.</p>
-                  </div>
+                  <EmptyState 
+                    type={searchQuery ? 'search' : 'filter'}
+                    searchQuery={searchQuery}
+                    onReset={() => {
+                      setSearchQuery('');
+                      setFormatFilter('all');
+                      setLocationFilter('all');
+                    }}
+                  />
                 )}
               </div>
             )}
@@ -209,51 +238,21 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="py-20 border-t border-white/5 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-                  <Zap className="text-white fill-current" size={18} />
-                </div>
-                <span className="text-xl font-bold tracking-tight text-white font-sans">
-                  GlobalTech<span className="text-primary-light">Events</span>
-                </span>
-              </div>
-              <p className="text-white/40 max-w-sm leading-relaxed font-sans">
-                Connecting technology leaders and enthusiasts through a unified global event index.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-6">Product</h4>
-              <ul className="space-y-4 text-white/40 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Calendar</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Newsletter</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Access</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-6">Community</h4>
-              <ul className="space-y-4 text-white/40 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Submit Event</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Sponsorships</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Discord</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-10 border-t border-white/5 text-white/30 text-[12px] uppercase tracking-widest font-sans">
-            <div className="flex items-center gap-2">
-              <span>© 2026 Global Tech Events. Indexing the future.</span>
-            </div>
-            <div className="flex items-center gap-8">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Legal</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer 
+        onCalendarClick={scrollToCalendar}
+        onNewsletterClick={() => setComingSoonFeature('Newsletter')}
+        onAPIClick={() => setComingSoonFeature('API Access')}
+        onSubmitClick={() => setComingSoonFeature('Submit Event')}
+        onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
+        onDiscordClick={() => setComingSoonFeature('Discord Community')}
+      />
+      
+      {/* Coming Soon Modal */}
+      <ComingSoon 
+        isOpen={comingSoonFeature !== null}
+        onClose={() => setComingSoonFeature(null)}
+        feature={comingSoonFeature || undefined}
+      />
 
       {/* Event Details Modal */}
       <EventDetail 

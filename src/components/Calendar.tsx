@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   format, 
   startOfMonth, 
@@ -11,10 +11,11 @@ import {
   addMonths, 
   subMonths 
 } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe } from 'lucide-react';
 import { TechEvent } from '../types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import EmptyState from './EmptyState';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -27,6 +28,22 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [userTimezone, setUserTimezone] = useState<string>('');
+  const [timezoneOffset, setTimezoneOffset] = useState<string>('');
+
+  useEffect(() => {
+    // 获取用户的浏览器时区
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    setUserTimezone(timezone);
+    
+    // 计算 UTC 偏移量
+    const offset = -new Date().getTimezoneOffset();
+    const hours = Math.floor(Math.abs(offset) / 60);
+    const minutes = Math.abs(offset) % 60;
+    const sign = offset >= 0 ? '+' : '-';
+    const offsetStr = `UTC${sign}${hours}${minutes > 0 ? ':' + minutes.toString().padStart(2, '0') : ''}`;
+    setTimezoneOffset(offsetStr);
+  }, []);
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(monthStart);
@@ -39,37 +56,51 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const goToToday = () => setCurrentDate(new Date());
 
+  // 检查当前月份是否有活动
+  const hasEventsThisMonth = events.some(event => 
+    isSameMonth(new Date(event.startTime), currentDate)
+  );
+
   return (
-    <div className="glass-panel overflow-hidden border-white/[0.05]">
+    <div className="glass-panel overflow-hidden border border-white/[0.05]">
       {/* Calendar Header */}
-      <div className="flex items-center justify-between p-8 border-b border-white/[0.05] bg-white/[0.02]">
-        <h2 className="text-3xl font-serif italic text-white">
-          {format(currentDate, 'MMMM yyyy')}
-        </h2>
-        <div className="flex items-center space-x-6">
-          <button 
-            onClick={goToToday}
-            className="text-sm font-medium text-white/50 hover:text-white transition-colors"
-          >
-            Today
-          </button>
-          <div className="flex items-center gap-1">
+      <div className="p-8 border-b border-white/[0.05] bg-white/[0.02]">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-3xl font-serif italic text-white">
+            {format(currentDate, 'MMMM yyyy')}
+          </h2>
+          <div className="flex items-center gap-3 sm:gap-6">
             <button 
-              onClick={prevMonth}
-              className="p-2 text-white/40 hover:text-white transition-colors"
-              aria-label="Previous month"
+              onClick={goToToday}
+              className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-all border border-white/10 hover:border-white/20"
             >
-              <ChevronLeft size={24} />
+              Today
             </button>
-            <button 
-              onClick={nextMonth}
-              className="p-2 text-white/40 hover:text-white transition-colors"
-              aria-label="Next month"
-            >
-              <ChevronRight size={24} />
-            </button>
+            <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
+              <button 
+                onClick={prevMonth}
+                className="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-md transition-all"
+                aria-label="Previous month"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button 
+                onClick={nextMonth}
+                className="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-md transition-all"
+                aria-label="Next month"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
         </div>
+        {/* Timezone Indicator */}
+        {userTimezone && (
+          <div className="flex items-center gap-2 text-xs text-white/50">
+            <Globe size={14} className="text-white/40" />
+            <span>All times shown in your local timezone: <span className="text-white/70 font-medium">{userTimezone}</span> <span className="text-primary/70">({timezoneOffset})</span></span>
+          </div>
+        )}
       </div>
 
       {/* Weekdays Header */}
@@ -81,18 +112,25 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
         ))}
       </div>
 
-      {/* Days Grid */}
-      <div className="calendar-grid">
-        {days.map((day, idx) => {
+      {/* Empty State or Days Grid */}
+      {!hasEventsThisMonth ? (
+        <div className="p-8">
+          <EmptyState type="calendar" onReset={goToToday} />
+        </div>
+      ) : (
+        <div className="calendar-grid">
+          {days.map((day, idx) => {
           const dayEvents = events.filter(event => isSameDay(new Date(event.startTime), day));
           const isCurrentMonth = isSameMonth(day, monthStart);
           const isToday = isSameDay(day, new Date());
+          const isLastRow = idx >= days.length - 7; // 检查是否是最后一行
 
           return (
             <div 
               key={day.toString()} 
               className={cn(
-                "min-h-[140px] p-4 border-b border-r border-white/[0.05] transition-all group",
+                "min-h-[140px] p-4 border-r border-white/[0.05] transition-all group",
+                !isLastRow && "border-b", // 最后一行不显示底部边框
                 !isCurrentMonth ? "bg-black/20" : "bg-transparent hover:bg-white/[0.02]",
                 idx % 7 === 6 && "border-r-0"
               )}
@@ -112,13 +150,13 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
                   <button
                     key={event.id}
                     onClick={() => onEventClick(event)}
-                    className="w-full text-left px-2.5 py-1.5 text-[10px] leading-tight rounded-lg bg-primary/10 border border-primary/20 text-white/90 hover:bg-primary/20 transition-all truncate"
+                    className="w-full text-left px-2.5 py-1.5 text-[10px] leading-tight rounded-lg bg-primary/15 border border-primary/30 text-white hover:bg-primary/25 hover:border-primary/40 transition-all truncate shadow-sm"
                   >
                     <span className="font-medium">{event.title}</span>
                   </button>
                 ))}
                 {dayEvents.length > 3 && (
-                  <div className="text-[10px] text-white/30 pl-2 font-medium">
+                  <div className="text-[10px] text-white/50 pl-2 font-medium">
                     + {dayEvents.length - 3} more
                   </div>
                 )}
@@ -126,7 +164,8 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
             </div>
           );
         })}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

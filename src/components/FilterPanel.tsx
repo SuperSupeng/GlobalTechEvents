@@ -68,29 +68,29 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   return (
     <>
-      <div className="space-y-4 mb-8 sm:mb-12">
-        {/* Search Bar */}
-        <div className="relative group w-full">
-          <Search className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors" size={20} />
-          <input 
-            type="text"
-            placeholder="Search events..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-[#0a0a0a]/70 border border-white/[0.15] rounded-[2rem] text-white text-sm sm:text-base placeholder:text-white/40 focus:outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/10 backdrop-blur-2xl transition-all font-sans shadow-lg shadow-black/30"
-          />
-        </div>
+      <div className="space-y-5 mb-8 sm:mb-12">
+        {/* Search Bar + Location on Desktop */}
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
+          {/* Search Bar */}
+          <div className="relative group flex-1">
+            <Search className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors" size={20} />
+            <input 
+              type="text"
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-[#0a0a0a]/70 border border-white/[0.15] rounded-[2rem] text-white text-sm sm:text-base placeholder:text-white/40 focus:outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/10 backdrop-blur-2xl transition-all font-sans shadow-lg shadow-black/30"
+            />
+          </div>
 
-        {/* Filters Row - 优化布局 */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
-          {/* Location Filter */}
-          <div className="relative flex-1 sm:flex-none">
+          {/* Location Filter - Desktop: 旁边, Mobile: 下方 */}
+          <div className="relative lg:w-auto w-full">
             <button
               ref={locationButtonRef}
               onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-              className="flex items-center justify-between gap-2 px-5 sm:px-6 h-[52px] sm:h-[56px] bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full text-white/70 hover:text-white hover:border-white/25 active:scale-[0.98] transition-all backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:min-w-[200px]"
+              className="flex items-center justify-between gap-2 px-5 sm:px-6 h-[52px] sm:h-[64px] bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full text-white/70 hover:text-white hover:border-white/25 active:scale-[0.98] transition-all backdrop-blur-2xl shadow-lg shadow-black/30 w-full lg:min-w-[220px]"
             >
-              <div className="flex items-center gap-2 overflow-hidden">
+              <div className="flex items-center gap-2.5 overflow-hidden">
                 <MapPin size={18} className="text-white/50 flex-shrink-0" />
                 <span className="text-sm font-medium truncate">
                   {locationFilter === 'all' ? 'All Locations' : 
@@ -101,54 +101,54 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               <ChevronDown size={16} className={`text-white/40 flex-shrink-0 transition-transform ${showLocationDropdown ? 'rotate-180' : ''}`} />
             </button>
           </div>
+        </div>
 
-          {/* Format Select & View Switcher - 组合在一起 */}
-          <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto">
-            {/* Format Select */}
-            <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[280px]">
-              <button 
-                onClick={() => onFormatChange('all')}
-                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-              >
-                All
-              </button>
-              <button 
-                onClick={() => onFormatChange('online')}
-                className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-              >
-                <Globe size={14} />
-                <span>Online</span>
-              </button>
-              <button 
-                onClick={() => onFormatChange('offline')}
-                className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-              >
-                <MapPin size={14} />
-                <span>Offline</span>
-              </button>
-            </div>
+        {/* Filters Row - Format + View 在一行 */}
+        <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
+          {/* Format Select */}
+          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[280px]">
+            <button 
+              onClick={() => onFormatChange('all')}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+            >
+              All
+            </button>
+            <button 
+              onClick={() => onFormatChange('online')}
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+            >
+              <Globe size={14} />
+              <span>Online</span>
+            </button>
+            <button 
+              onClick={() => onFormatChange('offline')}
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+            >
+              <MapPin size={14} />
+              <span>Offline</span>
+            </button>
+          </div>
 
-            {/* View Switcher */}
-            <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[240px]">
-              <button 
-                onClick={() => onViewModeChange('month')}
-                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-              >
-                Month
-              </button>
-              <button 
-                onClick={() => onViewModeChange('week')}
-                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-              >
-                Week
-              </button>
-              <button 
-                onClick={() => onViewModeChange('list')}
-                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-              >
-                List
-              </button>
-            </div>
+          {/* View Switcher */}
+          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[240px]">
+            <button 
+              onClick={() => onViewModeChange('month')}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+            >
+              Month
+            </button>
+            <button 
+              onClick={() => onViewModeChange('week')}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+            >
+              Week
+            </button>
+            <button 
+              onClick={() => onViewModeChange('list')}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+            >
+              List
+            </button>
           </div>
         </div>
       </div>

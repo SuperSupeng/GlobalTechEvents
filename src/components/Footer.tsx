@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Twitter, Github } from 'lucide-react';
+import { Twitter, Github } from 'lucide-react';
 import Logo from './Logo';
 
 interface FooterProps {

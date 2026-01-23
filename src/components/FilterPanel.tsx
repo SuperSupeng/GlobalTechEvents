@@ -68,9 +68,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-8 sm:mb-12">
+      <div className="flex flex-col gap-4 mb-8 sm:mb-12">
         {/* Search Bar */}
-        <div className="flex-grow relative group w-full">
+        <div className="relative group w-full">
           <Search className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors" size={20} />
           <input 
             type="text"
@@ -81,65 +81,68 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full lg:w-auto">
+        {/* Filters Row */}
+        <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full">
           {/* Location Filter */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <button
               ref={locationButtonRef}
               onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-              className="flex items-center justify-between gap-2 px-4 sm:px-6 h-[56px] sm:h-[64px] bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full text-white/70 hover:text-white hover:border-white/25 transition-all backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto text-sm min-w-[180px]"
+              className="flex items-center justify-between gap-2 px-5 sm:px-6 h-[52px] sm:h-[56px] bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full text-white/70 hover:text-white hover:border-white/25 active:scale-[0.98] transition-all backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:min-w-[200px]"
             >
-              <div className="flex items-center gap-2">
-                <MapPin size={16} className="text-white/50 flex-shrink-0" />
-                <span className="text-xs sm:text-sm whitespace-nowrap">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <MapPin size={18} className="text-white/50 flex-shrink-0" />
+                <span className="text-sm font-medium truncate">
                   {locationFilter === 'all' ? 'All Locations' : 
                    locationFilter === 'online' ? 'Online Events' : 
-                   locationFilter.length > 20 ? locationFilter.substring(0, 20) + '...' : locationFilter}
+                   locationFilter}
                 </span>
               </div>
-              <ChevronDown size={16} className="text-white/40 flex-shrink-0" />
+              <ChevronDown size={16} className={`text-white/40 flex-shrink-0 transition-transform ${showLocationDropdown ? 'rotate-180' : ''}`} />
             </button>
           </div>
 
           {/* Format Select */}
-          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[56px] sm:h-[64px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto justify-between sm:justify-start">
+          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
             <button 
               onClick={() => onFormatChange('all')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/50 hover:text-white'}`}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
             >
               All
             </button>
             <button 
               onClick={() => onFormatChange('online')}
-              className={`px-3 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all uppercase tracking-widest flex-1 sm:flex-none ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/50 hover:text-white'}`}
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
             >
-              <Globe size={12} className="sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">Online</span>
+              <Globe size={14} />
+              <span>Online</span>
             </button>
             <button 
               onClick={() => onFormatChange('offline')}
-              className={`px-3 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all uppercase tracking-widest flex-1 sm:flex-none ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/50 hover:text-white'}`}
+              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
             >
-              <MapPin size={12} className="sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">Offline</span>
+              <MapPin size={14} />
+              <span>Offline</span>
             </button>
           </div>
 
           {/* View Switcher */}
-          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[56px] sm:h-[64px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
+          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
             <button 
               onClick={() => onViewModeChange('month')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
             >
               Month
             </button>
             <button 
               onClick={() => onViewModeChange('week')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
             >
               Week
             </button>
             <button 
               onClick={() => onViewModeChange('list')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs font-bold transition-all uppercase tracking-widest flex-1 sm:flex-none ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/50 hover:text-white'}`}
+              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
             >
               List
             </button>
@@ -151,7 +154,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       {showLocationDropdown && createPortal(
         <div 
           ref={locationDropdownRef}
-          className="fixed w-[calc(100%-2rem)] sm:w-[320px] bg-[#0a0a0a]/98 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl" 
+          className="fixed w-[calc(100%-2rem)] max-w-[400px] sm:w-[360px] bg-[#0a0a0a]/98 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200" 
           style={{ 
             zIndex: 99999,
             top: `${dropdownPosition.top}px`,
@@ -159,52 +162,55 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           }}
         >
           {/* Search Input */}
-          <div className="p-3 border-b border-white/5">
+          <div className="p-4 border-b border-white/5">
             <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 type="text"
                 placeholder="Search location..."
                 value={locationSearchQuery}
                 onChange={(e) => setLocationSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all"
                 onClick={(e) => e.stopPropagation()}
+                autoFocus
               />
             </div>
           </div>
           
           {/* Location List */}
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-80 overflow-y-auto overscroll-contain">
             <button
               onClick={() => { onLocationChange('all'); setShowLocationDropdown(false); setLocationSearchQuery(''); }}
-              className={`w-full px-6 py-3 text-left text-sm hover:bg-white/5 transition-all whitespace-nowrap ${locationFilter === 'all' ? 'bg-white/10 text-white' : 'text-white/70'}`}
+              className={`w-full px-5 py-3.5 text-left text-sm hover:bg-white/5 active:bg-white/10 transition-colors font-medium ${locationFilter === 'all' ? 'bg-white/10 text-white' : 'text-white/70'}`}
             >
               All Locations
             </button>
             <button
               onClick={() => { onLocationChange('online'); setShowLocationDropdown(false); setLocationSearchQuery(''); }}
-              className={`w-full px-6 py-3 text-left text-sm hover:bg-white/5 transition-all border-t border-white/5 flex items-center gap-2 whitespace-nowrap ${locationFilter === 'online' ? 'bg-white/10 text-white' : 'text-white/70'}`}
+              className={`w-full px-5 py-3.5 text-left text-sm hover:bg-white/5 active:bg-white/10 transition-colors border-t border-white/5 flex items-center gap-2.5 font-medium ${locationFilter === 'online' ? 'bg-white/10 text-white' : 'text-white/70'}`}
             >
-              <Globe size={14} className="text-emerald-400" />
-              Online Events
+              <Globe size={16} className="text-emerald-400 flex-shrink-0" />
+              <span>Online Events</span>
             </button>
             
             {filteredLocations.length > 0 ? (
               <>
-                <div className="border-t border-white/10 my-2"></div>
+                <div className="border-t border-white/10 my-1"></div>
                 {filteredLocations.map(location => (
                   <button
                     key={location}
                     onClick={() => { onLocationChange(location); setShowLocationDropdown(false); setLocationSearchQuery(''); }}
-                    className={`w-full px-6 py-3 text-left text-sm hover:bg-white/5 transition-all whitespace-nowrap ${locationFilter === location ? 'bg-white/10 text-white' : 'text-white/70'}`}
+                    className={`w-full px-5 py-3.5 text-left text-sm hover:bg-white/5 active:bg-white/10 transition-colors font-medium ${locationFilter === location ? 'bg-white/10 text-white' : 'text-white/70'}`}
                   >
+                    <MapPin size={14} className="inline mr-2 text-white/40" />
                     {location}
                   </button>
                 ))}
               </>
             ) : locationSearchQuery && (
-              <div className="px-6 py-8 text-center text-white/40 text-sm">
-                No locations found
+              <div className="px-5 py-12 text-center text-white/40 text-sm">
+                <Search size={24} className="mx-auto mb-2 opacity-30" />
+                <p>No locations found</p>
               </div>
             )}
           </div>

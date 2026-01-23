@@ -1,5 +1,6 @@
 import React from 'react';
 import { Zap, Twitter, Github } from 'lucide-react';
+import Logo from './Logo';
 
 interface FooterProps {
   onCalendarClick: () => void;
@@ -26,9 +27,7 @@ const Footer: React.FC<FooterProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10 mb-12 sm:mb-20">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-                  <Zap className="text-white fill-current" size={18} />
-                </div>
+                <Logo size={32} />
                 <span className="text-xl font-bold tracking-tight text-white font-sans">
                   GlobalTech<span className="text-primary-light">Events</span>
                 </span>

@@ -140,8 +140,7 @@ const App: React.FC = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-base sm:text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4"
           >
-            Aggregate the world's top developer conferences, hackathons, and tech salons.
-            Across time zones, pinpoint your next technical gathering.
+            Your gateway to the world's tech events. Conferences, hackathons, meetups—all in one calendar, across every timezone.
           </motion.p>
           
           <motion.div 

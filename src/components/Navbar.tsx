@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Zap, Menu, X } from 'lucide-react';
+import Logo from './Logo';
 
 interface NavbarProps {
   onExploreClick: () => void;
@@ -23,11 +24,9 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 glass-panel !rounded-full relative">
         <button 
           onClick={scrollToTop}
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
         >
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/30">
-            <Zap className="text-white fill-current" size={18} />
-          </div>
+          <Logo size={32} className="group-hover:scale-110 transition-transform duration-300" />
           <span className="text-xl font-bold tracking-tight text-white font-sans">
             GlobalTech<span className="text-primary-light">Events</span>
           </span>

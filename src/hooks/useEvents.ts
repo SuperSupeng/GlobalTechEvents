@@ -11,6 +11,8 @@ export function useEvents(filters: EventFilters = {}) {
     staleTime: 5 * 60 * 1000, // 5分钟内数据被认为是新鲜的
     gcTime: 10 * 60 * 1000, // 10分钟后清除缓存
     refetchOnWindowFocus: false, // 窗口聚焦时不自动重新获取
+    placeholderData: (previousData) => previousData, // 保留之前的数据，避免闪烁
+    retry: 2, // 失败后重试2次
   });
 }
 

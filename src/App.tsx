@@ -52,7 +52,12 @@ const App: React.FC = () => {
   };
 
   // 🆕 使用 API 获取数据
-  const { data: events = [], isLoading: eventsLoading, error: eventsError } = useEvents({
+  const { 
+    data: events = [], 
+    isLoading: eventsLoading, 
+    isFetching: eventsFetching,
+    error: eventsError 
+  } = useEvents({
     search: searchQuery,
     format: formatFilter as any,
     location: locationFilter,
@@ -256,9 +261,9 @@ const App: React.FC = () => {
           />
 
           {/* Main Content with View Transitions */}
-          <div className="min-h-[300px] sm:min-h-[500px]">
-            {/* Loading State */}
-            {eventsLoading ? (
+          <div className="min-h-[300px] sm:min-h-[500px] relative">
+            {/* 初次加载的全屏 Loading */}
+            {eventsLoading && !events.length ? (
               <div className="flex flex-col items-center justify-center py-20">
                 <Loader2 size={48} className="animate-spin text-primary mb-4" />
                 <p className="text-white/50 text-sm">Loading events...</p>
@@ -269,7 +274,16 @@ const App: React.FC = () => {
                 <p className="text-white/50 text-sm">Please check your internet connection and try again.</p>
               </div>
             ) : (
-              <AnimatePresence mode="wait">
+              <>
+                {/* 筛选时的小型加载指示器 */}
+                {eventsFetching && events.length > 0 && (
+                  <div className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-[#0a0a0a]/90 border border-white/10 rounded-full px-4 py-2 backdrop-blur-xl">
+                    <Loader2 size={16} className="animate-spin text-primary" />
+                    <span className="text-white/60 text-xs font-medium">Updating...</span>
+                  </div>
+                )}
+                
+                <AnimatePresence mode="wait">
               {viewMode === 'month' ? (
                 <motion.div
                   key="month-view"
@@ -315,7 +329,8 @@ const App: React.FC = () => {
                   />
                 </motion.div>
               )}
-            </AnimatePresence>
+              </AnimatePresence>
+              </>
             )}
           </div>
         </div>

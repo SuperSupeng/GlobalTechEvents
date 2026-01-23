@@ -68,7 +68,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   return (
     <>
-      <div className="flex flex-col gap-4 mb-8 sm:mb-12">
+      <div className="space-y-4 mb-8 sm:mb-12">
         {/* Search Bar */}
         <div className="relative group w-full">
           <Search className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors" size={20} />
@@ -81,8 +81,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           />
         </div>
 
-        {/* Filters Row */}
-        <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full">
+        {/* Filters Row - 优化布局 */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
           {/* Location Filter */}
           <div className="relative flex-1 sm:flex-none">
             <button
@@ -102,50 +102,53 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             </button>
           </div>
 
-          {/* Format Select */}
-          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
-            <button 
-              onClick={() => onFormatChange('all')}
-              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-            >
-              All
-            </button>
-            <button 
-              onClick={() => onFormatChange('online')}
-              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-            >
-              <Globe size={14} />
-              <span>Online</span>
-            </button>
-            <button 
-              onClick={() => onFormatChange('offline')}
-              className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
-            >
-              <MapPin size={14} />
-              <span>Offline</span>
-            </button>
-          </div>
+          {/* Format Select & View Switcher - 组合在一起 */}
+          <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto">
+            {/* Format Select */}
+            <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[280px]">
+              <button 
+                onClick={() => onFormatChange('all')}
+                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'all' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+              >
+                All
+              </button>
+              <button 
+                onClick={() => onFormatChange('online')}
+                className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'online' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+              >
+                <Globe size={14} />
+                <span>Online</span>
+              </button>
+              <button 
+                onClick={() => onFormatChange('offline')}
+                className={`px-4 sm:px-6 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all uppercase tracking-wider flex-1 active:scale-95 ${formatFilter === 'offline' ? 'bg-white text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+              >
+                <MapPin size={14} />
+                <span>Offline</span>
+              </button>
+            </div>
 
-          {/* View Switcher */}
-          <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 w-full sm:w-auto">
-            <button 
-              onClick={() => onViewModeChange('month')}
-              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-            >
-              Month
-            </button>
-            <button 
-              onClick={() => onViewModeChange('week')}
-              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-            >
-              Week
-            </button>
-            <button 
-              onClick={() => onViewModeChange('list')}
-              className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 sm:flex-none active:scale-95 ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
-            >
-              List
-            </button>
+            {/* View Switcher */}
+            <div className="flex bg-[#0a0a0a]/70 border border-white/[0.15] rounded-full p-1.5 h-[52px] sm:h-[56px] items-center backdrop-blur-2xl shadow-lg shadow-black/30 flex-1 sm:flex-none sm:min-w-[240px]">
+              <button 
+                onClick={() => onViewModeChange('month')}
+                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'month' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+              >
+                Month
+              </button>
+              <button 
+                onClick={() => onViewModeChange('week')}
+                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'week' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+              >
+                Week
+              </button>
+              <button 
+                onClick={() => onViewModeChange('list')}
+                className={`px-5 sm:px-6 py-2.5 rounded-full text-xs font-semibold transition-all uppercase tracking-wider flex-1 active:scale-95 ${viewMode === 'list' ? 'bg-white/15 text-white' : 'text-white/60 hover:text-white'}`}
+              >
+                List
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -13,6 +13,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ComingSoon from './components/ComingSoon';
 import Toast from './components/Toast';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
@@ -22,6 +24,7 @@ const App: React.FC = () => {
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms'>('home');
   
   // Toast notifications
   const { toasts, removeToast, success } = useToast();
@@ -54,6 +57,22 @@ const App: React.FC = () => {
     return events;
   }, [events]);
 
+  // 处理页面导航
+  const navigateToPrivacy = () => {
+    setCurrentPage('privacy');
+    window.scrollTo(0, 0);
+  };
+
+  const navigateToTerms = () => {
+    setCurrentPage('terms');
+    window.scrollTo(0, 0);
+  };
+
+  const navigateToHome = () => {
+    setCurrentPage('home');
+    window.scrollTo(0, 0);
+  };
+
   const splitText = (text: string) => {
     return text.split(" ").map((word, wordIndex) => (
       <span key={`word-${wordIndex}`} className="inline-block mr-3 last:mr-0">
@@ -65,6 +84,15 @@ const App: React.FC = () => {
       </span>
     ));
   };
+
+  // 如果在法律页面，只显示该页面
+  if (currentPage === 'privacy') {
+    return <PrivacyPolicy onBack={navigateToHome} />;
+  }
+
+  if (currentPage === 'terms') {
+    return <TermsOfService onBack={navigateToHome} />;
+  }
 
   return (
     <div className="min-h-screen relative">
@@ -271,6 +299,8 @@ const App: React.FC = () => {
         onSubmitClick={() => setComingSoonFeature('Submit Event')}
         onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
         onDiscordClick={openDiscord}
+        onPrivacyClick={navigateToPrivacy}
+        onTermsClick={navigateToTerms}
       />
       
       {/* Coming Soon Modal */}

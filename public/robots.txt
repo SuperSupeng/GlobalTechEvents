@@ -1,0 +1,32 @@
+# GlobalTechEvents Robots.txt
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# AI Crawlers (Allow all for GEO optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Sitemap
+Sitemap: https://globaltechevents.com/sitemap.xml

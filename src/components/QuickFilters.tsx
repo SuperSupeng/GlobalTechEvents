@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Cpu, Link as LinkIcon, DollarSign, Calendar as CalendarIcon } from 'lucide-react';
+import { Sparkles, Cpu, Link as LinkIcon, DollarSign, Cloud, Code2, Users } from 'lucide-react';
 
 interface QuickFilter {
   id: string;
@@ -35,23 +35,28 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({ onFilterClick }) => {
       searchTerm: 'Web3' 
     },
     { 
-      id: 'blockchain', 
-      label: 'Blockchain', 
-      icon: <LinkIcon size={14} />, 
-      searchTerm: 'Blockchain' 
+      id: 'cloud', 
+      label: 'Cloud', 
+      icon: <Cloud size={14} />, 
+      searchTerm: 'Cloud' 
+    },
+    { 
+      id: 'devops', 
+      label: 'DevOps', 
+      icon: <Code2 size={14} />, 
+      searchTerm: 'DevOps' 
+    },
+    { 
+      id: 'meetup', 
+      label: 'Meetup', 
+      icon: <Users size={14} />, 
+      searchTerm: 'Meetup' 
     },
     { 
       id: 'free', 
       label: 'Free', 
       icon: <DollarSign size={14} />, 
       searchTerm: 'Free' 
-    },
-    { 
-      id: 'this-week', 
-      label: 'This Week', 
-      icon: <CalendarIcon size={14} />, 
-      searchTerm: '',
-      badge: '📅'
     },
   ];
 
@@ -61,16 +66,17 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({ onFilterClick }) => {
         <button
           key={filter.id}
           onClick={() => onFilterClick(filter.searchTerm || filter.label)}
-          className="group flex items-center gap-1.5 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs font-medium active:scale-95"
+          className="group flex items-center gap-1.5 px-3 py-2 bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 hover:border-primary/50 rounded-full text-white/80 hover:text-white transition-all text-xs font-medium active:scale-95 shadow-lg"
+          style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
         >
           {filter.badge ? (
-            <span className="text-sm">{filter.badge}</span>
+            <span className="text-sm drop-shadow-lg">{filter.badge}</span>
           ) : (
-            <span className="text-white/40 group-hover:text-primary/70 transition-colors">
+            <span className="text-white/60 group-hover:text-primary transition-colors drop-shadow-lg">
               {filter.icon}
             </span>
           )}
-          <span>{filter.label}</span>
+          <span className="font-semibold">{filter.label}</span>
         </button>
       ))}
     </div>

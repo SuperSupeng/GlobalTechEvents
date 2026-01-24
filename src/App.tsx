@@ -249,7 +249,7 @@ const App: React.FC = () => {
         </section>
 
         {/* Filter & Search */}
-        <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-32 sm:pb-40">
+        <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-32 sm:pb-40">
           {/* Quick Filters */}
           <QuickFilters 
             onFilterClick={(searchTerm) => setSearchQuery(searchTerm)}
@@ -265,6 +265,11 @@ const App: React.FC = () => {
             allLocations={allLocations}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
+            onClearFilters={() => {
+              setSearchQuery('');
+              setFormatFilter('all');
+              setLocationFilter('all');
+            }}
           />
 
           {/* Featured Events */}

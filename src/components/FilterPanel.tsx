@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, MapPin, Globe, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Globe, ChevronDown, X } from 'lucide-react';
 import { ViewMode } from '../types';
 
 interface FilterPanelProps {
@@ -13,6 +13,7 @@ interface FilterPanelProps {
   allLocations: string[];
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
+  onClearFilters: () => void;
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -24,7 +25,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onLocationChange,
   allLocations,
   viewMode,
-  onViewModeChange
+  onViewModeChange,
+  onClearFilters
 }) => {
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
@@ -66,10 +68,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     };
   }, [showLocationDropdown]);
 
+  // 检查是否有激活的筛选条件
+  const hasActiveFilters = searchQuery || formatFilter !== 'all' || locationFilter !== 'all';
+
   return (
     <>
       <div className="space-y-5 mb-8 sm:mb-12">
-        {/* Search Bar + Location on Desktop */}
+        {/* Search Bar + Location + Clear Button on Desktop */}
         <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* Search Bar */}
           <div className="relative group flex-1">
@@ -101,6 +106,17 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               <ChevronDown size={16} className={`text-white/40 flex-shrink-0 transition-transform ${showLocationDropdown ? 'rotate-180' : ''}`} />
             </button>
           </div>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <button
+              onClick={onClearFilters}
+              className="flex items-center gap-2 px-4 sm:px-5 h-[52px] sm:h-[64px] bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full text-white/60 hover:text-white transition-all backdrop-blur-2xl shadow-lg shadow-black/30 active:scale-95"
+            >
+              <X size={16} />
+              <span className="text-sm font-medium">Clear</span>
+            </button>
+          )}
         </div>
 
         {/* Filters Row - Format + View 在一行 */}

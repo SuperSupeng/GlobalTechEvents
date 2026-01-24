@@ -226,10 +226,14 @@ const WeekView: React.FC<WeekViewProps> = ({ events }) => {
       )}
 
       {/* Week Grid */}
-      <div className="bg-[#0a0a0a]/70 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
-        {/* Days Header */}
-        <div className="grid grid-cols-8 border-b border-white/10 bg-white/5">
-          <div className="px-2 py-3 text-xs font-semibold text-white/50 border-r border-white/10 flex items-center">Time</div>
+      <div className="bg-[#0a0a0a]/70 border border-white/10 rounded-2xl backdrop-blur-xl overflow-x-auto">
+        <div className="min-w-[800px]">
+          {/* Days Header */}
+          <div 
+            className="grid border-b border-white/10 bg-white/5"
+            style={{ gridTemplateColumns: '100px repeat(7, 1fr)' }}
+          >
+          <div className="py-3 text-xs font-semibold text-white/50 border-r border-white/10 flex items-center justify-center">Time</div>
           {weekDays.map((day, index) => (
             <div
               key={index}
@@ -243,15 +247,18 @@ const WeekView: React.FC<WeekViewProps> = ({ events }) => {
               </div>
             </div>
           ))}
-        </div>
+          </div>
 
-        {/* Time Grid */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[800px]">
+          {/* Time Grid */}
+          <div>
             {hours.map(hour => (
-              <div key={hour} className="grid grid-cols-8 border-b border-white/5 last:border-b-0" style={{ height: '60px' }}>
+              <div 
+                key={hour} 
+                className="grid border-b border-white/5 last:border-b-0" 
+                style={{ height: '60px', gridTemplateColumns: '100px repeat(7, 1fr)' }}
+              >
                 {/* Hour Label */}
-                <div className="p-2 text-xs text-white/40 border-r border-white/10 flex items-start">
+                <div className="py-3 text-xs text-white/40 border-r border-white/10 flex items-start justify-center">
                   {format(new Date().setHours(hour, 0, 0, 0), 'HH:mm')}
                 </div>
                 
@@ -266,7 +273,7 @@ const WeekView: React.FC<WeekViewProps> = ({ events }) => {
                   return (
                     <div
                       key={dayIndex}
-                      className={`relative border-r border-white/10 last:border-r-0 ${
+                      className={`relative p-3 border-r border-white/10 last:border-r-0 ${
                         isToday(day) ? 'bg-primary/5' : 'bg-transparent'
                       }`}
                     >

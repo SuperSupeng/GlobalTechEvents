@@ -173,9 +173,9 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
               >
                 <div className="flex items-center gap-3">
                   <Calendar size={20} className="text-white/60 group-hover:text-white" />
-                  <div>
-                    <span className="font-medium">Apple Calendar / macOS</span>
-                    <span className="block text-xs text-white/40">Downloads .ics, open to add</span>
+                  <div className="text-left">
+                    <div className="font-medium">Apple Calendar / macOS</div>
+                    <div className="text-xs text-white/40 mt-0.5">Downloads .ics, open to add</div>
                   </div>
                 </div>
                 <Download size={16} className="text-white/40 group-hover:text-white/60" />
@@ -190,9 +190,9 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     <path d="M19.5 3h-15A1.5 1.5 0 003 4.5v15A1.5 1.5 0 004.5 21h15a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 0019.5 3zM12 18.75a6.75 6.75 0 110-13.5 6.75 6.75 0 010 13.5z"/>
                     <path d="M12 6.75v5.25l3.75 2.25"/>
                   </svg>
-                  <div>
-                    <span className="font-medium">Google Calendar</span>
-                    <span className="block text-xs text-white/40">Copies URL, then paste</span>
+                  <div className="text-left">
+                    <div className="font-medium">Google Calendar</div>
+                    <div className="text-xs text-white/40 mt-0.5">Copies URL, then paste</div>
                   </div>
                 </div>
                 <ExternalLink size={16} className="text-white/40 group-hover:text-white/60" />

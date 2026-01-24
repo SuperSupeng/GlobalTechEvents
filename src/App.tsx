@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { Zap, ChevronDown, Loader2, MessageCircle } from 'lucide-react';
+import { Zap, ChevronDown, Loader2, MessageCircle, Rss } from 'lucide-react';
 import { TechEvent, ViewMode } from './types';
 import { useEvents, useLocations } from './hooks/useEvents';
 import Calendar from './components/Calendar';
@@ -18,6 +18,7 @@ import TermsOfService from './pages/TermsOfService';
 import Resources from './pages/Resources';
 import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
+import SubscribeModal from './components/SubscribeModal';
 import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
@@ -37,6 +38,7 @@ const App: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms' | 'resources'>(getInitialPage());
+  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   
   // Toast notifications
   const { toasts, removeToast, success } = useToast();
@@ -296,6 +298,22 @@ const App: React.FC = () => {
             }}
           />
 
+          {/* Subscribe Action Bar */}
+          <div className="flex items-center justify-between mb-8 sm:mb-10">
+            <div className="text-white/40 text-sm">
+              {filteredEvents.length > 0 && (
+                <span>{filteredEvents.length} events found</span>
+              )}
+            </div>
+            <button
+              onClick={() => setShowSubscribeModal(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 rounded-full text-primary-light hover:text-white transition-all text-sm font-medium"
+            >
+              <Rss size={16} />
+              Subscribe to Calendar
+            </button>
+          </div>
+
           {/* Featured Events */}
           {!searchQuery && !locationFilter && formatFilter === 'all' && events.length > 0 && (
             <FeaturedEvents 
@@ -404,6 +422,15 @@ const App: React.FC = () => {
         event={selectedEvent} 
         onClose={() => setSelectedEvent(null)}
         onToast={success}
+      />
+
+      {/* Subscribe Modal */}
+      <SubscribeModal
+        isOpen={showSubscribeModal}
+        onClose={() => setShowSubscribeModal(false)}
+        onToast={success}
+        formatFilter={formatFilter}
+        locationFilter={locationFilter}
       />
 
       {/* Toast Notifications */}

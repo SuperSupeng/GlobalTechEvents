@@ -36,7 +36,6 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const subscribeUrl = buildSubscribeUrl();
-  const webcalUrl = subscribeUrl.replace(/^https?:/, 'webcal:');
 
   const handleCopyUrl = async () => {
     try {
@@ -59,23 +58,40 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const handleSubscribeApple = () => {
-    window.location.href = webcalUrl;
+    // 直接下载 .ics 文件，macOS/iOS 会自动用 Apple Calendar 打开
+    // 创建一个隐藏的 a 标签来触发下载
+    const link = document.createElement('a');
+    link.href = subscribeUrl;
+    link.download = 'globaltechevents.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     if (onToast) {
-      onToast('Opening calendar app...');
+      onToast('Calendar file downloaded - open to add to Calendar');
     }
   };
 
-  const handleSubscribeGoogle = () => {
-    // Google Calendar subscription URL
-    const googleUrl = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(subscribeUrl)}`;
-    window.open(googleUrl, '_blank');
-    if (onToast) {
-      onToast('Opening Google Calendar...');
+  const handleSubscribeGoogle = async () => {
+    // Google Calendar 需要通过 "Add by URL" 功能添加
+    // 先复制 URL 到剪贴板，然后打开 Google Calendar 的添加页面
+    try {
+      await navigator.clipboard.writeText(subscribeUrl);
+      // 打开 Google Calendar 的 "Other calendars" 添加页面
+      window.open('https://calendar.google.com/calendar/u/0/r/settings/addbyurl', '_blank');
+      if (onToast) {
+        onToast('URL copied! Paste it in Google Calendar.');
+      }
+    } catch (err) {
+      // 如果复制失败，仍然打开页面
+      window.open('https://calendar.google.com/calendar/u/0/r/settings/addbyurl', '_blank');
+      if (onToast) {
+        onToast('Opening Google Calendar - copy the URL above.');
+      }
     }
   };
 
   const handleSubscribeOutlook = () => {
-    // Outlook web subscription
+    // Outlook web subscription - 使用正确的 URL 格式
     const outlookUrl = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(subscribeUrl)}&name=GlobalTechEvents`;
     window.open(outlookUrl, '_blank');
     if (onToast) {
@@ -157,9 +173,12 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
               >
                 <div className="flex items-center gap-3">
                   <Calendar size={20} className="text-white/60 group-hover:text-white" />
-                  <span className="font-medium">Apple Calendar / macOS</span>
+                  <div>
+                    <span className="font-medium">Apple Calendar / macOS</span>
+                    <span className="block text-xs text-white/40">Downloads .ics, open to add</span>
+                  </div>
                 </div>
-                <ExternalLink size={16} className="text-white/40 group-hover:text-white/60" />
+                <Download size={16} className="text-white/40 group-hover:text-white/60" />
               </button>
 
               <button
@@ -171,7 +190,10 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
                     <path d="M19.5 3h-15A1.5 1.5 0 003 4.5v15A1.5 1.5 0 004.5 21h15a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 0019.5 3zM12 18.75a6.75 6.75 0 110-13.5 6.75 6.75 0 010 13.5z"/>
                     <path d="M12 6.75v5.25l3.75 2.25"/>
                   </svg>
-                  <span className="font-medium">Google Calendar</span>
+                  <div>
+                    <span className="font-medium">Google Calendar</span>
+                    <span className="block text-xs text-white/40">Copies URL, then paste</span>
+                  </div>
                 </div>
                 <ExternalLink size={16} className="text-white/40 group-hover:text-white/60" />
               </button>

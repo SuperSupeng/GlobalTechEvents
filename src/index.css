@@ -3,10 +3,26 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    overflow-y: auto; /* 确保可以正常滚动 */
+    scroll-behavior: smooth;
+  }
+  
   body {
-    @apply bg-[#030303] text-slate-100 antialiased overflow-x-hidden;
+    @apply bg-[#030303] text-slate-100 antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto; /* 确保可以滚动 */
+    min-height: 100vh;
+  }
+  
+  #root {
+    position: relative;
+    overflow: visible;
   }
   
   h1, h2, h3 {
@@ -30,8 +46,15 @@
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  touch-action: none;
+  user-select: none;
   transform: translateZ(0);
   will-change: transform;
+}
+
+.shader-bg-container * {
+  pointer-events: none !important;
+  touch-action: none !important;
 }
 
 .shader-bg-container::after {

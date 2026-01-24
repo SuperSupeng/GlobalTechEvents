@@ -132,16 +132,28 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative" style={{ overflow: 'visible' }}>
       {/* Shader Background */}
-      <div className="shader-bg-container" style={{ pointerEvents: 'none' }}>
-        <ShaderGradientCanvas style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+      <div className="shader-bg-container" style={{ pointerEvents: 'none', touchAction: 'none' }}>
+        <ShaderGradientCanvas 
+          style={{ 
+            position: 'fixed', 
+            inset: 0, 
+            width: '100%', 
+            height: '100%', 
+            pointerEvents: 'none',
+            touchAction: 'none',
+            userSelect: 'none'
+          }}
+          eventSource={undefined}
+          eventPrefix="client"
+        >
           <ShaderGradient
             control="query"
             urlString="https://www.shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1.55&cAzimuthAngle=180&cDistance=3.6&cPolarAngle=90&cameraZoom=1&color1=%23ff7a18&color2=%23ffd8a8&color3=%23f2e7ff&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=45&frameRate=24&gizmoHelper=hide&grain=on&lightType=3d&pixelDensity=0.9&positionX=-1.4&positionY=0&positionZ=0&range=disabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=0&rotationY=10&rotationZ=50&shader=defaults&type=plane&uAmplitude=1&uDensity=1.3&uFrequency=5.5&uSpeed=0.28&uStrength=4&uTime=0&wireframe=false"
           />
         </ShaderGradientCanvas>
-        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" style={{ touchAction: 'none' }} />
       </div>
 
       {/* Navigation */}
@@ -153,7 +165,7 @@ const App: React.FC = () => {
 
       <main className="relative z-10">
         {/* Hero Section - 占满首屏 */}
-        <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 relative z-10">
+        <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 relative z-10 w-full">
           <div className="text-center max-w-4xl mx-auto w-full px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -217,7 +229,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16 sm:mb-0"
           >
             <button 
               onClick={scrollToCalendar}
@@ -240,11 +252,11 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2, repeat: Infinity, repeatType: "reverse" }}
-            className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 hover:text-white/60 transition-colors cursor-pointer"
+            className="absolute bottom-4 sm:bottom-12 left-0 right-0 mx-auto flex flex-col items-center gap-1 sm:gap-2 text-white/40 hover:text-white/60 transition-colors cursor-pointer w-fit"
             onClick={scrollToCalendar}
           >
-            <span className="text-xs font-medium uppercase tracking-widest mb-2">Explore Events</span>
-            <ChevronDown size={24} className="animate-bounce" />
+            <span className="text-xs font-medium uppercase tracking-widest mb-1 whitespace-nowrap">Explore Events</span>
+            <ChevronDown size={20} className="sm:w-6 sm:h-6 animate-bounce" />
           </motion.div>
         </section>
 

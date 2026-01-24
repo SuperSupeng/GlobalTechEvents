@@ -34,9 +34,13 @@ export async function fetchEvents(filters: EventFilters = {}): Promise<TechEvent
       if (filters.location === 'online') {
         query = query.eq('format', 'online');
       } else {
-        // 搜索城市或国家
-        const cityName = filters.location.split(',')[0].trim();
-        query = query.or(`location->>city.eq.${cityName},location->>country.eq.${cityName}`);
+        // 搜索城市或国家（清理输入防止注入）
+        const cityName = filters.location.split(',')[0].trim()
+          .replace(/[^\w\s\u4e00-\u9fa5-]/g, ''); // 只保留字母、数字、空格、中文、连字符
+        
+        if (cityName) {
+          query = query.or(`location->>city.eq.${cityName},location->>country.eq.${cityName}`);
+        }
       }
     }
 

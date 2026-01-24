@@ -15,16 +15,18 @@ import ComingSoon from './components/ComingSoon';
 import Toast from './components/Toast';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Resources from './pages/Resources';
 import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
 import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
   // 根据 URL 路径确定初始页面
-  const getInitialPage = (): 'home' | 'privacy' | 'terms' => {
+  const getInitialPage = (): 'home' | 'privacy' | 'terms' | 'resources' => {
     const path = window.location.pathname;
     if (path === '/privacy') return 'privacy';
     if (path === '/terms') return 'terms';
+    if (path === '/resources') return 'resources';
     return 'home';
   };
 
@@ -34,7 +36,7 @@ const App: React.FC = () => {
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms'>(getInitialPage());
+  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms' | 'resources'>(getInitialPage());
   
   // Toast notifications
   const { toasts, removeToast, success } = useToast();
@@ -97,12 +99,20 @@ const App: React.FC = () => {
     document.title = 'GlobalTechEvents - Your Gateway to Tech Events Worldwide';
   };
 
+  const navigateToResources = () => {
+    setCurrentPage('resources');
+    window.history.pushState({}, '', '/resources');
+    window.scrollTo(0, 0);
+    document.title = 'Resources - GlobalTechEvents';
+  };
+
   // 处理浏览器前进/后退按钮
   React.useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
       if (path === '/privacy') setCurrentPage('privacy');
       else if (path === '/terms') setCurrentPage('terms');
+      else if (path === '/resources') setCurrentPage('resources');
       else setCurrentPage('home');
     };
 
@@ -131,6 +141,10 @@ const App: React.FC = () => {
     return <TermsOfService onBack={navigateToHome} />;
   }
 
+  if (currentPage === 'resources') {
+    return <Resources onBack={navigateToHome} />;
+  }
+
   return (
     <div className="min-h-screen relative" style={{ overflow: 'visible' }}>
       {/* Shader Background */}
@@ -157,7 +171,7 @@ const App: React.FC = () => {
       {/* Navigation */}
       <Navbar 
         onExploreClick={scrollToCalendar}
-        onResourcesClick={() => setComingSoonFeature('Resources')}
+        onResourcesClick={navigateToResources}
         onSubmitClick={() => setComingSoonFeature('Submit Event')}
       />
 

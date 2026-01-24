@@ -1,8 +1,9 @@
 import React from 'react';
 import { TechEvent } from '../types';
-import { MapPin, Globe, ExternalLink, Tag } from 'lucide-react';
+import { MapPin, Globe, ExternalLink, Tag, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { identifyTags, getTagColorClasses } from '../utils/tags';
+import { getTimeUrgency } from '../utils/timeUtils';
 
 interface EventCardProps {
   event: TechEvent;
@@ -11,6 +12,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const smartTags = identifyTags(event);
+  const timeUrgency = getTimeUrgency(event.startTime);
   
   return (
     <div 
@@ -31,6 +33,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
         {/* Content Section */}
         <div className="flex-grow min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-3">
+            {/* Time Urgency Badge */}
+            {timeUrgency && (
+              <span className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border ${timeUrgency.color} ${timeUrgency.bgColor} ${timeUrgency.borderColor}`}>
+                <Calendar size={11} />
+                {timeUrgency.label}
+              </span>
+            )}
+            
             {event.format === 'online' ? (
               <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-400/10 px-2.5 py-1 rounded-full border border-emerald-400/20">
                 <Globe size={11} /> <span className="hidden xs:inline">Online</span>

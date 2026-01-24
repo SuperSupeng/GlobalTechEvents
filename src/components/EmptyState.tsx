@@ -1,16 +1,18 @@
 import React from 'react';
-import { Calendar, Search, Filter } from 'lucide-react';
+import { Calendar, Search, Filter, Cpu, Link as LinkIcon } from 'lucide-react';
 
 interface EmptyStateProps {
   type?: 'search' | 'filter' | 'calendar';
   searchQuery?: string;
   onReset?: () => void;
+  onQuickFilter?: (searchTerm: string) => void;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ 
   type = 'search', 
   searchQuery,
-  onReset 
+  onReset,
+  onQuickFilter
 }) => {
   const configs = {
     search: {
@@ -46,14 +48,46 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       <p className="text-sm sm:text-base text-white/50 mb-6 max-w-md mx-auto leading-relaxed">
         {config.description}
       </p>
-      {onReset && (
-        <button
-          onClick={onReset}
-          className="px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full text-sm text-white/70 hover:text-white transition-all font-medium"
-        >
-          Clear filters
-        </button>
-      )}
+      <div className="flex flex-col items-center gap-4">
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full text-sm text-white/70 hover:text-white transition-all font-medium"
+          >
+            Clear filters
+          </button>
+        )}
+        
+        {/* Quick suggestions */}
+        {onQuickFilter && (type === 'search' || type === 'filter') && (
+          <div className="mt-4">
+            <p className="text-xs text-white/40 mb-3">Try exploring:</p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => onQuickFilter('AI')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
+              >
+                <Cpu size={12} />
+                <span>AI Events</span>
+              </button>
+              <button
+                onClick={() => onQuickFilter('Web3')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
+              >
+                <LinkIcon size={12} />
+                <span>Web3 Events</span>
+              </button>
+              <button
+                onClick={() => onQuickFilter('Blockchain')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
+              >
+                <LinkIcon size={12} />
+                <span>Blockchain</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

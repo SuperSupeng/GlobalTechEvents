@@ -30,6 +30,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [userTimezone, setUserTimezone] = useState<string>('');
   const [timezoneOffset, setTimezoneOffset] = useState<string>('');
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // 获取用户的浏览器时区
@@ -52,9 +53,27 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
 
   const days = eachDayOfInterval({ start: startDate, end: endDate });
 
-  const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
-  const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const nextMonth = () => {
+    setCurrentDate(addMonths(currentDate, 1));
+    setExpandedDays(new Set()); // 切换月份时重置展开状态
+  };
+  const prevMonth = () => {
+    setCurrentDate(subMonths(currentDate, 1));
+    setExpandedDays(new Set()); // 切换月份时重置展开状态
+  };
   const goToToday = () => setCurrentDate(new Date());
+
+  const toggleDayExpanded = (dayKey: string) => {
+    setExpandedDays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dayKey)) {
+        newSet.delete(dayKey);
+      } else {
+        newSet.add(dayKey);
+      }
+      return newSet;
+    });
+  };
 
   // 检查当前月份是否有活动
   const hasEventsThisMonth = events.some(event => 
@@ -124,6 +143,9 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
           const isCurrentMonth = isSameMonth(day, monthStart);
           const isToday = isSameDay(day, new Date());
           const isLastRow = idx >= days.length - 7; // 检查是否是最后一行
+          const dayKey = day.toISOString();
+          const isExpanded = expandedDays.has(dayKey);
+          const displayLimit = isExpanded ? dayEvents.length : 3;
 
           return (
             <div 
@@ -143,10 +165,15 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
                 )}>
                   {format(day, 'd')}
                 </span>
+                {dayEvents.length > 0 && (
+                  <span className="text-[10px] text-white/40 font-medium">
+                    {dayEvents.length}
+                  </span>
+                )}
               </div>
               
               <div className="space-y-1.5">
-                {dayEvents.slice(0, 3).map(event => (
+                {dayEvents.slice(0, displayLimit).map(event => (
                   <button
                     key={event.id}
                     onClick={() => onEventClick(event)}
@@ -156,9 +183,12 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
                   </button>
                 ))}
                 {dayEvents.length > 3 && (
-                  <div className="text-[10px] text-white/50 pl-2 font-medium">
-                    + {dayEvents.length - 3} more
-                  </div>
+                  <button
+                    onClick={() => toggleDayExpanded(dayKey)}
+                    className="w-full text-left px-2.5 py-1 text-[10px] text-white/50 hover:text-white/80 hover:bg-white/5 rounded-lg transition-all font-medium"
+                  >
+                    {isExpanded ? '− Show less' : `+ ${dayEvents.length - 3} more`}
+                  </button>
                 )}
               </div>
             </div>

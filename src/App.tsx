@@ -15,6 +15,8 @@ import ComingSoon from './components/ComingSoon';
 import Toast from './components/Toast';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import QuickFilters from './components/QuickFilters';
+import FeaturedEvents from './components/FeaturedEvents';
 import { useToast } from './hooks/useToast';
 
 const App: React.FC = () => {
@@ -248,6 +250,11 @@ const App: React.FC = () => {
 
         {/* Filter & Search */}
         <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-32 sm:pb-40">
+          {/* Quick Filters */}
+          <QuickFilters 
+            onFilterClick={(searchTerm) => setSearchQuery(searchTerm)}
+          />
+          
           <FilterPanel 
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -259,6 +266,14 @@ const App: React.FC = () => {
             viewMode={viewMode}
             onViewModeChange={setViewMode}
           />
+
+          {/* Featured Events */}
+          {!searchQuery && !locationFilter && formatFilter === 'all' && events.length > 0 && (
+            <FeaturedEvents 
+              events={filteredEvents.slice(0, 6)}
+              onEventClick={setSelectedEvent}
+            />
+          )}
 
           {/* Main Content with View Transitions */}
           <div className="min-h-[300px] sm:min-h-[500px] relative">

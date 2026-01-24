@@ -144,9 +144,7 @@ const App: React.FC = () => {
             pointerEvents: 'none',
             touchAction: 'none',
             userSelect: 'none'
-          }}
-          eventSource={undefined}
-          eventPrefix="client"
+          } as React.CSSProperties}
         >
           <ShaderGradient
             control="query"

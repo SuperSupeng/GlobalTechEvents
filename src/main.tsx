@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App.tsx'
 import './index.css'
+import { WHATSAPP_GROUP_URL } from './config/constants'
 
-// 创建 React Query 客户端
+// React Query client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5分钟
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },
 })
 
-// 🎉 开发者彩蛋
+// Developer easter egg
 if (typeof window !== 'undefined') {
   const styles = {
     title: 'color: #8b5cf6; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(139,92,246,0.3);',
@@ -25,16 +26,16 @@ if (typeof window !== 'undefined') {
   };
 
   console.log('%c🚀 GlobalTechEvents', styles.title);
-  console.log('%c👋 嘿，开发者朋友！', styles.text);
-  console.log('%c', 'line-height: 20px;'); // 空行
-  console.log('%c发现你打开了控制台，看来你也是技术爱好者！', styles.text);
-  console.log('%c我们正在构建全球最好的技术活动聚合平台。', styles.text);
-  console.log('%c', 'line-height: 20px;'); // 空行
-  console.log('%c💬 加入我们的 Discord 社区吧！', styles.link);
-  console.log('%chttps://discord.gg/Cj7s7nt7', 'color: #60a5fa; font-size: 14px; text-decoration: underline;');
-  console.log('%c', 'line-height: 20px;'); // 空行
-  console.log('%c技术栈：React + TypeScript + Vite + Supabase + Three.js', 'color: #6b7280; font-size: 12px; font-style: italic;');
-  console.log('%c🌟 如果你有兴趣参与开发或提供反馈，欢迎联系我们！', styles.text);
+  console.log('%c👋 Hey, developer!', styles.text);
+  console.log('%c', 'line-height: 20px;');
+  console.log('%cYou opened the console—looks like you\'re a tech enthusiast too!', styles.text);
+  console.log('%cWe\'re building the world\'s best tech events aggregator.', styles.text);
+  console.log('%c', 'line-height: 20px;');
+  console.log('%c💬 Join our WhatsApp community!', styles.link);
+  console.log(`%c${WHATSAPP_GROUP_URL}`, 'color: #60a5fa; font-size: 14px; text-decoration: underline;');
+  console.log('%c', 'line-height: 20px;');
+  console.log('%cStack: React + TypeScript + Vite + Supabase + Three.js', 'color: #6b7280; font-size: 12px; font-style: italic;');
+  console.log('%c🌟 Interested in contributing or feedback? We\'d love to hear from you!', styles.text);
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

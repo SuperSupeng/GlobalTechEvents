@@ -32,15 +32,15 @@ const Navbar: React.FC<NavbarProps> = ({
           </span>
         </button>
         
-        <div className="hidden md:flex items-center gap-10 text-[13px] font-medium tracking-wide uppercase text-white/60">
-          <button onClick={onExploreClick} className="text-white hover:text-white transition-colors">Explore</button>
+        <div className="hidden md:flex items-center gap-10 text-[13px] font-medium tracking-wide uppercase text-white/80">
+          <button onClick={onExploreClick} className="text-white hover:text-white transition-colors">View Calendar</button>
           <button onClick={onResourcesClick} className="hover:text-white transition-colors">Resources</button>
           <button onClick={onSubmitClick} className="hover:text-white transition-colors">Submit Event</button>
         </div>
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
+          className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -56,17 +56,17 @@ const Navbar: React.FC<NavbarProps> = ({
               onClick={() => { onExploreClick(); setMobileMenuOpen(false); }} 
               className="text-white hover:text-primary transition-colors py-2 font-medium text-left"
             >
-              Explore
+              View Calendar
             </button>
             <button 
               onClick={() => { onResourcesClick(); setMobileMenuOpen(false); }} 
-              className="text-white/60 hover:text-white transition-colors py-2 text-left"
+              className="text-white/80 hover:text-white transition-colors py-2 text-left"
             >
               Resources
             </button>
             <button 
               onClick={() => { onSubmitClick(); setMobileMenuOpen(false); }} 
-              className="text-white/60 hover:text-white transition-colors py-2 text-left"
+              className="text-white/80 hover:text-white transition-colors py-2 text-left"
             >
               Submit Event
             </button>

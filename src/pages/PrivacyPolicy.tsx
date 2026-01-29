@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { WHATSAPP_GROUP_URL } from '../config/constants';
 
 interface PrivacyPolicyProps {
   onBack: () => void;
@@ -162,7 +163,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
             </p>
             <div className="bg-white/5 border border-white/10 rounded-lg p-4">
               <p className="text-white/70">📧 Email: <a href="mailto:privacy@globaltechevents.com" className="text-primary hover:underline">privacy@globaltechevents.com</a></p>
-              <p className="text-white/70 mt-2">💬 Discord: <a href="https://discord.gg/Cj7s7nt7" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Join our community</a></p>
+              <p className="text-white/70 mt-2">💬 WhatsApp: <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Join our community</a></p>
             </div>
           </section>
 

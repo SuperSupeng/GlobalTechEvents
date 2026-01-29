@@ -19,12 +19,17 @@ const FeaturedEvents: React.FC<FeaturedEventsProps> = ({ events, onEventClick })
 
   return (
     <div className="mb-12">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <Sparkles size={24} className="text-primary" />
-        <h2 className="text-2xl sm:text-3xl font-serif italic text-white">
-          Featured This Week
-        </h2>
+      {/* Header - 图标强化，置於月历之前 */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/30 text-primary">
+          <Sparkles size={28} strokeWidth={2} aria-hidden />
+        </div>
+        <div>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary/90 mb-1 block">Featured</span>
+          <h2 className="text-2xl sm:text-3xl font-serif italic text-white">
+            This Week
+          </h2>
+        </div>
       </div>
 
       {/* Events Grid */}
@@ -55,11 +60,11 @@ const FeaturedEvents: React.FC<FeaturedEventsProps> = ({ events, onEventClick })
 
               {/* Event Meta */}
               <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-white/60 text-sm">
+                <div className="flex items-center gap-2 text-white/80 text-sm">
                   <Calendar size={14} className="flex-shrink-0" />
                   <span className="text-xs">{format(new Date(event.startTime), 'MMM dd, yyyy · HH:mm')}</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/60 text-sm">
+                <div className="flex items-center gap-2 text-white/80 text-sm">
                   {event.format === 'online' ? (
                     <>
                       <Globe size={14} className="text-emerald-400 flex-shrink-0" />
@@ -76,7 +81,7 @@ const FeaturedEvents: React.FC<FeaturedEventsProps> = ({ events, onEventClick })
 
               {/* Event Summary */}
               {event.summary && (
-                <p className="text-white/50 text-xs leading-relaxed line-clamp-2 mb-4">
+                <p className="text-white/70 text-xs leading-relaxed line-clamp-2 mb-4">
                   {event.summary}
                 </p>
               )}
@@ -87,7 +92,7 @@ const FeaturedEvents: React.FC<FeaturedEventsProps> = ({ events, onEventClick })
                   {event.tags.slice(0, 3).map((tag, index) => (
                     <span
                       key={index}
-                      className="text-[10px] px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-white/50"
+                      className="text-[10px] px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-white/70"
                     >
                       {tag}
                     </span>

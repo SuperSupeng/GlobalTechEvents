@@ -6,20 +6,22 @@ interface QuickFilter {
   label: string;
   icon: React.ReactNode;
   searchTerm?: string;
+  tagFilter?: string;
   badge?: string;
 }
 
 interface QuickFiltersProps {
   onFilterClick: (searchTerm: string) => void;
+  onTagFilterClick?: (tag: string) => void;
 }
 
-const QuickFilters: React.FC<QuickFiltersProps> = ({ onFilterClick }) => {
+const QuickFilters: React.FC<QuickFiltersProps> = ({ onFilterClick, onTagFilterClick }) => {
   const filters: QuickFilter[] = [
     { 
-      id: 'hot', 
-      label: 'Hot', 
+      id: 'featured', 
+      label: 'Featured', 
       icon: <Sparkles size={14} />, 
-      searchTerm: '',
+      tagFilter: 'Featured',
       badge: '🔥'
     },
     { 
@@ -65,7 +67,13 @@ const QuickFilters: React.FC<QuickFiltersProps> = ({ onFilterClick }) => {
       {filters.map((filter) => (
         <button
           key={filter.id}
-          onClick={() => onFilterClick(filter.searchTerm || filter.label)}
+          onClick={() => {
+            if (filter.tagFilter && onTagFilterClick) {
+              onTagFilterClick(filter.tagFilter);
+            } else {
+              onFilterClick(filter.searchTerm ?? filter.label);
+            }
+          }}
           className="group flex items-center gap-1.5 px-3 py-2 bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 hover:border-primary/50 rounded-full text-white/80 hover:text-white transition-all text-xs font-medium active:scale-95 shadow-lg"
           style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
         >

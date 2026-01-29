@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Calendar, Globe2 } from 'lucide-react';
+import { WHATSAPP_GROUP_URL } from '../config/constants';
 
 interface ResourcesProps {
   onBack: () => void;
@@ -244,15 +245,15 @@ const Resources: React.FC<ResourcesProps> = ({ onBack }) => {
         <section className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-2">Contribute a resource</h2>
           <p className="text-white/70 text-sm">
-            Have a trusted regional feed or resource? Share it with the community in our Discord.
+            Have a trusted regional feed or resource? Share it with the community in our WhatsApp group.
           </p>
           <a
-            href="https://discord.gg/Cj7s7nt7"
+            href={WHATSAPP_GROUP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full border border-primary/40 px-4 py-2 text-sm text-primary-light hover:text-white hover:border-primary/80 transition-colors mt-4"
           >
-            Join Discord
+            Join WhatsApp
           </a>
         </section>
       </div>

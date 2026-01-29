@@ -7,7 +7,7 @@ interface FooterProps {
   onAPIClick: () => void;
   onSubmitClick: () => void;
   onSponsorshipsClick: () => void;
-  onDiscordClick: () => void;
+  onWhatsAppClick: () => void;
   onPrivacyClick: () => void;
   onTermsClick: () => void;
 }
@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({
   onAPIClick,
   onSubmitClick,
   onSponsorshipsClick,
-  onDiscordClick,
+  onWhatsAppClick,
   onPrivacyClick,
   onTermsClick
 }) => {
@@ -35,13 +35,13 @@ const Footer: React.FC<FooterProps> = ({
                   GlobalTech<span className="text-primary-light">Events</span>
                 </span>
               </div>
-              <p className="text-white/60 max-w-sm leading-relaxed font-sans text-sm sm:text-[15px]">
+              <p className="text-white/80 max-w-sm leading-relaxed font-sans text-sm sm:text-[15px]">
                 Your gateway to the world's most influential tech events. From AI summits to developer conferences, discover, track, and never miss the moments that shape technology's future.
               </p>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-6 text-sm">Product</h4>
-              <ul className="space-y-4 text-white/55 text-sm">
+              <ul className="space-y-4 text-white/75 text-sm">
                 <li><button onClick={onCalendarClick} className="hover:text-white transition-colors">Calendar</button></li>
                 <li><button onClick={onNewsletterClick} className="hover:text-white transition-colors">Newsletter</button></li>
                 <li><button onClick={onAPIClick} className="hover:text-white transition-colors">API Access</button></li>
@@ -49,21 +49,21 @@ const Footer: React.FC<FooterProps> = ({
             </div>
             <div>
               <h4 className="text-white font-semibold mb-6 text-sm">Community</h4>
-              <ul className="space-y-4 text-white/55 text-sm">
+              <ul className="space-y-4 text-white/75 text-sm">
                 <li><button onClick={onSubmitClick} className="hover:text-white transition-colors">Submit Event</button></li>
                 <li><button onClick={onSponsorshipsClick} className="hover:text-white transition-colors">Sponsorships</button></li>
-                <li><button onClick={onDiscordClick} className="hover:text-white transition-colors">Discord</button></li>
+                <li><button onClick={onWhatsAppClick} className="hover:text-white transition-colors">WhatsApp</button></li>
               </ul>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center gap-3 pt-6 sm:pt-10 border-t border-white/10 text-white/45 text-xs sm:text-sm font-sans text-center">
+          <div className="flex flex-col items-center justify-center gap-3 pt-6 sm:pt-10 border-t border-white/10 text-white/65 text-xs sm:text-sm font-sans text-center">
             <p>© 2026 GlobalTechEvents. Indexing the future of technology.</p>
-            <div className="flex items-center gap-4 text-white/40 text-xs">
+            <div className="flex items-center gap-4 text-white/65 text-xs">
               <button onClick={onPrivacyClick} className="hover:text-white transition-colors">Privacy Policy</button>
               <span>·</span>
               <button onClick={onTermsClick} className="hover:text-white transition-colors">Terms of Service</button>
             </div>
-            <p className="text-white/30 text-[10px] sm:text-xs">Made with ❤️ for the global tech community</p>
+            <p className="text-white/55 text-[10px] sm:text-xs">Made with ❤️ for the global tech community</p>
           </div>
         </div>
       </footer>

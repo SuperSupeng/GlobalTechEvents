@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { WHATSAPP_GROUP_URL } from '../config/constants';
 
 interface TermsOfServiceProps {
   onBack: () => void;
@@ -42,7 +43,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
               <li>Event calendar and listings</li>
               <li>Search and filtering tools</li>
               <li>Bookmarking functionality</li>
-              <li>Community features (Discord)</li>
+              <li>Community features (WhatsApp)</li>
               <li>API access (subject to rate limits)</li>
             </ul>
           </section>
@@ -112,7 +113,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
 
             <h3 className="text-xl font-semibold mb-3 text-primary">5.2 Community Guidelines</h3>
             <p className="text-white/70 leading-relaxed mb-4">
-              When participating in our community (Discord, comments, etc.), you must:
+              When participating in our community (WhatsApp, comments, etc.), you must:
             </p>
             <ul className="list-disc list-inside text-white/70 space-y-2">
               <li>Be respectful and professional</li>
@@ -205,7 +206,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
             </p>
             <div className="bg-white/5 border border-white/10 rounded-lg p-4">
               <p className="text-white/70">📧 Email: <a href="mailto:legal@globaltechevents.com" className="text-primary hover:underline">legal@globaltechevents.com</a></p>
-              <p className="text-white/70 mt-2">💬 Discord: <a href="https://discord.gg/Cj7s7nt7" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Join our community</a></p>
+              <p className="text-white/70 mt-2">💬 WhatsApp: <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Join our community</a></p>
             </div>
           </section>
 

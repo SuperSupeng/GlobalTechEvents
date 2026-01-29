@@ -10,6 +10,7 @@ export default {
         primary: {
           DEFAULT: '#ff7a18', // Brighter orange for contrast
           dark: '#f06400',
+          light: '#ffd8a8',
         },
         accent: '#ffd8a8', // Lighter tan for glow accents
         background: '#030303',

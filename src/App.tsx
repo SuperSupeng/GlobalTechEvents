@@ -20,6 +20,7 @@ import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
 import SubscribeModal from './components/SubscribeModal';
 import { useToast } from './hooks/useToast';
+import { WHATSAPP_GROUP_URL } from './config/constants';
 
 const App: React.FC = () => {
   // 根据 URL 路径确定初始页面
@@ -33,6 +34,7 @@ const App: React.FC = () => {
 
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [searchQuery, setSearchQuery] = useState('');
+  const [tagFilter, setTagFilter] = useState<string>('');
   const [formatFilter, setFormatFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
@@ -52,9 +54,8 @@ const App: React.FC = () => {
     setViewMode('month'); // 确保显示日历视图
   };
 
-  // Open Discord community
-  const openDiscord = () => {
-    window.open('https://discord.gg/Cj7s7nt7', '_blank');
+  const openWhatsApp = () => {
+    window.open(WHATSAPP_GROUP_URL, '_blank');
   };
 
   // 🆕 使用 API 获取数据
@@ -65,6 +66,7 @@ const App: React.FC = () => {
     error: eventsError 
   } = useEvents({
     search: searchQuery,
+    tag: tagFilter || undefined,
     format: formatFilter as any,
     location: locationFilter,
   });
@@ -185,7 +187,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium mb-8"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
               2026 Global tech events now open for subscription
@@ -234,7 +236,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-base sm:text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4"
+            className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]"
           >
             Your gateway to the world's tech events. Conferences, hackathons, meetups—all in one calendar, across every timezone.
           </motion.p>
@@ -249,14 +251,14 @@ const App: React.FC = () => {
               onClick={scrollToCalendar}
               className="btn-primary flex items-center gap-2 w-full sm:w-auto"
             >
-              Start Exploring <Zap size={18} />
+              View Calendar <Zap size={18} />
             </button>
             <button 
-              onClick={openDiscord}
+              onClick={openWhatsApp}
               className="btn-secondary flex items-center gap-2 w-full sm:w-auto group"
             >
               <MessageCircle size={18} className="group-hover:rotate-12 transition-transform" />
-              Join Discord
+              Join WhatsApp
             </button>
           </motion.div>
           </div>
@@ -266,10 +268,10 @@ const App: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2, repeat: Infinity, repeatType: "reverse" }}
-            className="absolute bottom-4 sm:bottom-12 left-0 right-0 mx-auto flex flex-col items-center gap-1 sm:gap-2 text-white/40 hover:text-white/60 transition-colors cursor-pointer w-fit"
+            className="absolute bottom-4 sm:bottom-12 left-0 right-0 mx-auto flex flex-col items-center gap-1 sm:gap-2 text-white/70 hover:text-white transition-colors cursor-pointer w-fit"
             onClick={scrollToCalendar}
           >
-            <span className="text-xs font-medium uppercase tracking-widest mb-1 whitespace-nowrap">Explore Events</span>
+            <span className="text-xs font-medium uppercase tracking-widest mb-1 whitespace-nowrap">View Calendar</span>
             <ChevronDown size={20} className="sm:w-6 sm:h-6 animate-bounce" />
           </motion.div>
         </section>
@@ -278,12 +280,22 @@ const App: React.FC = () => {
         <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-32 sm:pb-40">
           {/* Quick Filters */}
           <QuickFilters 
-            onFilterClick={(searchTerm) => setSearchQuery(searchTerm)}
+            onFilterClick={(searchTerm) => {
+              setSearchQuery(searchTerm);
+              setTagFilter('');
+            }}
+            onTagFilterClick={(tag) => {
+              setTagFilter(tag);
+              setSearchQuery('');
+            }}
           />
           
           <FilterPanel 
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onSearchChange={(q) => {
+              setSearchQuery(q);
+              setTagFilter('');
+            }}
             formatFilter={formatFilter}
             onFormatChange={setFormatFilter}
             locationFilter={locationFilter}
@@ -293,6 +305,7 @@ const App: React.FC = () => {
             onViewModeChange={setViewMode}
             onClearFilters={() => {
               setSearchQuery('');
+              setTagFilter('');
               setFormatFilter('all');
               setLocationFilter('all');
             }}
@@ -300,7 +313,7 @@ const App: React.FC = () => {
 
           {/* Subscribe Action Bar */}
           <div className="flex items-center justify-between mb-8 sm:mb-10">
-            <div className="text-white/40 text-sm">
+            <div className="text-white/70 text-sm">
               {filteredEvents.length > 0 && (
                 <span>{filteredEvents.length} events found</span>
               )}
@@ -315,7 +328,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Featured Events */}
-          {!searchQuery && !locationFilter && formatFilter === 'all' && events.length > 0 && (
+          {!searchQuery && !tagFilter && !locationFilter && formatFilter === 'all' && events.length > 0 && (
             <FeaturedEvents 
               events={filteredEvents.slice(0, 6)}
               onEventClick={setSelectedEvent}
@@ -328,12 +341,12 @@ const App: React.FC = () => {
             {eventsLoading && !events.length ? (
               <div className="flex flex-col items-center justify-center py-20">
                 <Loader2 size={48} className="animate-spin text-primary mb-4" />
-                <p className="text-white/50 text-sm">Loading events...</p>
+                <p className="text-white/75 text-sm">Loading events...</p>
               </div>
             ) : eventsError ? (
               <div className="flex flex-col items-center justify-center py-20">
                 <div className="text-red-400 mb-4">⚠️ Failed to load events</div>
-                <p className="text-white/50 text-sm">Please check your internet connection and try again.</p>
+                <p className="text-white/75 text-sm">Please check your internet connection and try again.</p>
               </div>
             ) : (
               <>
@@ -341,7 +354,7 @@ const App: React.FC = () => {
                 {eventsFetching && events.length > 0 && (
                   <div className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-[#0a0a0a]/90 border border-white/10 rounded-full px-4 py-2 backdrop-blur-xl">
                     <Loader2 size={16} className="animate-spin text-primary" />
-                    <span className="text-white/60 text-xs font-medium">Updating...</span>
+                    <span className="text-white/80 text-xs font-medium">Updating...</span>
                   </div>
                 )}
                 
@@ -405,7 +418,7 @@ const App: React.FC = () => {
         onAPIClick={() => setComingSoonFeature('API Access')}
         onSubmitClick={() => setComingSoonFeature('Submit Event')}
         onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
-        onDiscordClick={openDiscord}
+        onWhatsAppClick={openWhatsApp}
         onPrivacyClick={navigateToPrivacy}
         onTermsClick={navigateToTerms}
       />

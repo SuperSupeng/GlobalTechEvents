@@ -5,6 +5,7 @@ export interface EventFilters {
   search?: string;
   format?: 'all' | 'online' | 'offline' | 'hybrid';
   location?: string;
+  tag?: string;
   startDate?: Date;
   endDate?: Date;
   limit?: number;
@@ -44,7 +45,12 @@ export async function fetchEvents(filters: EventFilters = {}): Promise<TechEvent
       }
     }
 
-    // 搜索关键词
+    // Tag filter (e.g. Featured for paid/partner events)
+    if (filters.tag) {
+      query = query.contains('tags', [filters.tag]);
+    }
+
+    // Search keywords
     if (filters.search) {
       const searchTerm = `%${filters.search}%`;
       query = query.or(`title.ilike.${searchTerm},summary.ilike.${searchTerm}`);

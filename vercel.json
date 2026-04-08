@@ -13,6 +13,14 @@
       "destination": "/api/:path*"
     },
     {
+      "source": "/events/:slug",
+      "destination": "/events/:slug/index.html"
+    },
+    {
+      "source": "/events/:slug/",
+      "destination": "/events/:slug/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -58,6 +66,19 @@
         {
           "key": "Content-Type",
           "value": "text/plain"
+        }
+      ]
+    },
+    {
+      "source": "/events/:slug",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
         }
       ]
     },

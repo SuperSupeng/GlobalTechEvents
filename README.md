@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# Global Tech Events (GTE)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 全球科技活动聚合网站 - 一站式发现值得参加的科技活动
 
-Currently, two official plugins are available:
+**线上地址**：https://globaltechevents.xyz  
+**状态**：✅ MVP 已上线（2026-04-06）
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 项目定位
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Global Tech Events 解决「活动信息分散、发现成本高」的问题：
 
-## Expanding the ESLint configuration
+- 科技活动分散在 Meetup、Eventbrite、Luma、社区官网等多个平台
+- 用户需要跨平台搜索，容易错过高质量活动
+- 缺少按城市、类型、时间统一筛选与规划的入口
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+GTE 提供聚合式活动发现体验，支持按城市、时间和活动类型浏览，帮助用户更高效地连接线下科技社区。
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 目标用户
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Founder / Builder**：拓展行业网络、追踪前沿趋势
+- **数字游民**：到新城市后快速融入本地技术社区
+- **远程工作者**：通过线下活动建立真实连接、减少孤立感
+
+---
+
+## 核心价值
+
+1. **省时间**：聚合多个来源，减少跨平台检索成本
+2. **不错过**：集中展示即将发生的重要活动
+3. **可规划**：按城市和时间维度安排参与节奏
+
+---
+
+## 当前功能（MVP）
+
+- 活动列表浏览
+- 活动详情查看
+- 基础筛选与检索
+- 线上部署（Vercel）
+
+后续将逐步完善：数据更新频率、SEO 页面、增长分发与订阅能力。
+
+---
+
+## 技术栈
+
+- React + TypeScript + Vite
+- Tailwind CSS
+- Supabase
+- Vercel
+
+---
+
+## 本地开发
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+常用命令：
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build    # 生产构建
+npm run preview  # 本地预览构建结果
+npm run lint     # 代码检查
+npm run migrate  # 数据迁移脚本（需 .env.local）
 ```
+
+---
+
+## 项目结构（简要）
+
+- `src/`：前端应用
+- `api/`：服务端 API（Vercel Functions）
+- `database/`：数据结构与脚本
+- `docs/`：项目文档
+
+---
+
+## 相关文档
+
+- 产品定位参考：`/home/admin/Nutstore Files/Knowledge-Database/4. Projects/globaltechevents/README.md`
+- 项目需求文档：`PRD.md`

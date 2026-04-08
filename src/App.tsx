@@ -16,6 +16,8 @@ import Toast from './components/Toast';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Resources from './pages/Resources';
+import SEOEventPage from './pages/SEOEventPage';
+import { getSEOEventPageByPath, type SEOEventPageData } from './data/seoEventPages';
 import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
 import SubscribeModal from './components/SubscribeModal';
@@ -24,13 +26,22 @@ import { WHATSAPP_GROUP_URL } from './config/constants';
 
 const App: React.FC = () => {
   // 根据 URL 路径确定初始页面
-  const getInitialPage = (): 'home' | 'privacy' | 'terms' | 'resources' => {
+  const getInitialRoute = (): {
+    page: 'home' | 'privacy' | 'terms' | 'resources' | 'seoEvent';
+    seoEventPage: SEOEventPageData | null;
+  } => {
     const path = window.location.pathname;
-    if (path === '/privacy') return 'privacy';
-    if (path === '/terms') return 'terms';
-    if (path === '/resources') return 'resources';
-    return 'home';
+    if (path === '/privacy') return { page: 'privacy', seoEventPage: null };
+    if (path === '/terms') return { page: 'terms', seoEventPage: null };
+    if (path === '/resources') return { page: 'resources', seoEventPage: null };
+
+    const seoEventPage = getSEOEventPageByPath(path);
+    if (seoEventPage) return { page: 'seoEvent', seoEventPage };
+
+    return { page: 'home', seoEventPage: null };
   };
+
+  const initialRoute = getInitialRoute();
 
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,7 +50,8 @@ const App: React.FC = () => {
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms' | 'resources'>(getInitialPage());
+  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms' | 'resources' | 'seoEvent'>(initialRoute.page);
+  const [seoEventPage, setSeoEventPage] = useState<SEOEventPageData | null>(initialRoute.seoEventPage);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   
   // Toast notifications
@@ -97,6 +109,7 @@ const App: React.FC = () => {
 
   const navigateToHome = () => {
     setCurrentPage('home');
+    setSeoEventPage(null);
     window.history.pushState({}, '', '/');
     window.scrollTo(0, 0);
     // 恢复主页 title
@@ -114,10 +127,25 @@ const App: React.FC = () => {
   React.useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      if (path === '/privacy') setCurrentPage('privacy');
-      else if (path === '/terms') setCurrentPage('terms');
-      else if (path === '/resources') setCurrentPage('resources');
-      else setCurrentPage('home');
+      if (path === '/privacy') {
+        setCurrentPage('privacy');
+        setSeoEventPage(null);
+      } else if (path === '/terms') {
+        setCurrentPage('terms');
+        setSeoEventPage(null);
+      } else if (path === '/resources') {
+        setCurrentPage('resources');
+        setSeoEventPage(null);
+      } else {
+        const nextSEOEventPage = getSEOEventPageByPath(path);
+        if (nextSEOEventPage) {
+          setCurrentPage('seoEvent');
+          setSeoEventPage(nextSEOEventPage);
+        } else {
+          setCurrentPage('home');
+          setSeoEventPage(null);
+        }
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -147,6 +175,10 @@ const App: React.FC = () => {
 
   if (currentPage === 'resources') {
     return <Resources onBack={navigateToHome} />;
+  }
+
+  if (currentPage === 'seoEvent' && seoEventPage) {
+    return <SEOEventPage page={seoEventPage} onBackHome={navigateToHome} />;
   }
 
   return (

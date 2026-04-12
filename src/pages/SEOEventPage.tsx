@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, Globe, MapPin, Tag } from 'lucide-react';
 import Logo from '../components/Logo';
 import type { SEOEventPageData } from '../data/seoEventPages';
 import { injectSchema, updateMetaTags } from '../utils/seo';
+import { trackOutboundClick } from '../utils/analytics';
 
 interface SEOEventPageProps {
   page: SEOEventPageData;
@@ -40,8 +41,8 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome }) => {
         page.format === 'online'
           ? 'https://schema.org/OnlineEventAttendanceMode'
           : page.format === 'hybrid'
-          ? 'https://schema.org/MixedEventAttendanceMode'
-          : 'https://schema.org/OfflineEventAttendanceMode',
+            ? 'https://schema.org/MixedEventAttendanceMode'
+            : 'https://schema.org/OfflineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       location:
         page.format === 'online'
@@ -70,6 +71,16 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome }) => {
 
     injectSchema(JSON.stringify(schema));
   }, [page]);
+
+  const handleOfficialClick = (targetUrl: string, ctaLabel: string) => {
+    trackOutboundClick({
+      sourcePage: window.location.pathname,
+      pageType: 'seo_event_page',
+      targetUrl,
+      eventSlug: page.slug,
+      ctaLabel,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#030303] text-white">
@@ -142,11 +153,23 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome }) => {
         <section className="glass-panel p-6">
           <h2 className="text-2xl font-serif italic mb-3">Official links</h2>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={page.officialUrl} target="_blank" rel="noreferrer" className="btn-primary text-center">
+            <a
+              href={page.officialUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => handleOfficialClick(page.officialUrl, 'Official Website')}
+              className="btn-primary text-center"
+            >
               Official Website
             </a>
             {page.registrationUrl && (
-              <a href={page.registrationUrl} target="_blank" rel="noreferrer" className="btn-secondary text-center">
+              <a
+                href={page.registrationUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => handleOfficialClick(page.registrationUrl!, 'Registration')}
+                className="btn-secondary text-center"
+              >
                 Registration
               </a>
             )}

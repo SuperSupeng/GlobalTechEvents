@@ -10,6 +10,7 @@ import {
   addToAppleCalendar 
 } from '../utils/calendar';
 import { identifyTags, getTagColorClasses } from '../utils/tags';
+import { createEventSlug, trackOutboundClick } from '../utils/analytics';
 
 interface EventDetailProps {
   event: TechEvent | null;
@@ -59,6 +60,17 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
     } catch (err) {
       console.error('Failed to copy link:', err);
     }
+  };
+
+  const handleOfficialWebsiteClick = () => {
+    trackOutboundClick({
+      sourcePage: window.location.pathname,
+      pageType: 'event_detail_modal',
+      targetUrl: event.links.officialSite,
+      eventSlug: createEventSlug(event.title),
+      ctaLabel: 'Official Website',
+    });
+    window.open(event.links.officialSite, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -173,7 +185,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
-                  onClick={() => window.open(event.links.officialSite, '_blank')}
+                  onClick={handleOfficialWebsiteClick}
                   className="flex-1 btn-primary flex items-center justify-center gap-3 !py-5"
                 >
                   Official Website <ArrowUpRight size={20} />

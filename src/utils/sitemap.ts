@@ -4,7 +4,7 @@ import { TechEvent } from '../types';
  * 生成 XML Sitemap
  */
 export function generateSitemap(events: TechEvent[]): string {
-  const baseUrl = 'https://globaltechevents.com';
+  const baseUrl = 'https://www.globaltechevents.xyz';
   const today = new Date().toISOString().split('T')[0];
 
   const urls = [
@@ -92,6 +92,6 @@ User-agent: Googlebot
 Allow: /
 
 # Sitemap
-Sitemap: https://globaltechevents.com/sitemap.xml
+Sitemap: https://www.globaltechevents.xyz/sitemap.xml
 `;
 }

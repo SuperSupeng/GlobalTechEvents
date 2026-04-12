@@ -35,7 +35,7 @@ const App: React.FC = () => {
     if (path === '/privacy') return { page: 'privacy', seoEventPage: null };
     if (path === '/terms') return { page: 'terms', seoEventPage: null };
     if (path === '/resources') return { page: 'resources', seoEventPage: null };
-    if (path === '/events') return { page: 'eventsHub', seoEventPage: null };
+    if (path === '/events' || path === '/events/') return { page: 'eventsHub', seoEventPage: null };
 
     const seoEventPage = getSEOEventPageByPath(path);
     if (seoEventPage) return { page: 'seoEvent', seoEventPage };
@@ -106,7 +106,7 @@ const App: React.FC = () => {
     setSeoEventPage(null);
     window.history.pushState({}, '', '/events');
     window.scrollTo(0, 0);
-    document.title = 'Events Hub - GlobalTechEvents';
+    document.title = 'Tech Events Directory | GlobalTechEvents';
   };
 
   const openWhatsApp = (ctaLabel: string, pageType: string) => {
@@ -147,7 +147,7 @@ const App: React.FC = () => {
       } else if (path === '/resources') {
         setCurrentPage('resources');
         setSeoEventPage(null);
-      } else if (path === '/events') {
+      } else if (path === '/events' || path === '/events/') {
         setCurrentPage('eventsHub');
         setSeoEventPage(null);
       } else {
@@ -202,6 +202,7 @@ const App: React.FC = () => {
         <EventsHubPage events={events} onToast={success} />
         <Footer
           onCalendarClick={navigateToHomeAndScrollToCalendar}
+          onEventsClick={navigateToEventsHub}
           onNewsletterClick={navigateToEventsHub}
           onAPIClick={() => setComingSoonFeature('API Access')}
           onSubmitClick={navigateToEventsHub}
@@ -438,6 +439,7 @@ const App: React.FC = () => {
 
       <Footer
         onCalendarClick={scrollToCalendar}
+        onEventsClick={navigateToEventsHub}
         onNewsletterClick={navigateToEventsHub}
         onAPIClick={() => setComingSoonFeature('API Access')}
         onSubmitClick={navigateToEventsHub}

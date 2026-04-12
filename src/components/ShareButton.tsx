@@ -19,7 +19,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
   const [copied, setCopied] = useState(false);
 
   // 构建分享内容
-  const shareUrl = customUrl || (event ? `https://globaltechevents.com/event/${event.id}` : window.location.href);
+  const shareUrl = customUrl || (event ? `https://www.globaltechevents.xyz/event/${event.id}` : window.location.href);
   const shareTitle = customTitle || (event ? event.title : 'GlobalTechEvents');
   const shareDescription = customDescription || (event ? event.summary : 'Discover tech events worldwide');
 

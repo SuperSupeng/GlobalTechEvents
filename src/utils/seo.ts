@@ -22,7 +22,7 @@ export function getHomeSEO(): SEOMetadata {
     ogTitle: 'GlobalTechEvents - Your Gateway to Tech Events Worldwide',
     ogDescription: 'Discover, track, and never miss tech conferences, AI summits, hackathons, and meetups. 1000+ events across 60+ countries.',
     twitterCard: 'summary_large_image',
-    canonicalUrl: 'https://globaltechevents.com',
+    canonicalUrl: 'https://www.globaltechevents.xyz',
   };
 }
 
@@ -48,7 +48,7 @@ export function getEventSEO(event: TechEvent): SEOMetadata {
     ogDescription: event.summary,
     ogImage: event.coverImage,
     twitterCard: event.coverImage ? 'summary_large_image' : 'summary',
-    canonicalUrl: `https://globaltechevents.com/event/${event.id}`,
+    canonicalUrl: `https://www.globaltechevents.xyz/event/${event.id}`,
   };
 }
 
@@ -63,7 +63,7 @@ export function getTagSEO(tag: string): SEOMetadata {
     ogTitle: `Best ${tag} Events & Conferences`,
     ogDescription: `Explore ${tag} events happening around the world. Stay updated with the latest ${tag} conferences and meetups.`,
     twitterCard: 'summary',
-    canonicalUrl: `https://globaltechevents.com/tag/${tag.toLowerCase()}`,
+    canonicalUrl: `https://www.globaltechevents.xyz/tag/${tag.toLowerCase()}`,
   };
 }
 
@@ -78,7 +78,7 @@ export function getLocationSEO(location: string): SEOMetadata {
     ogTitle: `Tech Events in ${location}`,
     ogDescription: `Explore upcoming tech events, conferences, and meetups in ${location}. Connect with the tech community.`,
     twitterCard: 'summary',
-    canonicalUrl: `https://globaltechevents.com/location/${location.toLowerCase().replace(/\s+/g, '-')}`,
+    canonicalUrl: `https://www.globaltechevents.xyz/location/${location.toLowerCase().replace(/\s+/g, '-')}`,
   };
 }
 

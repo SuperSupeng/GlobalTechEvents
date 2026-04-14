@@ -64,6 +64,12 @@ function normalizePayload(input: unknown): EventPayload {
   };
 }
 
+function toTrackProperties(payload: EventPayload): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(payload).filter(([, value]): value is string => typeof value === 'string' && value.length > 0),
+  );
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -84,7 +90,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const payload = normalizePayload(req.body?.payload);
-    await track(eventName, payload);
+    await track(eventName, toTrackProperties(payload));
 
     const loggedEvent = buildLoggedEvent(eventName, payload);
     console.info(`CTA_TRACK_EVENT ${JSON.stringify(loggedEvent)}`);

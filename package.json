@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "migrate": "tsx --env-file=.env.local scripts/migrate-data.ts",
     "sync:events": "tsx --env-file=.env.local scripts/sync-events.ts",
-    "sync:events:dry": "tsx --env-file=.env.local scripts/sync-events.ts --dry-run"
+    "sync:events:dry": "tsx --env-file=.env.local scripts/sync-events.ts --dry-run",
+    "export:cta": "node scripts/export-cta-custom-events.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.121.3",

@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { track } from '@vercel/analytics/server';
 
 type AllowedEventName = 'add_to_calendar' | 'outbound_click';
+type CTAType = 'add_to_calendar' | 'registration' | 'official_website' | 'other_outbound';
 
 interface EventPayload {
   page_type?: string;
@@ -12,8 +13,38 @@ interface EventPayload {
   target_url?: string;
 }
 
+interface LoggedCTAEvent extends EventPayload {
+  event_name: AllowedEventName;
+  cta_type: CTAType;
+  tracked_at: string;
+}
+
 function isAllowedEventName(value: unknown): value is AllowedEventName {
   return value === 'add_to_calendar' || value === 'outbound_click';
+}
+
+function normalizeCtaType(eventName: AllowedEventName, payload: EventPayload): CTAType {
+  if (eventName === 'add_to_calendar') {
+    return 'add_to_calendar';
+  }
+
+  const normalizedLabel = payload.cta_label?.trim().toLowerCase();
+  if (normalizedLabel === 'registration') {
+    return 'registration';
+  }
+  if (normalizedLabel === 'official website') {
+    return 'official_website';
+  }
+  return 'other_outbound';
+}
+
+function buildLoggedEvent(eventName: AllowedEventName, payload: EventPayload): LoggedCTAEvent {
+  return {
+    ...payload,
+    event_name: eventName,
+    cta_type: normalizeCtaType(eventName, payload),
+    tracked_at: new Date().toISOString(),
+  };
 }
 
 function normalizePayload(input: unknown): EventPayload {
@@ -54,6 +85,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const payload = normalizePayload(req.body?.payload);
     await track(eventName, payload);
+
+    const loggedEvent = buildLoggedEvent(eventName, payload);
+    console.info(`CTA_TRACK_EVENT ${JSON.stringify(loggedEvent)}`);
+
     return res.status(204).end();
   } catch (error) {
     console.error('Failed to record CTA event', error);

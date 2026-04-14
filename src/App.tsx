@@ -222,7 +222,7 @@ const App: React.FC = () => {
   }
 
   if (currentPage === 'seoEvent' && seoEventPage) {
-    return <SEOEventPage page={seoEventPage} onBackHome={navigateToHome} />;
+    return <SEOEventPage page={seoEventPage} onBackHome={navigateToHome} onToast={success} />;
   }
 
   return (

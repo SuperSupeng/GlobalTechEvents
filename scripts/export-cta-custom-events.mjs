@@ -14,6 +14,7 @@ function parseArgs(argv) {
     outDir: path.resolve('artifacts/cta-custom-events'),
     project: 'global-tech-events',
     environment: 'production',
+    deploymentUrl: '',
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -40,6 +41,9 @@ function parseArgs(argv) {
     } else if (arg === '--project' && next) {
       options.project = next;
       index += 1;
+    } else if (arg === '--deployment-url' && next) {
+      options.deploymentUrl = next;
+      index += 1;
     } else if (arg === '--environment' && next) {
       options.environment = next;
       index += 1;
@@ -63,22 +67,67 @@ Options:
   --limit <n>              Max log lines to request (default: ${DEFAULT_LIMIT})
   --out-dir <path>         Output directory (default: artifacts/cta-custom-events)
   --project <name>         Vercel project name (default: global-tech-events)
+  --deployment-url <url>   Use a specific deployment URL instead of auto-resolving latest prod
   --environment <env>      Vercel environment (default: production)
 `);
 }
 
+function runJsonCommand(args) {
+  const result = spawnSync('npx', args, {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    env: process.env,
+    maxBuffer: 20 * 1024 * 1024,
+  });
+
+  if (result.status !== 0) {
+    throw new Error(`command failed with code ${result.status}\n${result.stderr || result.stdout}`);
+  }
+
+  return `${result.stdout}\n${result.stderr}`;
+}
+
+function resolveDeploymentUrl(options) {
+  if (options.deploymentUrl) {
+    return options.deploymentUrl.replace(/^https?:\/\//, '');
+  }
+
+  const rawOutput = runJsonCommand([
+    'vercel',
+    'list',
+    options.project,
+    '--environment',
+    options.environment,
+    '--status',
+    'READY',
+    '--format',
+    'json',
+  ]);
+
+  const startIndex = rawOutput.indexOf('{');
+  if (startIndex === -1) {
+    throw new Error(`Failed to parse deployment list output:\n${rawOutput}`);
+  }
+
+  const parsed = JSON.parse(rawOutput.slice(startIndex));
+  const deployment = parsed.deployments?.[0];
+  if (!deployment?.url) {
+    throw new Error(`No READY ${options.environment} deployment found for ${options.project}`);
+  }
+
+  return deployment.url;
+}
+
 function runVercelLogs(options) {
+  const deploymentUrl = resolveDeploymentUrl(options);
   const args = [
     'vercel',
     'logs',
+    deploymentUrl,
     '--json',
     '--no-follow',
     '--source',
     'serverless',
-    '--project',
-    options.project,
-    '--environment',
-    options.environment,
     '--since',
     options.since,
     '--limit',

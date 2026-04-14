@@ -275,7 +275,7 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
 ];
 
 export const ALL_SEO_EVENT_PAGES: SEOEventPageData[] =
-  GENERATED_SEO_EVENT_PAGES.length > 0 ? GENERATED_SEO_EVENT_PAGES : SEO_EVENT_PAGES;
+  generatedSEOEventPages.length > 0 ? (generatedSEOEventPages as SEOEventPageData[]) : SEO_EVENT_PAGES;
 
 export function getSEOEventPageBySlug(slug: string): SEOEventPageData | undefined {
   return ALL_SEO_EVENT_PAGES.find((item) => item.slug === slug);

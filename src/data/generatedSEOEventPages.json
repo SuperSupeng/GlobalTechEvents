@@ -1,6 +1,4 @@
-import type { SEOEventPageData } from './seoEventPages';
-
-export const GENERATED_SEO_EVENT_PAGES: SEOEventPageData[] = [
+[
   {
     "slug": "ces-2026",
     "eventName": "CES 2026",
@@ -3614,4 +3612,4 @@ export const GENERATED_SEO_EVENT_PAGES: SEOEventPageData[] = [
       }
     ]
   }
-];
+]

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowUpRight, Mail, Send, Sparkles } from 'lucide-react';
 import { submitEventSubmission, submitNewsletterSignup } from '../api/leadForms';
-import { SEO_EVENT_PAGES } from '../data/seoEventPages';
+import { ALL_SEO_EVENT_PAGES } from '../data/seoEventPages';
 import { createEventSlug, trackCustomEvent, trackOutboundClick } from '../utils/analytics';
 import { WHATSAPP_GROUP_URL } from '../config/constants';
 
@@ -13,7 +13,7 @@ const inputClassName =
   'w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/35 focus:outline-none focus:border-primary/60';
 
 const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
-  const featuredEvents = useMemo(() => SEO_EVENT_PAGES, []);
+  const featuredEvents = useMemo(() => ALL_SEO_EVENT_PAGES, []);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [newsletterError, setNewsletterError] = useState('');
@@ -124,7 +124,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
 
         <section className="mb-12">
           <div className="flex items-center gap-2 mb-5 text-white/70 uppercase tracking-[0.2em] text-xs">
-            <Sparkles size={14} /> Top 10 SEO Event Guides
+            <Sparkles size={14} /> 81 Event Guides
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {featuredEvents.map((eventItem) => (

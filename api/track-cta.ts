@@ -65,9 +65,12 @@ function normalizePayload(input: unknown): EventPayload {
 }
 
 function toTrackProperties(payload: EventPayload): Record<string, string> {
-  return Object.fromEntries(
-    Object.entries(payload).filter(([, value]): value is string => typeof value === 'string' && value.length > 0),
-  );
+  return Object.entries(payload).reduce<Record<string, string>>((acc, [key, value]) => {
+    if (typeof value === 'string' && value.length > 0) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

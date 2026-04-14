@@ -31,9 +31,22 @@
       ul { padding-left: 22px; }
       .topics { display: flex; flex-wrap: wrap; gap: 10px; }
       .topic { display: inline-block; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); font-size: 14px; }
-      a.btn { display: inline-block; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+      a.btn, button.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font-size: 15px; }
+      .btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      .btn-tertiary { background: transparent; color: #fff; border: 1px dashed rgba(255,255,255,.18); }
       .muted { color: rgba(255,255,255,.55); font-size: 13px; }
       .faq-item + .faq-item { margin-top: 14px; }
+      .cta-card { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(255,255,255,.04)); border-color: rgba(245,158,11,.22); }
+      .cta-kicker { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 10px; }
+      .cta-note-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-top: 16px; }
+      .cta-note { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 14px; }
+      @media (max-width: 640px) {
+        h1 { font-size: 34px; }
+        .wrap { padding-top: 28px; }
+        .btn-row { flex-direction: column; }
+        a.btn, button.btn { width: 100%; }
+      }
     </style>
   </head>
   <body>
@@ -41,6 +54,24 @@
       <p class="eyebrow">Tech Event Guide</p>
       <h1>Apple WWDC 2026: Dates, Location & Event Guide</h1>
       <p>Apple Worldwide Developers Conference. Experience the latest in iOS, iPadOS, macOS, and more.</p>
+
+      <section class="card cta-card">
+        <p class="cta-kicker">Primary action</p>
+        <h2 style="margin-top:0;">Save this event before you forget it</h2>
+        <p>Put Apple WWDC on your calendar first, then choose whether to register now or review the official event site.</p>
+        <p class="muted">CTA order for SEO visitors: Add to Calendar → Registration → Official Website</p>
+        <div class="btn-row">
+          <a class="btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Apple+WWDC+2026&amp;dates=20260608T090000Z%2F20260612T180000Z&amp;details=Apple+Worldwide+Developers+Conference.+Experience+the+latest+in+iOS%2C+iPadOS%2C+macOS%2C+and+more.%0A%0AOrganizer%3A+Apple+WWDC%0A%0AMore+info%3A+https%3A%2F%2Fdeveloper.apple.com%2Fwwdc&amp;location=Online+Event&amp;sprop=website%3Aglobaltechevents.com" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
+          
+          <a class="btn btn-secondary" href="https://developer.apple.com/wwdc" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="https://developer.apple.com/wwdc">Official Website</a>
+          <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
+        </div>
+        <div class="cta-note-grid">
+          <div class="cta-note">Primary conversion: add this event to your schedule</div>
+          <div class="cta-note">Secondary conversion: register while intent is still hot</div>
+          <div class="cta-note">Research path: verify details on the organizer site</div>
+        </div>
+      </section>
 
       <section class="grid">
         <div class="card">
@@ -91,10 +122,66 @@
       </section>
 
       <section class="card">
-        <h2>Official links</h2>
-        <p><a class="btn" href="https://developer.apple.com/wwdc" target="_blank" rel="noreferrer">Official Website</a></p>
+        <h2>Before you leave</h2>
+        <p>The action block has been moved above the fold for SEO visitors, so the top CTA is now the fastest path to save or join this event.</p>
         <p class="muted">Canonical URL: https://www.globaltechevents.xyz/events/apple-wwdc-2026</p>
       </section>
     </main>
+    <script>
+      (() => {
+        const payloadBase = {"page_type":"seo_event_page","event_slug":"apple-wwdc-2026","source_page":"/events/apple-wwdc-2026"};
+        const icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//GlobalTechEvents//SEO Event Page//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:apple-wwdc-2026@globaltechevents.com\r\nDTSTAMP:20260414T081237Z\r\nDTSTART:20260608T090000Z\r\nDTEND:20260612T180000Z\r\nSUMMARY:Apple WWDC 2026\r\nDESCRIPTION:Apple Worldwide Developers Conference. Experience the latest in iOS, iPadOS, macOS, and more.\\n\\nOrganizer: Apple WWDC\\n\\nMore info: https://developer.apple.com/wwdc\r\nLOCATION:Online Event\r\nURL:https://developer.apple.com/wwdc\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR";
+        const fileName = "apple-wwdc-2026.ics";
+
+        const sendTrack = async (eventName, payload) => {
+          try {
+            const body = JSON.stringify({ eventName, payload: { ...payloadBase, ...payload } });
+            if (navigator.sendBeacon) {
+              const blob = new Blob([body], { type: 'application/json' });
+              navigator.sendBeacon('/api/track-cta', blob);
+              return;
+            }
+            await fetch('/api/track-cta', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body,
+              keepalive: true,
+            });
+          } catch (error) {
+            console.warn('Failed to track CTA event', error);
+          }
+        };
+
+        document.querySelectorAll('[data-track-event]').forEach((element) => {
+          element.addEventListener('click', () => {
+            const target = element.getAttribute('data-track-target');
+            const provider = element.getAttribute('data-track-provider');
+            sendTrack(element.getAttribute('data-track-event'), {
+              cta_label: element.getAttribute('data-track-label') || '',
+              target_url: target || '',
+              calendar_provider: provider || '',
+            });
+          });
+        });
+
+        const downloadButton = document.querySelector('[data-download-ics="true"]');
+        if (downloadButton) {
+          downloadButton.addEventListener('click', async () => {
+            await sendTrack('add_to_calendar', {
+              cta_label: 'Download .ics',
+              calendar_provider: 'ics',
+            });
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(link.href), 0);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

@@ -118,9 +118,52 @@ function buildJsonLd(page) {
   };
 }
 
+function buildGoogleCalendarUrl(page) {
+  const startDate = String(page.startDate || '').replace(/-/g, '');
+  const endDate = String(page.endDate || page.startDate || '').replace(/-/g, '');
+  const location = page.format === 'online' ? 'Online Event' : `${page.city}, ${page.country}`;
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: page.eventName,
+    dates: `${startDate}T090000Z/${endDate}T180000Z`,
+    details: `${page.whyItMatters}\n\nOrganizer: ${page.shortName}\n\nMore info: ${page.officialUrl}`,
+    location,
+    sprop: 'website:globaltechevents.com',
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function buildIcsContent(page) {
+  const location = page.format === 'online' ? 'Online Event' : `${page.city}, ${page.country}`;
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//GlobalTechEvents//SEO Event Page//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${page.slug}@globaltechevents.com`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
+    `DTSTART:${String(page.startDate).replace(/-/g, '')}T090000Z`,
+    `DTEND:${String(page.endDate).replace(/-/g, '')}T180000Z`,
+    `SUMMARY:${page.eventName}`,
+    `DESCRIPTION:${page.whyItMatters.replace(/\n/g, '\\n')}\\n\\nOrganizer: ${page.shortName}\\n\\nMore info: ${page.officialUrl}`,
+    `LOCATION:${location}`,
+    `URL:${page.officialUrl}`,
+    'STATUS:CONFIRMED',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+}
+
 function renderPage(page) {
   const canonical = `${SITE_URL}/events/${page.slug}`;
   const jsonLd = JSON.stringify(buildJsonLd(page));
+  const googleCalendarUrl = buildGoogleCalendarUrl(page);
+  const icsContent = buildIcsContent(page);
+  const registrationButton = page.registrationUrl
+    ? `<a class="btn btn-secondary" href="${escapeHtml(page.registrationUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Registration" data-track-target="${escapeHtml(page.registrationUrl)}">Registration</a>`
+    : '';
   const faqHtml = page.faq
     .map(
       (item) => `
@@ -172,9 +215,22 @@ function renderPage(page) {
       ul { padding-left: 22px; }
       .topics { display: flex; flex-wrap: wrap; gap: 10px; }
       .topic { display: inline-block; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); font-size: 14px; }
-      a.btn { display: inline-block; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+      a.btn, button.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font-size: 15px; }
+      .btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      .btn-tertiary { background: transparent; color: #fff; border: 1px dashed rgba(255,255,255,.18); }
       .muted { color: rgba(255,255,255,.55); font-size: 13px; }
       .faq-item + .faq-item { margin-top: 14px; }
+      .cta-card { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(255,255,255,.04)); border-color: rgba(245,158,11,.22); }
+      .cta-kicker { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 10px; }
+      .cta-note-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-top: 16px; }
+      .cta-note { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 14px; }
+      @media (max-width: 640px) {
+        h1 { font-size: 34px; }
+        .wrap { padding-top: 28px; }
+        .btn-row { flex-direction: column; }
+        a.btn, button.btn { width: 100%; }
+      }
     </style>
   </head>
   <body>
@@ -182,6 +238,24 @@ function renderPage(page) {
       <p class="eyebrow">Tech Event Guide</p>
       <h1>${escapeHtml(page.eventName)}: Dates, Location & Event Guide</h1>
       <p>${escapeHtml(page.whyItMatters)}</p>
+
+      <section class="card cta-card">
+        <p class="cta-kicker">Primary action</p>
+        <h2 style="margin-top:0;">Save this event before you forget it</h2>
+        <p>Put ${escapeHtml(page.shortName)} on your calendar first, then choose whether to register now or review the official event site.</p>
+        <p class="muted">CTA order for SEO visitors: Add to Calendar → Registration → Official Website</p>
+        <div class="btn-row">
+          <a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
+          ${registrationButton}
+          <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
+          <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
+        </div>
+        <div class="cta-note-grid">
+          <div class="cta-note">Primary conversion: add this event to your schedule</div>
+          <div class="cta-note">Secondary conversion: register while intent is still hot</div>
+          <div class="cta-note">Research path: verify details on the organizer site</div>
+        </div>
+      </section>
 
       <section class="grid">
         <div class="card">
@@ -220,11 +294,67 @@ function renderPage(page) {
       </section>
 
       <section class="card">
-        <h2>Official links</h2>
-        <p><a class="btn" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer">Official Website</a></p>
+        <h2>Before you leave</h2>
+        <p>The action block has been moved above the fold for SEO visitors, so the top CTA is now the fastest path to save or join this event.</p>
         <p class="muted">Canonical URL: ${canonical}</p>
       </section>
     </main>
+    <script>
+      (() => {
+        const payloadBase = ${JSON.stringify({ page_type: 'seo_event_page', event_slug: page.slug, source_page: `/events/${page.slug}` })};
+        const icsContent = ${JSON.stringify(icsContent)};
+        const fileName = ${JSON.stringify(`${page.slug}.ics`)};
+
+        const sendTrack = async (eventName, payload) => {
+          try {
+            const body = JSON.stringify({ eventName, payload: { ...payloadBase, ...payload } });
+            if (navigator.sendBeacon) {
+              const blob = new Blob([body], { type: 'application/json' });
+              navigator.sendBeacon('/api/track-cta', blob);
+              return;
+            }
+            await fetch('/api/track-cta', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body,
+              keepalive: true,
+            });
+          } catch (error) {
+            console.warn('Failed to track CTA event', error);
+          }
+        };
+
+        document.querySelectorAll('[data-track-event]').forEach((element) => {
+          element.addEventListener('click', () => {
+            const target = element.getAttribute('data-track-target');
+            const provider = element.getAttribute('data-track-provider');
+            sendTrack(element.getAttribute('data-track-event'), {
+              cta_label: element.getAttribute('data-track-label') || '',
+              target_url: target || '',
+              calendar_provider: provider || '',
+            });
+          });
+        });
+
+        const downloadButton = document.querySelector('[data-download-ics="true"]');
+        if (downloadButton) {
+          downloadButton.addEventListener('click', async () => {
+            await sendTrack('add_to_calendar', {
+              cta_label: 'Download .ics',
+              calendar_provider: 'ics',
+            });
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(link.href), 0);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>`;
 }

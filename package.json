@@ -9,7 +9,9 @@
     "build": "npm run build:seo && tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "migrate": "tsx --env-file=.env.local scripts/migrate-data.ts"
+    "migrate": "tsx --env-file=.env.local scripts/migrate-data.ts",
+    "sync:events": "tsx --env-file=.env.local scripts/sync-events.ts",
+    "sync:events:dry": "tsx --env-file=.env.local scripts/sync-events.ts --dry-run"
   },
   "dependencies": {
     "@react-three/drei": "^9.121.3",

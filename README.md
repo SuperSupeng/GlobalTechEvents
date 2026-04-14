@@ -58,10 +58,12 @@ npm run dev
 常用命令：
 
 ```bash
-npm run build    # 生产构建
-npm run preview  # 本地预览构建结果
-npm run lint     # 代码检查
-npm run migrate  # 数据迁移脚本（需 .env.local）
+npm run build            # 生产构建
+npm run preview          # 本地预览构建结果
+npm run lint             # 代码检查
+npm run migrate          # 数据迁移脚本（需 .env.local）
+npm run sync:events:dry  # 活动数据自动更新 dry-run
+npm run sync:events      # 活动数据自动更新并写回 Supabase
 ```
 
 ---
@@ -88,11 +90,13 @@ VITE_SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=...
 # 可选兼容：如果服务端不读 VITE_SUPABASE_URL，可额外设置 SUPABASE_URL
 SUPABASE_URL=https://xxx.supabase.co
+CRON_SECRET=...                    # 推荐；手动触发 /api/cron/sync-events 时使用
 ```
 
 说明：
 - `api/newsletter-signups.ts`：真实保存 newsletter signup 成功态后，前端才触发 `newsletter_signup`。
 - `api/event-submissions.ts`：真实保存 submit event 成功态后，前端才触发 `submit_event`。
+- `api/cron/sync-events.ts`：每日自动复核活动数据，优先使用 `links.source`，没有则回退到 `links.officialSite`。
 - 没有 Supabase 配置时 API 会返回 503，避免把 click intent 伪装成 success。
 
 ### Supabase schema
@@ -172,5 +176,6 @@ SUPABASE_URL=https://xxx.supabase.co
 
 ## 相关文档
 
+- 活动数据自动更新：`docs/event-sync.md`
 - 产品定位参考：`/home/admin/Nutstore Files/Knowledge-Database/4. Projects/globaltechevents/README.md`
 - 项目需求文档：`PRD.md`

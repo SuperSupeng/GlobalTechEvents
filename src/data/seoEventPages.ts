@@ -1,3 +1,5 @@
+import generatedSEOEventPages from './generatedSEOEventPages.json';
+
 export interface SEOEventPageData {
   slug: string;
   eventName: string;
@@ -272,8 +274,11 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
   },
 ];
 
+export const ALL_SEO_EVENT_PAGES: SEOEventPageData[] =
+  GENERATED_SEO_EVENT_PAGES.length > 0 ? GENERATED_SEO_EVENT_PAGES : SEO_EVENT_PAGES;
+
 export function getSEOEventPageBySlug(slug: string): SEOEventPageData | undefined {
-  return SEO_EVENT_PAGES.find((item) => item.slug === slug);
+  return ALL_SEO_EVENT_PAGES.find((item) => item.slug === slug);
 }
 
 export function getSEOEventPageByPath(pathname: string): SEOEventPageData | undefined {

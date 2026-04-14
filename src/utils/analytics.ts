@@ -12,6 +12,14 @@ export interface OutboundClickPayload {
   ctaLabel: string;
 }
 
+export interface AddToCalendarPayload {
+  sourcePage: string;
+  pageType: string;
+  calendarProvider: 'google' | 'apple' | 'outlook' | 'ics';
+  eventSlug?: string;
+  ctaLabel: string;
+}
+
 const sanitizePayload = (payload: AnalyticsPayload): Record<string, AnalyticsPrimitive> => {
   return Object.entries(payload).reduce<Record<string, AnalyticsPrimitive>>((acc, [key, value]) => {
     if (value === null || value === undefined || value === '') {
@@ -75,6 +83,22 @@ export const trackOutboundClick = ({
     page_type: pageType,
     target_url: targetUrl,
     target_domain: resolveTargetDomain(targetUrl),
+    event_slug: eventSlug,
+    cta_label: ctaLabel,
+  });
+};
+
+export const trackAddToCalendar = ({
+  sourcePage,
+  pageType,
+  calendarProvider,
+  eventSlug,
+  ctaLabel,
+}: AddToCalendarPayload) => {
+  trackCustomEvent('add_to_calendar', {
+    source_page: sourcePage,
+    page_type: pageType,
+    calendar_provider: calendarProvider,
     event_slug: eventSlug,
     cta_label: ctaLabel,
   });

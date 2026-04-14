@@ -199,7 +199,7 @@ const App: React.FC = () => {
           onSubmitClick={navigateToEventsHub}
           onEventsHubClick={navigateToEventsHub}
         />
-        <EventsHubPage events={events} onToast={success} />
+        <EventsHubPage onToast={success} />
         <Footer
           onCalendarClick={navigateToHomeAndScrollToCalendar}
           onEventsClick={navigateToEventsHub}

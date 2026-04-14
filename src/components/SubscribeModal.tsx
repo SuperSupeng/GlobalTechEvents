@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Copy, Check, ExternalLink, Rss, Download } from 'lucide-react';
+import { trackAddToCalendar } from '../utils/analytics';
 
 interface SubscribeModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const subscribeUrl = buildSubscribeUrl();
+  const sourcePage = window.location.pathname;
 
   const handleCopyUrl = async () => {
     try {
@@ -51,6 +53,12 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const handleDownloadIcs = () => {
+    trackAddToCalendar({
+      sourcePage,
+      pageType: 'calendar_subscribe_modal',
+      calendarProvider: 'ics',
+      ctaLabel: 'Subscribe Modal - Download ICS',
+    });
     window.open(subscribeUrl, '_blank');
     if (onToast) {
       onToast('Calendar file downloading...');
@@ -58,6 +66,12 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const handleSubscribeApple = () => {
+    trackAddToCalendar({
+      sourcePage,
+      pageType: 'calendar_subscribe_modal',
+      calendarProvider: 'apple',
+      ctaLabel: 'Subscribe Modal - Apple Calendar',
+    });
     // 直接下载 .ics 文件，macOS/iOS 会自动用 Apple Calendar 打开
     // 创建一个隐藏的 a 标签来触发下载
     const link = document.createElement('a');
@@ -72,6 +86,12 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const handleSubscribeGoogle = async () => {
+    trackAddToCalendar({
+      sourcePage,
+      pageType: 'calendar_subscribe_modal',
+      calendarProvider: 'google',
+      ctaLabel: 'Subscribe Modal - Google Calendar',
+    });
     // Google Calendar 需要通过 "Add by URL" 功能添加
     // 先复制 URL 到剪贴板，然后打开 Google Calendar 的添加页面
     try {
@@ -91,6 +111,12 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   };
 
   const handleSubscribeOutlook = () => {
+    trackAddToCalendar({
+      sourcePage,
+      pageType: 'calendar_subscribe_modal',
+      calendarProvider: 'outlook',
+      ctaLabel: 'Subscribe Modal - Outlook',
+    });
     // Outlook web subscription - 使用正确的 URL 格式
     const outlookUrl = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(subscribeUrl)}&name=GlobalTechEvents`;
     window.open(outlookUrl, '_blank');

@@ -10,7 +10,7 @@ import {
   addToAppleCalendar 
 } from '../utils/calendar';
 import { identifyTags, getTagColorClasses } from '../utils/tags';
-import { createEventSlug, trackOutboundClick } from '../utils/analytics';
+import { createEventSlug, trackAddToCalendar, trackOutboundClick } from '../utils/analytics';
 
 interface EventDetailProps {
   event: TechEvent | null;
@@ -26,6 +26,14 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
   const smartTags = identifyTags(event);
 
   const handleAddToCalendar = (type: 'google' | 'apple' | 'outlook' | 'ics') => {
+    trackAddToCalendar({
+      sourcePage: window.location.pathname,
+      pageType: 'event_detail_modal',
+      calendarProvider: type,
+      eventSlug: createEventSlug(event.title),
+      ctaLabel: `Add to Calendar - ${type}`,
+    });
+
     let message = '';
     switch (type) {
       case 'google':

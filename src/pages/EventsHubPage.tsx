@@ -1,20 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowUpRight, Mail, Send, Sparkles } from 'lucide-react';
-import type { TechEvent } from '../types';
 import { submitEventSubmission, submitNewsletterSignup } from '../api/leadForms';
+import { SEO_EVENT_PAGES } from '../data/seoEventPages';
 import { createEventSlug, trackCustomEvent, trackOutboundClick } from '../utils/analytics';
 import { WHATSAPP_GROUP_URL } from '../config/constants';
 
 interface EventsHubPageProps {
-  events: TechEvent[];
   onToast?: (message: string) => void;
 }
 
 const inputClassName =
   'w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/35 focus:outline-none focus:border-primary/60';
 
-const EventsHubPage: React.FC<EventsHubPageProps> = ({ events, onToast }) => {
-  const featuredEvents = useMemo(() => events.slice(0, 6), [events]);
+const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
+  const featuredEvents = useMemo(() => SEO_EVENT_PAGES, []);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [newsletterError, setNewsletterError] = useState('');
@@ -125,33 +124,41 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ events, onToast }) => {
 
         <section className="mb-12">
           <div className="flex items-center gap-2 mb-5 text-white/70 uppercase tracking-[0.2em] text-xs">
-            <Sparkles size={14} /> Top Events
+            <Sparkles size={14} /> Top 10 SEO Event Guides
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {featuredEvents.map((eventItem) => (
-              <article key={eventItem.id} className="glass-panel p-5 flex flex-col gap-4">
+              <article key={eventItem.slug} className="glass-panel p-5 flex flex-col gap-4">
                 <div>
                   <p className="text-white/45 text-xs uppercase tracking-[0.18em] mb-2">
-                    {eventItem.location?.city || 'Online'} · {eventItem.format}
+                    {eventItem.city} · {eventItem.format}
                   </p>
-                  <h2 className="text-xl font-semibold text-white mb-2">{eventItem.title}</h2>
-                  <p className="text-white/65 text-sm leading-relaxed">{eventItem.summary}</p>
+                  <h2 className="text-xl font-semibold text-white mb-2">{eventItem.eventName}</h2>
+                  <p className="text-white/65 text-sm leading-relaxed">{eventItem.metaDescription}</p>
                 </div>
-                <button
-                  onClick={() => {
-                    trackOutboundClick({
-                      sourcePage,
-                      pageType: 'events_hub',
-                      targetUrl: eventItem.links.officialSite,
-                      eventSlug: createEventSlug(eventItem.title),
-                      ctaLabel: 'Top Event Official Website',
-                    });
-                    window.open(eventItem.links.officialSite, '_blank', 'noopener,noreferrer');
-                  }}
-                  className="btn-secondary inline-flex items-center justify-center gap-2"
-                >
-                  Official Website <ArrowUpRight size={16} />
-                </button>
+                <div className="mt-auto flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={`/events/${eventItem.slug}`}
+                    className="btn-primary inline-flex items-center justify-center gap-2"
+                  >
+                    View Event Guide <ArrowUpRight size={16} />
+                  </a>
+                  <button
+                    onClick={() => {
+                      trackOutboundClick({
+                        sourcePage,
+                        pageType: 'events_hub',
+                        targetUrl: eventItem.officialUrl,
+                        eventSlug: eventItem.slug,
+                        ctaLabel: 'Top Event Official Website',
+                      });
+                      window.open(eventItem.officialUrl, '_blank', 'noopener,noreferrer');
+                    }}
+                    className="btn-secondary inline-flex items-center justify-center gap-2"
+                  >
+                    Official Website <ArrowUpRight size={16} />
+                  </button>
+                </div>
               </article>
             ))}
           </div>

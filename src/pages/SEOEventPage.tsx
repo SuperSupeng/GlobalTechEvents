@@ -3,7 +3,7 @@ import { ArrowLeft, Calendar, ChevronDown, Download, Globe, MapPin, Tag } from '
 import Logo from '../components/Logo';
 import type { SEOEventPageData } from '../data/seoEventPages';
 import { injectSchema, updateMetaTags } from '../utils/seo';
-import { trackAddToCalendar, trackOutboundClick } from '../utils/analytics';
+import { trackAddToCalendar, trackLandingPageView, trackOutboundClick } from '../utils/analytics';
 import { downloadICS, getGoogleCalendarUrl } from '../utils/calendar';
 import type { TechEvent } from '../types';
 
@@ -106,6 +106,14 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
 
     injectSchema(JSON.stringify(schema));
   }, [page]);
+
+  useEffect(() => {
+    void trackLandingPageView({
+      sourcePage: window.location.pathname,
+      pageType: 'seo_event_page',
+      eventSlug: page.slug,
+    });
+  }, [page.slug]);
 
   const handleOfficialClick = (targetUrl: string, ctaLabel: string) => {
     trackOutboundClick({

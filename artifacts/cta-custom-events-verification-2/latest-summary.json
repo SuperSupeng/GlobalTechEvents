@@ -1,0 +1,19 @@
+{
+  "total_events": 3,
+  "by_cta_type": {
+    "add_to_calendar": 1,
+    "registration": 1,
+    "official_website": 1
+  },
+  "by_page_type": {
+    "seo_event_page": 3
+  },
+  "by_event_slug": {
+    "ai-summit-london-2026": 3
+  },
+  "by_breakdown": {
+    "ai-summit-london-2026__seo_event_page__add_to_calendar": 1,
+    "ai-summit-london-2026__seo_event_page__registration": 1,
+    "ai-summit-london-2026__seo_event_page__official_website": 1
+  }
+}

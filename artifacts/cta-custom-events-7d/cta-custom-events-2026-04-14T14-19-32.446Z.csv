@@ -1,0 +1,4 @@
+tracked_at,event_name,cta_type,page_type,event_slug,source_page,cta_label,calendar_provider,target_url
+2026-04-14T13:35:19.333Z,add_to_calendar,add_to_calendar,seo_event_page,ai-summit-london-2026,/events/ai-summit-london-2026,Add to Calendar,google,https://calendar.google.com/calendar/render?action=TEMPLATE
+2026-04-14T13:35:19.507Z,outbound_click,registration,seo_event_page,ai-summit-london-2026,/events/ai-summit-london-2026,Registration,,https://example.com/register
+2026-04-14T13:35:19.545Z,outbound_click,official_website,seo_event_page,ai-summit-london-2026,/events/ai-summit-london-2026,Official Website,,https://example.com/official

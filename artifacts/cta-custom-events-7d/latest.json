@@ -1,0 +1,33 @@
+[
+  {
+    "tracked_at": "2026-04-14T13:35:19.333Z",
+    "page_type": "seo_event_page",
+    "event_slug": "ai-summit-london-2026",
+    "source_page": "/events/ai-summit-london-2026",
+    "cta_label": "Add to Calendar",
+    "calendar_provider": "google",
+    "target_url": "https://calendar.google.com/calendar/render?action=TEMPLATE",
+    "event_name": "add_to_calendar",
+    "cta_type": "add_to_calendar"
+  },
+  {
+    "tracked_at": "2026-04-14T13:35:19.507Z",
+    "page_type": "seo_event_page",
+    "event_slug": "ai-summit-london-2026",
+    "source_page": "/events/ai-summit-london-2026",
+    "cta_label": "Registration",
+    "target_url": "https://example.com/register",
+    "event_name": "outbound_click",
+    "cta_type": "registration"
+  },
+  {
+    "tracked_at": "2026-04-14T13:35:19.545Z",
+    "page_type": "seo_event_page",
+    "event_slug": "ai-summit-london-2026",
+    "source_page": "/events/ai-summit-london-2026",
+    "cta_label": "Official Website",
+    "target_url": "https://example.com/official",
+    "event_name": "outbound_click",
+    "cta_type": "official_website"
+  }
+]

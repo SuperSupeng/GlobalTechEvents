@@ -1,0 +1,147 @@
+{
+  "slug": "best-ai-conferences-2026",
+  "language": "en",
+  "status": "draft",
+  "template": "compare",
+  "title": "Best AI Conferences 2026 (Compare GTC, DevDay, Cloud Summits & More)",
+  "seoTitle": "Best AI Conferences 2026 (draft shell) | GlobalTechEvents",
+  "description": "This page is an unpublished outline shell for a future compare guide. It does not rank conferences, and it does not state dates, prices, or speakers.",
+  "intentAnswered": false,
+  "primaryKeyword": "best AI conferences 2026",
+  "asOf": "2026-10-14",
+  "shellNotice": "Draft shell — not a published guide. This page does not rank conferences and does not state dates, prices, or speakers.",
+  "author": {
+    "name": "Author TBD",
+    "bio": "Placeholder byline for the guide template. Replace with a real GlobalTechEvents editor and bio before publishing. This is not a ghost author.",
+    "placeholder": true
+  },
+  "coverImage": null,
+  "bodyImages": [],
+  "sections": [
+    {
+      "id": "how-we-chose",
+      "heading": "How we chose these conferences",
+      "paragraphs": [
+        "Section placeholder. Selection notes are not published in this shell."
+      ],
+      "subsections": [
+        { "heading": "Industry events only (academic venues stay out of this guide)" },
+        { "heading": "Selection criteria: role fit, AI depth, geography, cost band, calendar reliability" },
+        { "heading": "As-of date and update cadence" },
+        { "heading": "Site scope: AI is the first guide track; the calendar covers broader major tech events" }
+      ]
+    },
+    {
+      "id": "comparison-table",
+      "heading": "Quick comparison table",
+      "paragraphs": [
+        "Table slot. Rows are added at publish time from official sites. This shell leaves the table empty."
+      ]
+    },
+    {
+      "id": "best-by-role",
+      "heading": "Best by role",
+      "paragraphs": [
+        "Section placeholder. Role notes are not published in this shell."
+      ],
+      "subsections": [
+        { "heading": "Builders, AI engineers, and agent teams" },
+        { "heading": "Enterprise buyers and IT leaders" },
+        { "heading": "Founders, operators, and press" },
+        { "heading": "Infra, hardware, and chip ecosystem" }
+      ]
+    },
+    {
+      "id": "best-by-region",
+      "heading": "Best by region",
+      "paragraphs": [
+        "Section placeholder. Regional notes are not published in this shell."
+      ],
+      "subsections": [
+        { "heading": "North America" },
+        { "heading": "Europe" },
+        { "heading": "Middle East and Asia" }
+      ]
+    },
+    {
+      "id": "snapshots",
+      "heading": "Conference snapshots",
+      "paragraphs": [
+        "Section placeholder. One snapshot per event is added at publish time, with dates left TBD until an official site confirms them."
+      ]
+    },
+    {
+      "id": "ai-tracks",
+      "heading": "Major tech events with strong AI tracks",
+      "paragraphs": [
+        "Section placeholder. This block keeps the guide multi-vertical. It is not a second ranking list."
+      ]
+    },
+    {
+      "id": "agent-specialty",
+      "heading": "AI agent and builder specialty events",
+      "paragraphs": [
+        "Section placeholder. A later guide can cover this cluster. This shell does not publish that list."
+      ]
+    },
+    {
+      "id": "how-to-use",
+      "heading": "How to use this shortlist",
+      "paragraphs": [
+        "Section placeholder. The published guide will point readers to the Global Tech Events calendar and WhatsApp for date changes."
+      ],
+      "subsections": [
+        { "heading": "Pick a flagship, a regional event, and a specialty" },
+        { "heading": "Budget and travel reality check" },
+        { "heading": "Follow dates on the calendar or WhatsApp" }
+      ]
+    }
+  ],
+  "comparisonTable": {
+    "caption": "Empty on purpose. Dates stay blank until confirmed on official sites. As of 2026-10-14. This is not a published ranking.",
+    "columns": [
+      "Event",
+      "Dates",
+      "City / region",
+      "AI focus",
+      "Best for",
+      "Cost band",
+      "Format",
+      "Go / Skip / Watch",
+      "GTE status"
+    ],
+    "rows": []
+  },
+  "faq": [
+    {
+      "question": "What are the best AI conferences in 2026?",
+      "answer": "Not published. This FAQ entry is a schema stub for the guide template and does not rank or recommend conferences."
+    },
+    {
+      "question": "Are NeurIPS, ICML, or CVPR on this list?",
+      "answer": "Not published. This FAQ entry is a schema stub. The published answer will explain the industry-versus-academic scope. This shell does not make that claim."
+    },
+    {
+      "question": "Which AI conference is best for developers versus enterprise buyers?",
+      "answer": "Not published. This FAQ entry is a schema stub and does not recommend a conference for either audience."
+    },
+    {
+      "question": "How often are dates updated?",
+      "answer": "Not published. This FAQ entry is a schema stub. The published guide will describe the as-of date and where to follow changes."
+    },
+    {
+      "question": "Is Global Tech Events only about AI?",
+      "answer": "Not published. This FAQ entry is a schema stub. The calendar covers major tech events across more than one vertical; this shell does not rebrand the product."
+    }
+  ],
+  "internalLinks": [
+    {
+      "href": "/",
+      "label": "Browse the Global Tech Events calendar"
+    },
+    {
+      "href": "/events",
+      "label": "Tech events directory"
+    }
+  ]
+}

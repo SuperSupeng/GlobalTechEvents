@@ -7,6 +7,7 @@ interface NavbarProps {
   onResourcesClick: () => void;
   onSubmitClick: () => void;
   onEventsHubClick: () => void;
+  onGuidesClick: () => void;
   onAgentFeedClick: () => void;
 }
 
@@ -15,6 +16,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onResourcesClick,
   onSubmitClick,
   onEventsHubClick,
+  onGuidesClick,
   onAgentFeedClick,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,16 +35,17 @@ const Navbar: React.FC<NavbarProps> = ({
           </span>
         </button>
 
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 text-[13px] font-medium tracking-wide uppercase text-white/80">
-          <button onClick={onExploreClick} className="text-white hover:text-white transition-colors">View Calendar</button>
-          <button onClick={onEventsHubClick} className="hover:text-white transition-colors">Events Hub</button>
-          <button onClick={onAgentFeedClick} className="hover:text-white transition-colors">Agent feed</button>
-          <button onClick={onResourcesClick} className="hover:text-white transition-colors">Resources</button>
-          <button onClick={onSubmitClick} className="hover:text-white transition-colors">Submit Event</button>
+        <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-[13px] font-medium tracking-wide uppercase text-white/80">
+          <button onClick={onExploreClick} className="shrink-0 whitespace-nowrap text-white hover:text-white transition-colors">View Calendar</button>
+          <button onClick={onEventsHubClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Events Hub</button>
+          <button onClick={onGuidesClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Guides</button>
+          <button onClick={onAgentFeedClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Agent feed</button>
+          <button onClick={onResourcesClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Resources</button>
+          <button onClick={onSubmitClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Submit Event</button>
         </div>
 
         <button
-          className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
+          className="lg:hidden p-2 text-white/80 hover:text-white transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -51,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-4 right-4 mt-2 glass-panel rounded-3xl p-6 animate-in fade-in slide-in-from-top-5">
+        <div className="lg:hidden absolute top-full left-4 right-4 mt-2 glass-panel rounded-3xl p-6 animate-in fade-in slide-in-from-top-5">
           <div className="flex flex-col gap-4">
             <button
               onClick={() => {
@@ -70,6 +73,15 @@ const Navbar: React.FC<NavbarProps> = ({
               className="text-white/80 hover:text-white transition-colors py-2 text-left"
             >
               Events Hub
+            </button>
+            <button
+              onClick={() => {
+                onGuidesClick();
+                setMobileMenuOpen(false);
+              }}
+              className="text-white/80 hover:text-white transition-colors py-2 text-left"
+            >
+              Guides
             </button>
             <button
               onClick={() => {

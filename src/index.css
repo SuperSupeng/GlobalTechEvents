@@ -137,18 +137,20 @@
   z-index: 1;
 }
 
+.footer-section > .max-w-5xl,
 .footer-section > .max-w-7xl {
   position: relative;
   z-index: 2; /* 确保footer内容在过渡层上方 */
 }
 
-/* Footer 文字阴影增强 - 提升可读性 */
+/* Tight shadow keeps white footer type crisp on the shader without a gray halo */
 .footer-section h4,
 .footer-section p,
 .footer-section a,
+.footer-section button,
+.footer-section li,
 .footer-section span {
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6),
-               0 4px 16px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 
 .calendar-grid {

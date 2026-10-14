@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { Zap, ChevronDown, Loader2, MessageCircle, Rss, Bot } from 'lucide-react';
+import { Zap, ChevronDown, Loader2, MessageCircle, Rss } from 'lucide-react';
 import { TechEvent, ViewMode } from './types';
 import { useEvents, useLocations } from './hooks/useEvents';
 import Calendar from './components/Calendar';
@@ -11,7 +11,6 @@ import EventDetail from './components/EventDetail';
 import FilterPanel from './components/FilterPanel';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ComingSoon from './components/ComingSoon';
 import Toast from './components/Toast';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
@@ -41,7 +40,6 @@ const App: React.FC = () => {
   const [formatFilter, setFormatFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
-  const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<AppPage>(initialRoute.page);
   const [seoEventPage, setSeoEventPage] = useState<SEOEventPageData | null>(
     initialRoute.page === 'seoEvent' ? initialRoute.seoEventPage : null,
@@ -113,10 +111,6 @@ const App: React.FC = () => {
       return;
     }
     navigateToPath(path);
-  };
-
-  const openAgentFeed = () => {
-    setComingSoonFeature('Agent feed');
   };
 
   const applyExploreChip = (term: string) => {
@@ -225,7 +219,6 @@ const App: React.FC = () => {
           onSubmitClick={navigateToEventsHub}
           onEventsHubClick={navigateToEventsHub}
           onGuidesClick={navigateToGuides}
-          onAgentFeedClick={openAgentFeed}
         />
         <EventsHubPage onToast={success} />
         <Footer
@@ -233,18 +226,10 @@ const App: React.FC = () => {
           onEventsClick={navigateToEventsHub}
           onGuidesClick={navigateToGuides}
           onNewsletterClick={navigateToEventsHub}
-          onAPIClick={() => setComingSoonFeature('API Access')}
-          onAgentFeedClick={openAgentFeed}
           onSubmitClick={navigateToEventsHub}
-          onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
           onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', 'events_hub')}
           onPrivacyClick={navigateToPrivacy}
           onTermsClick={navigateToTerms}
-        />
-        <ComingSoon
-          isOpen={comingSoonFeature !== null}
-          onClose={() => setComingSoonFeature(null)}
-          feature={comingSoonFeature || undefined}
         />
         <Toast toasts={toasts} onRemove={removeToast} />
       </>
@@ -265,7 +250,6 @@ const App: React.FC = () => {
           onSubmitClick={navigateToEventsHub}
           onEventsHubClick={navigateToEventsHub}
           onGuidesClick={navigateToGuides}
-          onAgentFeedClick={openAgentFeed}
         />
         {currentPage === 'guidesIndex' ? (
           <GuidesIndexPage guides={listGuides()} onOpenGuide={(slug) => navigateToPath(`/guides/${slug}`)} />
@@ -277,18 +261,10 @@ const App: React.FC = () => {
           onEventsClick={navigateToEventsHub}
           onGuidesClick={navigateToGuides}
           onNewsletterClick={navigateToEventsHub}
-          onAPIClick={() => setComingSoonFeature('API Access')}
-          onAgentFeedClick={openAgentFeed}
           onSubmitClick={navigateToEventsHub}
-          onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
           onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', currentPage === 'guidesIndex' ? 'guides_index' : 'guide')}
           onPrivacyClick={navigateToPrivacy}
           onTermsClick={navigateToTerms}
-        />
-        <ComingSoon
-          isOpen={comingSoonFeature !== null}
-          onClose={() => setComingSoonFeature(null)}
-          feature={comingSoonFeature || undefined}
         />
         <Toast toasts={toasts} onRemove={removeToast} />
       </>
@@ -323,7 +299,6 @@ const App: React.FC = () => {
         onSubmitClick={navigateToEventsHub}
         onEventsHubClick={navigateToEventsHub}
         onGuidesClick={navigateToGuides}
-        onAgentFeedClick={openAgentFeed}
       />
 
       <main className="relative z-10">
@@ -378,7 +353,7 @@ const App: React.FC = () => {
               transition={{ duration: 1, delay: 0.6 }}
               className="text-base sm:text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]"
             >
-              A unified calendar of globally known tech conferences and industry events. Subscribe once, sync everywhere—or follow the Agent-friendly feed and WhatsApp updates.
+              A unified calendar of globally known tech conferences and industry events. Subscribe once, sync everywhere, and follow updates on WhatsApp.
             </motion.p>
 
             <motion.div
@@ -390,14 +365,6 @@ const App: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full">
                 <button onClick={scrollToCalendar} className="btn-primary flex items-center gap-2 w-full sm:w-auto">
                   View Calendar <Zap size={18} />
-                </button>
-                <button
-                  type="button"
-                  onClick={openAgentFeed}
-                  className="btn-secondary flex items-center gap-2 w-full sm:w-auto"
-                >
-                  <Bot size={18} />
-                  Agent feed
                 </button>
                 <button
                   onClick={() => openWhatsApp('Hero Join WhatsApp', 'home')}
@@ -471,14 +438,6 @@ const App: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={openAgentFeed}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
-              >
-                <Bot size={16} />
-                Agent feed
-              </button>
-              <button
-                type="button"
                 onClick={() => openWhatsApp('Calendar row Join WhatsApp', 'home')}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
               >
@@ -549,19 +508,10 @@ const App: React.FC = () => {
         onEventsClick={navigateToEventsHub}
         onGuidesClick={navigateToGuides}
         onNewsletterClick={navigateToEventsHub}
-        onAPIClick={() => setComingSoonFeature('API Access')}
-        onAgentFeedClick={openAgentFeed}
         onSubmitClick={navigateToEventsHub}
-        onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
         onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', 'home')}
         onPrivacyClick={navigateToPrivacy}
         onTermsClick={navigateToTerms}
-      />
-
-      <ComingSoon
-        isOpen={comingSoonFeature !== null}
-        onClose={() => setComingSoonFeature(null)}
-        feature={comingSoonFeature || undefined}
       />
 
       <EventDetail event={selectedEvent} onClose={() => setSelectedEvent(null)} onToast={success} />

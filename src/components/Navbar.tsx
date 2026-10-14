@@ -8,7 +8,6 @@ interface NavbarProps {
   onSubmitClick: () => void;
   onEventsHubClick: () => void;
   onGuidesClick: () => void;
-  onAgentFeedClick: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -17,7 +16,6 @@ const Navbar: React.FC<NavbarProps> = ({
   onSubmitClick,
   onEventsHubClick,
   onGuidesClick,
-  onAgentFeedClick,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -39,7 +37,6 @@ const Navbar: React.FC<NavbarProps> = ({
           <button onClick={onExploreClick} className="shrink-0 whitespace-nowrap text-white hover:text-white transition-colors">View Calendar</button>
           <button onClick={onEventsHubClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Events Hub</button>
           <button onClick={onGuidesClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Guides</button>
-          <button onClick={onAgentFeedClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Agent feed</button>
           <button onClick={onResourcesClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Resources</button>
           <button onClick={onSubmitClick} className="shrink-0 whitespace-nowrap hover:text-white transition-colors">Submit Event</button>
         </div>
@@ -82,15 +79,6 @@ const Navbar: React.FC<NavbarProps> = ({
               className="text-white/80 hover:text-white transition-colors py-2 text-left"
             >
               Guides
-            </button>
-            <button
-              onClick={() => {
-                onAgentFeedClick();
-                setMobileMenuOpen(false);
-              }}
-              className="text-white/80 hover:text-white transition-colors py-2 text-left"
-            >
-              Agent feed
             </button>
             <button
               onClick={() => {

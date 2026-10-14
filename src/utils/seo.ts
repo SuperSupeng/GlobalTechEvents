@@ -17,10 +17,10 @@ interface SEOMetadata {
 export function getHomeSEO(): SEOMetadata {
   return {
     title: 'GlobalTechEvents — Major tech events in one calendar',
-    description: 'Unified calendar of globally known major tech events. Subscribe via calendar, Agent-friendly feed, or WhatsApp—built for industry professionals.',
+    description: 'Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals.',
     keywords: 'tech events calendar, global conferences, industry events, ICS subscribe',
     ogTitle: 'GlobalTechEvents — Major tech events in one calendar',
-    ogDescription: 'Unified calendar of globally known major tech events. Subscribe via calendar, Agent-friendly feed, or WhatsApp—built for industry professionals.',
+    ogDescription: 'Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals.',
     twitterCard: 'summary_large_image',
     canonicalUrl: 'https://www.globaltechevents.xyz',
   };

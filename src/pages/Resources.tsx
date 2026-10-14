@@ -46,7 +46,7 @@ const Resources: React.FC<ResourcesProps> = ({ onBack }) => {
           </h1>
           <p className="text-white/60 text-base md:text-lg max-w-3xl">
             Follow the unified calendar of globally known tech conferences and industry events.
-            Subscribe once, use the Agent-friendly feed, or join WhatsApp. Optional signals below
+            Subscribe once or join WhatsApp. Optional signals below
             are narrower than the calendar and stay in English on this page.
           </p>
         </header>
@@ -61,9 +61,9 @@ const Resources: React.FC<ResourcesProps> = ({ onBack }) => {
               </p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold">Agent feed</h3>
+              <h3 className="text-lg font-semibold">Agent-friendly feed</h3>
               <p className="text-white/60 text-sm mt-2">
-                Structured event data your Agent can read. Open Agent feed in the navigation; the feed URL is not live yet.
+                A structured feed for agents is planned. It is not available yet. Calendar subscribe and WhatsApp are the ways to follow today.
               </p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">

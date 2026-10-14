@@ -18,7 +18,11 @@ import TermsOfService from './pages/TermsOfService';
 import Resources from './pages/Resources';
 import SEOEventPage from './pages/SEOEventPage';
 import EventsHubPage from './pages/EventsHubPage';
-import { getSEOEventPageByPath, type SEOEventPageData } from './data/seoEventPages';
+import GuidesIndexPage from './pages/GuidesIndexPage';
+import GuidePage from './pages/GuidePage';
+import { getGuideBySlug, listGuides } from './content/guides';
+import { resolveAppRoute, type AppPage } from './routing/resolveAppRoute';
+import type { SEOEventPageData } from './data/seoEventPages';
 import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
 import SubscribeModal from './components/SubscribeModal';
@@ -29,23 +33,7 @@ import { trackOutboundClick } from './utils/analytics';
 import { getHomeSEO, updateMetaTags } from './utils/seo';
 
 const App: React.FC = () => {
-  const getInitialRoute = (): {
-    page: 'home' | 'privacy' | 'terms' | 'resources' | 'seoEvent' | 'eventsHub';
-    seoEventPage: SEOEventPageData | null;
-  } => {
-    const path = window.location.pathname;
-    if (path === '/privacy') return { page: 'privacy', seoEventPage: null };
-    if (path === '/terms') return { page: 'terms', seoEventPage: null };
-    if (path === '/resources') return { page: 'resources', seoEventPage: null };
-    if (path === '/events' || path === '/events/') return { page: 'eventsHub', seoEventPage: null };
-
-    const seoEventPage = getSEOEventPageByPath(path);
-    if (seoEventPage) return { page: 'seoEvent', seoEventPage };
-
-    return { page: 'home', seoEventPage: null };
-  };
-
-  const initialRoute = getInitialRoute();
+  const initialRoute = resolveAppRoute(window.location.pathname);
 
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,8 +42,11 @@ const App: React.FC = () => {
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
   const [comingSoonFeature, setComingSoonFeature] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<'home' | 'privacy' | 'terms' | 'resources' | 'seoEvent' | 'eventsHub'>(initialRoute.page);
-  const [seoEventPage, setSeoEventPage] = useState<SEOEventPageData | null>(initialRoute.seoEventPage);
+  const [currentPage, setCurrentPage] = useState<AppPage>(initialRoute.page);
+  const [seoEventPage, setSeoEventPage] = useState<SEOEventPageData | null>(
+    initialRoute.page === 'seoEvent' ? initialRoute.seoEventPage : null,
+  );
+  const [guideSlug, setGuideSlug] = useState<string | null>(initialRoute.page === 'guide' ? initialRoute.slug : null);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const { toasts, removeToast, success } = useToast();
@@ -66,26 +57,30 @@ const App: React.FC = () => {
     setViewMode('month');
   };
 
-  const navigateToPrivacy = () => {
-    setCurrentPage('privacy');
-    window.history.pushState({}, '', '/privacy');
+  const applyRoute = (pathname: string) => {
+    const next = resolveAppRoute(pathname);
+    setCurrentPage(next.page);
+    setSeoEventPage(next.page === 'seoEvent' ? next.seoEventPage : null);
+    setGuideSlug(next.page === 'guide' ? next.slug : null);
+  };
+
+  const navigateToPath = (pathname: string, title?: string) => {
+    applyRoute(pathname);
+    window.history.pushState({}, '', pathname);
     window.scrollTo(0, 0);
-    document.title = 'Privacy Policy - GlobalTechEvents';
+    if (title) document.title = title;
+  };
+
+  const navigateToPrivacy = () => {
+    navigateToPath('/privacy', 'Privacy Policy - GlobalTechEvents');
   };
 
   const navigateToTerms = () => {
-    setCurrentPage('terms');
-    window.history.pushState({}, '', '/terms');
-    window.scrollTo(0, 0);
-    document.title = 'Terms of Service - GlobalTechEvents';
+    navigateToPath('/terms', 'Terms of Service - GlobalTechEvents');
   };
 
   const navigateToHome = () => {
-    setCurrentPage('home');
-    setSeoEventPage(null);
-    window.history.pushState({}, '', '/');
-    window.scrollTo(0, 0);
-    document.title = 'GlobalTechEvents — Major tech events in one calendar';
+    navigateToPath('/', 'GlobalTechEvents — Major tech events in one calendar');
   };
 
   const navigateToHomeAndScrollToCalendar = () => {
@@ -96,19 +91,28 @@ const App: React.FC = () => {
   };
 
   const navigateToResources = () => {
-    setCurrentPage('resources');
-    setSeoEventPage(null);
-    window.history.pushState({}, '', '/resources');
-    window.scrollTo(0, 0);
-    document.title = 'Resources for tracking major tech events | GlobalTechEvents';
+    navigateToPath('/resources', 'Resources for tracking major tech events | GlobalTechEvents');
   };
 
   const navigateToEventsHub = () => {
-    setCurrentPage('eventsHub');
-    setSeoEventPage(null);
-    window.history.pushState({}, '', '/events');
-    window.scrollTo(0, 0);
-    document.title = 'Tech Events Directory | GlobalTechEvents';
+    navigateToPath('/events', 'Tech Events Directory | GlobalTechEvents');
+  };
+
+  const navigateToGuides = () => {
+    navigateToPath('/guides', 'Guides | GlobalTechEvents');
+  };
+
+  const navigateToHref = (href: string) => {
+    if (!href.startsWith('/')) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    const path = href.split(/[?#]/)[0] || '/';
+    if (path === '/') {
+      navigateToHomeAndScrollToCalendar();
+      return;
+    }
+    navigateToPath(path);
   };
 
   const openAgentFeed = () => {
@@ -168,29 +172,10 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     const handlePopState = () => {
-      const path = window.location.pathname;
-      if (path === '/privacy') {
-        setCurrentPage('privacy');
-        setSeoEventPage(null);
-      } else if (path === '/terms') {
-        setCurrentPage('terms');
-        setSeoEventPage(null);
-      } else if (path === '/resources') {
-        setCurrentPage('resources');
-        setSeoEventPage(null);
-      } else if (path === '/events' || path === '/events/') {
-        setCurrentPage('eventsHub');
-        setSeoEventPage(null);
-      } else {
-        const nextSEOEventPage = getSEOEventPageByPath(path);
-        if (nextSEOEventPage) {
-          setCurrentPage('seoEvent');
-          setSeoEventPage(nextSEOEventPage);
-        } else {
-          setCurrentPage('home');
-          setSeoEventPage(null);
-        }
-      }
+      const next = resolveAppRoute(window.location.pathname);
+      setCurrentPage(next.page);
+      setSeoEventPage(next.page === 'seoEvent' ? next.seoEventPage : null);
+      setGuideSlug(next.page === 'guide' ? next.slug : null);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -239,12 +224,14 @@ const App: React.FC = () => {
           onResourcesClick={navigateToResources}
           onSubmitClick={navigateToEventsHub}
           onEventsHubClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
           onAgentFeedClick={openAgentFeed}
         />
         <EventsHubPage onToast={success} />
         <Footer
           onCalendarClick={navigateToHomeAndScrollToCalendar}
           onEventsClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
           onNewsletterClick={navigateToEventsHub}
           onAPIClick={() => setComingSoonFeature('API Access')}
           onAgentFeedClick={openAgentFeed}
@@ -266,6 +253,46 @@ const App: React.FC = () => {
 
   if (currentPage === 'seoEvent' && seoEventPage) {
     return <SEOEventPage page={seoEventPage} onBackHome={navigateToHome} onToast={success} />;
+  }
+
+  if (currentPage === 'guidesIndex' || currentPage === 'guide') {
+    const activeGuide = guideSlug ? getGuideBySlug(guideSlug) ?? null : null;
+    return (
+      <>
+        <Navbar
+          onExploreClick={navigateToHomeAndScrollToCalendar}
+          onResourcesClick={navigateToResources}
+          onSubmitClick={navigateToEventsHub}
+          onEventsHubClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
+          onAgentFeedClick={openAgentFeed}
+        />
+        {currentPage === 'guidesIndex' ? (
+          <GuidesIndexPage guides={listGuides()} onOpenGuide={(slug) => navigateToPath(`/guides/${slug}`)} />
+        ) : (
+          <GuidePage guide={activeGuide} slug={guideSlug ?? ''} onNavigate={navigateToHref} />
+        )}
+        <Footer
+          onCalendarClick={navigateToHomeAndScrollToCalendar}
+          onEventsClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
+          onNewsletterClick={navigateToEventsHub}
+          onAPIClick={() => setComingSoonFeature('API Access')}
+          onAgentFeedClick={openAgentFeed}
+          onSubmitClick={navigateToEventsHub}
+          onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
+          onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', currentPage === 'guidesIndex' ? 'guides_index' : 'guide')}
+          onPrivacyClick={navigateToPrivacy}
+          onTermsClick={navigateToTerms}
+        />
+        <ComingSoon
+          isOpen={comingSoonFeature !== null}
+          onClose={() => setComingSoonFeature(null)}
+          feature={comingSoonFeature || undefined}
+        />
+        <Toast toasts={toasts} onRemove={removeToast} />
+      </>
+    );
   }
 
   return (
@@ -295,6 +322,7 @@ const App: React.FC = () => {
         onResourcesClick={navigateToResources}
         onSubmitClick={navigateToEventsHub}
         onEventsHubClick={navigateToEventsHub}
+        onGuidesClick={navigateToGuides}
         onAgentFeedClick={openAgentFeed}
       />
 
@@ -519,6 +547,7 @@ const App: React.FC = () => {
       <Footer
         onCalendarClick={scrollToCalendar}
         onEventsClick={navigateToEventsHub}
+        onGuidesClick={navigateToGuides}
         onNewsletterClick={navigateToEventsHub}
         onAPIClick={() => setComingSoonFeature('API Access')}
         onAgentFeedClick={openAgentFeed}

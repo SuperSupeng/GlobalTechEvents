@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { ensureGuidesInExistingSitemap, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 
 const SOURCE = path.resolve('src/data/seoEventPages.ts');
 const GENERATED_SOURCE = path.resolve('src/data/generatedSEOEventPages.json');
@@ -352,20 +353,36 @@ function renderPage(page) {
 </html>`;
 }
 
-function generateSitemap(pages) {
-  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events'];
+function generateSitemap(pages, guides = []) {
+  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events', '/guides'];
   const today = new Date().toISOString().slice(0, 10);
   const urls = [
     ...staticUrls.map((p) => `${SITE_URL}${p}`),
     ...pages.map((page) => `${SITE_URL}/events/${page.slug}`),
+    ...indexableGuideUrls(guides),
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
-  .map(
-    (url, idx) => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${idx === 0 ? 'daily' : url.includes('/events/') ? 'weekly' : 'monthly'}</changefreq>\n    <priority>${idx === 0 ? '1.0' : url.includes('/events/') ? '0.8' : url.endsWith('/events') ? '0.9' : '0.3'}</priority>\n  </url>`,
-  )
+  .map((url, idx) => {
+    const isHome = idx === 0;
+    const isEventPage = url.includes('/events/');
+    const isEventsHub = url.endsWith('/events');
+    const isGuidePage = url.includes('/guides/');
+    const isGuidesHub = url.endsWith('/guides');
+    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub ? 'weekly' : 'monthly';
+    const priority = isHome
+      ? '1.0'
+      : isEventPage || isGuidePage
+        ? '0.8'
+        : isEventsHub
+          ? '0.9'
+          : isGuidesHub
+            ? '0.7'
+            : '0.3';
+    return `  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  })
   .join('\n')}
 </urlset>`;
 }
@@ -480,12 +497,20 @@ async function main() {
     fs.writeFileSync(path.join(outDir, 'index.html'), renderPage(page));
   }
 
-  fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), generateSitemap(allPages));
+  const guides = writeGuideStaticPages();
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), generateSitemap(allPages, guides));
   writeGeneratedSource(allPages);
   console.log(`Generated ${allPages.length} crawlable SEO pages and sitemap entries into public/events/*`);
+  console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv.includes('--guides-only')) {
+  const guides = writeGuideStaticPages();
+  ensureGuidesInExistingSitemap(guides);
+  console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
+} else {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

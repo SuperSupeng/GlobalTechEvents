@@ -4,6 +4,7 @@ import Logo from './Logo';
 interface FooterProps {
   onCalendarClick: () => void;
   onEventsClick: () => void;
+  onGuidesClick: () => void;
   onNewsletterClick: () => void;
   onAPIClick: () => void;
   onAgentFeedClick: () => void;
@@ -17,6 +18,7 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({
   onCalendarClick,
   onEventsClick,
+  onGuidesClick,
   onNewsletterClick,
   onAPIClick,
   onAgentFeedClick,
@@ -47,6 +49,7 @@ const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-4 text-white/75 text-sm">
               <li><button onClick={onCalendarClick} className="hover:text-white transition-colors">Calendar</button></li>
               <li><button onClick={onEventsClick} className="hover:text-white transition-colors">Events Hub</button></li>
+              <li><button onClick={onGuidesClick} className="hover:text-white transition-colors">Guides</button></li>
               <li><button onClick={onAgentFeedClick} className="hover:text-white transition-colors">Agent feed</button></li>
               <li><button onClick={onNewsletterClick} className="hover:text-white transition-colors">Newsletter</button></li>
               <li><button onClick={onAPIClick} className="hover:text-white transition-colors">API Access</button></li>

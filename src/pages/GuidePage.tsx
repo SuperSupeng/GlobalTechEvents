@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { evaluateGuidePublishGate } from '../content/guides/publishGate';
 import { clearGuideDocumentHooks, mountGuideJsonLd, setGuideRobots } from '../content/guides/jsonld';
 import { guideCanonicalUrl } from '../content/guides/site';
-import type { Guide } from '../content/guides/types';
+import type { Guide, GuideAuthor } from '../content/guides/types';
 import { updateMetaTags } from '../utils/seo';
 
 interface GuidePageProps {
@@ -13,6 +13,62 @@ interface GuidePageProps {
 
 const DEFAULT_DRAFT_NOTICE =
   'Draft shell — not a published guide. This page does not rank conferences and does not state dates, prices, or speakers.';
+
+function GuideAuthorByline({ author }: { author: GuideAuthor }) {
+  const profileUrl = author.url?.trim() ?? '';
+  const portraitClass = 'h-10 w-10 shrink-0 rounded-full object-cover border border-white/15';
+
+  const identity = (
+    <>
+      {author.avatar?.src ? (
+        <img src={author.avatar.src} alt="" width={40} height={40} className={portraitClass} />
+      ) : null}
+      <span className="min-w-0">
+        <span className="block text-[15px] font-medium leading-tight text-white group-hover:text-primary-light">
+          {author.name}
+          {profileUrl ? <span className="sr-only"> (opens in a new tab)</span> : null}
+        </span>
+        <span className="mt-0.5 block text-sm font-normal leading-snug text-white/60">{author.bio}</span>
+      </span>
+    </>
+  );
+
+  return (
+    <section className="mb-8" aria-label="Author">
+      {author.placeholder && (
+        <p className="text-xs uppercase tracking-[0.14em] text-amber-200/90 mb-2">
+          Placeholder author — not a published byline
+        </p>
+      )}
+      {profileUrl ? (
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex max-w-full items-center gap-3 rounded-2xl text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+        >
+          {identity}
+        </a>
+      ) : (
+        <div className="flex max-w-full items-center gap-3">
+          {author.avatar?.src ? (
+            <img
+              src={author.avatar.src}
+              alt={author.avatar.alt || author.name}
+              width={40}
+              height={40}
+              className={portraitClass}
+            />
+          ) : null}
+          <div className="min-w-0">
+            <p className="text-[15px] font-medium leading-tight text-white">{author.name}</p>
+            <p className="mt-0.5 text-sm leading-snug text-white/60">{author.bio}</p>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
 
 const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
   const gate = guide ? evaluateGuidePublishGate(guide) : null;
@@ -82,31 +138,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
             <span className="font-medium text-white">As of {guide.asOf}</span>
           </p>
 
-          <section className="glass-panel p-6 mb-8" aria-labelledby="guide-author">
-            <h2 id="guide-author" className="text-sm uppercase tracking-[0.16em] text-white/50 mb-2">
-              Author
-            </h2>
-            {guide.author.placeholder && (
-              <p className="text-xs uppercase tracking-[0.14em] text-amber-200/90 mb-2">
-                Placeholder author — not a published byline
-              </p>
-            )}
-            <div className="flex items-start gap-4">
-              {guide.author.avatar?.src ? (
-                <img
-                  src={guide.author.avatar.src}
-                  alt={guide.author.avatar.alt}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 shrink-0 rounded-full object-cover border border-white/15"
-                />
-              ) : null}
-              <div>
-                <p className="text-lg font-medium">{guide.author.name}</p>
-                <p className="text-white/70 mt-2 leading-relaxed">{guide.author.bio}</p>
-              </div>
-            </div>
-          </section>
+          <GuideAuthorByline author={guide.author} />
 
           <p className="text-lg text-white/80 leading-relaxed mb-8">{guide.description}</p>
 

@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { getMissingSupabaseEnv, getSupabaseAdmin } from './supabase-admin';
+import { getMissingSupabaseEnv, getSupabaseAdmin } from './supabase-admin.js';
 
 type EventStatus = 'upcoming' | 'live' | 'ended' | 'canceled';
 

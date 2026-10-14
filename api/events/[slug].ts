@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getSEOEventPageBySlug } from '../../src/data/seoEventPages';
+import { getSEOEventPageBySlug } from '../../src/data/seoEventPages.js';
 
 function escapeHtml(value: string): string {
   return value

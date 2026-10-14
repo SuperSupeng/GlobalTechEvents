@@ -1,4 +1,4 @@
-import generatedSEOEventPages from './generatedSEOEventPages.json';
+import generatedSEOEventPages from './generatedSEOEventPages.json' with { type: 'json' };
 
 export interface SEOEventPageData {
   slug: string;

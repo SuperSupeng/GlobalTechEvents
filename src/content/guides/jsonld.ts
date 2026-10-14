@@ -8,6 +8,14 @@ export interface GuideJsonLd {
 
 export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
   const canonical = guideCanonicalUrl(guide.slug);
+  const author: Record<string, unknown> = {
+    '@type': 'Person',
+    name: guide.author.name,
+    description: guide.author.bio,
+  };
+  if (guide.author.avatar?.src) {
+    author.image = guide.author.avatar.src;
+  }
   const article: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -15,11 +23,7 @@ export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
     description: guide.description,
     inLanguage: guide.language,
     dateModified: guide.asOf,
-    author: {
-      '@type': 'Person',
-      name: guide.author.name,
-      description: guide.author.bio,
-    },
+    author,
     publisher: {
       '@type': 'Organization',
       name: 'GlobalTechEvents',

@@ -91,8 +91,21 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
                 Placeholder author — not a published byline
               </p>
             )}
-            <p className="text-lg font-medium">{guide.author.name}</p>
-            <p className="text-white/70 mt-2 leading-relaxed">{guide.author.bio}</p>
+            <div className="flex items-start gap-4">
+              {guide.author.avatar?.src ? (
+                <img
+                  src={guide.author.avatar.src}
+                  alt={guide.author.avatar.alt}
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 shrink-0 rounded-full object-cover border border-white/15"
+                />
+              ) : null}
+              <div>
+                <p className="text-lg font-medium">{guide.author.name}</p>
+                <p className="text-white/70 mt-2 leading-relaxed">{guide.author.bio}</p>
+              </div>
+            </div>
           </section>
 
           <p className="text-lg text-white/80 leading-relaxed mb-8">{guide.description}</p>

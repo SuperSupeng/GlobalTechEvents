@@ -70,6 +70,12 @@ function readWhatsAppUrl() {
 
 function buildGuideJsonLd(guide) {
   const canonical = `${SITE_URL}/guides/${guide.slug}`;
+  const author = {
+    '@type': 'Person',
+    name: guide.author?.name || '',
+    description: guide.author?.bio || '',
+  };
+  if (guide.author?.avatar?.src) author.image = guide.author.avatar.src;
   const article = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -77,11 +83,7 @@ function buildGuideJsonLd(guide) {
     description: guide.description,
     inLanguage: guide.language || 'en',
     dateModified: guide.asOf,
-    author: {
-      '@type': 'Person',
-      name: guide.author?.name || '',
-      description: guide.author?.bio || '',
-    },
+    author,
     publisher: {
       '@type': 'Organization',
       name: 'GlobalTechEvents',
@@ -160,6 +162,9 @@ function renderGuidePage(guide) {
   const authorLabel = guide.author?.placeholder
     ? '<p class="eyebrow">Placeholder author — not a published byline</p>'
     : '';
+  const avatar = guide.author?.avatar?.src
+    ? `<img class="avatar" src="${escapeHtml(guide.author.avatar.src)}" alt="${escapeHtml(guide.author.avatar.alt || guide.author.name || '')}" width="64" height="64" />`
+    : '';
   const faq = (guide.faq || [])
     .map(
       (item) => `<article class="card"><h3>${escapeHtml(item.question)}</h3><p>${escapeHtml(item.answer)}</p></article>`,
@@ -214,6 +219,8 @@ function renderGuidePage(guide) {
       th, td { border-bottom: 1px solid rgba(255,255,255,.1); text-align: left; padding: 8px; vertical-align: top; }
       caption { text-align: left; color: rgba(255,255,255,.6); margin-bottom: 8px; }
       img { max-width: 100%; border-radius: 16px; }
+      .author { display: flex; gap: 16px; align-items: flex-start; }
+      .avatar { width: 64px; height: 64px; border-radius: 999px; object-fit: cover; flex: none; }
     </style>
   </head>
   <body>
@@ -232,8 +239,13 @@ function renderGuidePage(guide) {
       <section class="card">
         <h2>Author</h2>
         ${authorLabel}
-        <p><strong>${escapeHtml(guide.author?.name || '')}</strong></p>
-        <p>${escapeHtml(guide.author?.bio || '')}</p>
+        <div class="author">
+          ${avatar}
+          <div>
+            <p><strong>${escapeHtml(guide.author?.name || '')}</strong></p>
+            <p>${escapeHtml(guide.author?.bio || '')}</p>
+          </div>
+        </div>
       </section>
       <p>${escapeHtml(guide.description || '')}</p>
       ${cover}
@@ -308,10 +320,35 @@ function renderGuidesIndex(guides) {
 </html>`;
 }
 
+const GUIDE_MEDIA_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif']);
+
+function collectGuideMedia(dir, root = dir) {
+  if (!fs.existsSync(dir)) return [];
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectGuideMedia(full, root));
+      continue;
+    }
+    if (GUIDE_MEDIA_EXT.has(path.extname(entry.name).toLowerCase())) {
+      files.push({ rel: path.relative(root, full), data: fs.readFileSync(full) });
+    }
+  }
+  return files;
+}
+
 export function writeGuideStaticPages() {
   const guides = loadGuides();
+  // HTML is regenerated, but cover and body images live beside each guide's index.html.
+  const preservedMedia = collectGuideMedia(GUIDES_OUTPUT_DIR);
   fs.rmSync(GUIDES_OUTPUT_DIR, { recursive: true, force: true });
   fs.mkdirSync(GUIDES_OUTPUT_DIR, { recursive: true });
+  for (const file of preservedMedia) {
+    const dest = path.join(GUIDES_OUTPUT_DIR, file.rel);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, file.data);
+  }
   fs.writeFileSync(path.join(GUIDES_OUTPUT_DIR, 'index.html'), renderGuidesIndex(guides));
   for (const guide of guides) {
     const outDir = path.join(GUIDES_OUTPUT_DIR, guide.slug);

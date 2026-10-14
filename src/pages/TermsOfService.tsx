@@ -194,8 +194,8 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
           <section className="mb-8">
             <h2 className="text-2xl font-bold mb-4">12. Governing Law</h2>
             <p className="text-white/70 leading-relaxed">
-              These Terms are governed by the laws of [Your Jurisdiction]. Any disputes shall be 
-              resolved in the courts of [Your Jurisdiction].
+              Applicable law and venue are not designated yet. This section will be updated after
+              legal review. Until then, these Terms do not name a country, state, or court.
             </p>
           </section>
 

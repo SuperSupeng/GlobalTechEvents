@@ -16,11 +16,11 @@ interface SEOMetadata {
  */
 export function getHomeSEO(): SEOMetadata {
   return {
-    title: 'GlobalTechEvents - Discover World\'s Best Tech Events & Conferences',
-    description: 'Your gateway to the world\'s tech events. Find AI summits, developer conferences, hackathons, and tech meetups worldwide. Free event calendar with 1000+ tech events.',
-    keywords: 'tech events, developer conferences, AI summit, hackathons, tech calendar, technology events, developer meetup, tech conference 2026, global tech events',
-    ogTitle: 'GlobalTechEvents - Your Gateway to Tech Events Worldwide',
-    ogDescription: 'Discover, track, and never miss tech conferences, AI summits, hackathons, and meetups. 1000+ events across 60+ countries.',
+    title: 'GlobalTechEvents — Major tech events in one calendar',
+    description: 'Unified calendar of globally known major tech events. Subscribe via calendar, Agent-friendly feed, or WhatsApp—built for industry professionals.',
+    keywords: 'tech events calendar, global conferences, industry events, ICS subscribe',
+    ogTitle: 'GlobalTechEvents — Major tech events in one calendar',
+    ogDescription: 'Unified calendar of globally known major tech events. Subscribe via calendar, Agent-friendly feed, or WhatsApp—built for industry professionals.',
     twitterCard: 'summary_large_image',
     canonicalUrl: 'https://www.globaltechevents.xyz',
   };

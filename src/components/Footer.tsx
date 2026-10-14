@@ -6,6 +6,7 @@ interface FooterProps {
   onEventsClick: () => void;
   onNewsletterClick: () => void;
   onAPIClick: () => void;
+  onAgentFeedClick: () => void;
   onSubmitClick: () => void;
   onSponsorshipsClick: () => void;
   onWhatsAppClick: () => void;
@@ -18,6 +19,7 @@ const Footer: React.FC<FooterProps> = ({
   onEventsClick,
   onNewsletterClick,
   onAPIClick,
+  onAgentFeedClick,
   onSubmitClick,
   onSponsorshipsClick,
   onWhatsAppClick,
@@ -37,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({
               </span>
             </div>
             <p className="text-white/80 max-w-sm leading-relaxed font-sans text-sm sm:text-[15px]">
-              Your gateway to the world's most influential tech events. From AI summits to developer conferences, discover, track, and never miss the moments that shape technology's future.
+              One calendar for the major tech events the industry actually tracks—subscribe, share with your Agent, or follow on WhatsApp.
             </p>
           </div>
           <div>
@@ -45,6 +47,7 @@ const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-4 text-white/75 text-sm">
               <li><button onClick={onCalendarClick} className="hover:text-white transition-colors">Calendar</button></li>
               <li><button onClick={onEventsClick} className="hover:text-white transition-colors">Events Hub</button></li>
+              <li><button onClick={onAgentFeedClick} className="hover:text-white transition-colors">Agent feed</button></li>
               <li><button onClick={onNewsletterClick} className="hover:text-white transition-colors">Newsletter</button></li>
               <li><button onClick={onAPIClick} className="hover:text-white transition-colors">API Access</button></li>
             </ul>

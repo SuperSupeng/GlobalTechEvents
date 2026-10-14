@@ -24,9 +24,10 @@ function cn(...inputs: ClassValue[]) {
 interface CalendarProps {
   events: TechEvent[];
   onEventClick: (event: TechEvent) => void;
+  onQuickFilter?: (searchTerm: string) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
+const Calendar: React.FC<CalendarProps> = ({ events, onEventClick, onQuickFilter }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [userTimezone, setUserTimezone] = useState<string>('');
   const [timezoneOffset, setTimezoneOffset] = useState<string>('');
@@ -134,7 +135,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onEventClick }) => {
       {/* Empty State or Days Grid */}
       {!hasEventsThisMonth ? (
         <div className="p-8">
-          <EmptyState type="calendar" onReset={goToToday} />
+          <EmptyState type="calendar" onReset={goToToday} onQuickFilter={onQuickFilter} />
         </div>
       ) : (
         <div className="calendar-grid">

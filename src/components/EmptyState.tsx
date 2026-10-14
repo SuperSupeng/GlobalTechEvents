@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Search, Filter, Cpu, Link as LinkIcon } from 'lucide-react';
+import { Calendar, Search, Filter, Sparkles, Cloud, Code2 } from 'lucide-react';
 
 interface EmptyStateProps {
   type?: 'search' | 'filter' | 'calendar';
@@ -7,6 +7,13 @@ interface EmptyStateProps {
   onReset?: () => void;
   onQuickFilter?: (searchTerm: string) => void;
 }
+
+const exploreChips = [
+  { label: 'Featured', term: 'Featured', icon: Sparkles },
+  { label: 'Conferences', term: 'Conference', icon: Calendar },
+  { label: 'Cloud', term: 'Cloud', icon: Cloud },
+  { label: 'DevOps', term: 'DevOps', icon: Code2 },
+];
 
 const EmptyState: React.FC<EmptyStateProps> = ({ 
   type = 'search', 
@@ -58,32 +65,23 @@ const EmptyState: React.FC<EmptyStateProps> = ({
           </button>
         )}
         
-        {/* Quick suggestions */}
-        {onQuickFilter && (type === 'search' || type === 'filter') && (
+        {onQuickFilter && (
           <div className="mt-4">
             <p className="text-xs text-white/40 mb-3">Try exploring:</p>
             <div className="flex flex-wrap gap-2 justify-center">
-              <button
-                onClick={() => onQuickFilter('AI')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
-              >
-                <Cpu size={12} />
-                <span>AI Events</span>
-              </button>
-              <button
-                onClick={() => onQuickFilter('Web3')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
-              >
-                <LinkIcon size={12} />
-                <span>Web3 Events</span>
-              </button>
-              <button
-                onClick={() => onQuickFilter('Blockchain')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
-              >
-                <LinkIcon size={12} />
-                <span>Blockchain</span>
-              </button>
+              {exploreChips.map((chip) => {
+                const ChipIcon = chip.icon;
+                return (
+                  <button
+                    key={chip.label}
+                    onClick={() => onQuickFilter(chip.term)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 rounded-full text-white/60 hover:text-white transition-all text-xs"
+                  >
+                    <ChipIcon size={12} />
+                    <span>{chip.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}

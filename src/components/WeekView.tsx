@@ -19,9 +19,10 @@ import EmptyState from './EmptyState';
 
 interface WeekViewProps {
   events: TechEvent[];
+  onQuickFilter?: (searchTerm: string) => void;
 }
 
-const WeekView: React.FC<WeekViewProps> = ({ events }) => {
+const WeekView: React.FC<WeekViewProps> = ({ events, onQuickFilter }) => {
   const [currentWeekStart, setCurrentWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 })); // Monday
   const [selectedEvent, setSelectedEvent] = useState<TechEvent | null>(null);
 
@@ -136,7 +137,7 @@ const WeekView: React.FC<WeekViewProps> = ({ events }) => {
           </div>
         </div>
 
-        <EmptyState type="calendar" />
+        <EmptyState type="calendar" onQuickFilter={onQuickFilter} />
       </div>
     );
   }

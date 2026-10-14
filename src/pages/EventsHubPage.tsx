@@ -59,7 +59,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
 
       setNewsletterStatus('success');
       setNewsletterEmail('');
-      onToast?.(result.duplicate ? 'You are already on the list.' : 'Newsletter signup saved.');
+      onToast?.(result.duplicate ? 'You are already on the list.' : "Thanks—you're on the list.");
     } catch (error) {
       setNewsletterStatus('error');
       setNewsletterError(error instanceof Error ? error.message : 'Failed to save newsletter signup.');
@@ -93,7 +93,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
         eventUrl: '',
         notes: '',
       });
-      onToast?.('Event submission saved.');
+      onToast?.('Thanks—we got your suggestion.');
     } catch (error) {
       setSubmitStatus('error');
       setSubmitError(error instanceof Error ? error.message : 'Failed to submit event.');
@@ -105,9 +105,9 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
       <main className="max-w-6xl mx-auto px-4 sm:px-6">
         <section className="mb-12 glass-panel p-8 sm:p-10">
           <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Events Hub</p>
-          <h1 className="text-4xl sm:text-5xl font-serif italic mb-4 leading-tight">Track top global tech events and join the fastest feedback loop.</h1>
+          <h1 className="text-4xl sm:text-5xl font-serif italic mb-4 leading-tight">Browse major tech events worldwide—then subscribe, submit a miss, or join WhatsApp.</h1>
           <p className="text-white/75 text-lg leading-relaxed max-w-3xl mb-8">
-            This page now doubles as the minimal conversion hub: real newsletter signups, real event submissions, and outbound clicks tracked to official destinations.
+            Guides for the events on our calendar. Register on the official site; save dates here.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button onClick={handleWhatsAppClick} className="btn-primary inline-flex items-center justify-center gap-2">
@@ -168,7 +168,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
           <div id="newsletter-form" className="glass-panel p-6 sm:p-8">
             <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Newsletter Signup</p>
             <h2 className="text-3xl font-serif italic mb-3">Get the weekly signal, not the noise.</h2>
-            <p className="text-white/70 leading-relaxed mb-6">Successful submit writes to Supabase through a Vercel Function, then emits the newsletter_signup conversion event.</p>
+            <p className="text-white/70 leading-relaxed mb-6">We’ll email a short weekly digest. No spam.</p>
             <form onSubmit={handleNewsletterSubmit} className="space-y-4">
               <input
                 type="email"
@@ -182,14 +182,14 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
                 {newsletterStatus === 'submitting' ? 'Saving…' : 'Join Newsletter'}
               </button>
             </form>
-            {newsletterStatus === 'success' && <p className="mt-4 text-sm text-emerald-300">Saved successfully. This counts as a real conversion event.</p>}
+            {newsletterStatus === 'success' && <p className="mt-4 text-sm text-emerald-300">Thanks—you're on the list.</p>}
             {newsletterStatus === 'error' && <p className="mt-4 text-sm text-red-300">{newsletterError}</p>}
           </div>
 
           <div id="submit-event-form" className="glass-panel p-6 sm:p-8">
             <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Submit Event</p>
             <h2 className="text-3xl font-serif italic mb-3">Add a conference we should track.</h2>
-            <p className="text-white/70 leading-relaxed mb-6">This form writes to Supabase through a Vercel Function. Only successful saves emit submit_event.</p>
+            <p className="text-white/70 leading-relaxed mb-6">We review every suggestion before it hits the calendar.</p>
             <form onSubmit={handleSubmitEvent} className="space-y-4">
               <input type="text" required value={submitForm.name} onChange={(event) => setSubmitForm((prev) => ({ ...prev, name: event.target.value }))} placeholder="Your name" className={inputClassName} />
               <input type="email" required value={submitForm.email} onChange={(event) => setSubmitForm((prev) => ({ ...prev, email: event.target.value }))} placeholder="Your email" className={inputClassName} />
@@ -200,7 +200,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
                 {submitStatus === 'submitting' ? 'Saving…' : 'Submit Event'}
               </button>
             </form>
-            {submitStatus === 'success' && <p className="mt-4 text-sm text-emerald-300">Saved successfully. This counts as a real conversion event.</p>}
+            {submitStatus === 'success' && <p className="mt-4 text-sm text-emerald-300">Thanks—we got your suggestion.</p>}
             {submitStatus === 'error' && <p className="mt-4 text-sm text-red-300">{submitError}</p>}
           </div>
         </section>

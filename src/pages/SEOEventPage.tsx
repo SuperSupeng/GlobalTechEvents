@@ -168,13 +168,11 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
         <section className="glass-panel p-6 sm:p-7 mb-10 border border-primary/20 shadow-[0_0_0_1px_rgba(212,175,55,0.08)]">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div className="max-w-2xl">
-              <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Primary action</p>
               <h2 className="text-2xl sm:text-3xl font-serif italic mb-3">Save this event before you forget it</h2>
               <p className="text-white/70 leading-relaxed">
                 Put {page.shortName} on your calendar first, then choose whether to register now or review the official event site.
               </p>
             </div>
-            <p className="text-sm text-white/45 lg:text-right">CTA order for SEO visitors: Add to Calendar → Registration → Official Website</p>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-3 mt-6">
@@ -232,17 +230,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             </a>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 text-sm text-white/60">
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3">
-              Primary conversion: add this event to your schedule
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3">
-              Secondary conversion: register while intent is still hot
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3">
-              Research path: verify details on the organizer site
-            </div>
-          </div>
+          <p className="mt-4 text-sm text-white/55">Always confirm details on the official site.</p>
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
@@ -294,9 +282,9 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
         </section>
 
         <section className="glass-panel p-6">
-          <h2 className="text-2xl font-serif italic mb-3">Before you leave</h2>
+          <h2 className="text-2xl font-serif italic mb-3">Ready?</h2>
           <p className="text-white/70 leading-relaxed">
-            The primary CTA has been moved above the fold for SEO visitors. Use the FAQ and official resources above to validate details, then take action from the top CTA block.
+            Add it to your calendar, then register on the official site.
           </p>
           <p className="text-xs text-white/50 mt-3">
             Last updated: {new Date().toLocaleDateString('en-US')}

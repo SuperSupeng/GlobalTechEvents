@@ -240,21 +240,15 @@ function renderPage(page) {
       <p>${escapeHtml(page.whyItMatters)}</p>
 
       <section class="card cta-card">
-        <p class="cta-kicker">Primary action</p>
         <h2 style="margin-top:0;">Save this event before you forget it</h2>
         <p>Put ${escapeHtml(page.shortName)} on your calendar first, then choose whether to register now or review the official event site.</p>
-        <p class="muted">CTA order for SEO visitors: Add to Calendar → Registration → Official Website</p>
         <div class="btn-row">
           <a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
           ${registrationButton}
           <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
           <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
         </div>
-        <div class="cta-note-grid">
-          <div class="cta-note">Primary conversion: add this event to your schedule</div>
-          <div class="cta-note">Secondary conversion: register while intent is still hot</div>
-          <div class="cta-note">Research path: verify details on the organizer site</div>
-        </div>
+        <p class="muted">Always confirm details on the official site.</p>
       </section>
 
       <section class="grid">
@@ -294,9 +288,8 @@ function renderPage(page) {
       </section>
 
       <section class="card">
-        <h2>Before you leave</h2>
-        <p>The action block has been moved above the fold for SEO visitors, so the top CTA is now the fastest path to save or join this event.</p>
-        <p class="muted">Canonical URL: ${canonical}</p>
+        <h2>Ready?</h2>
+        <p>Add it to your calendar, then register on the official site.</p>
       </section>
     </main>
     <script>

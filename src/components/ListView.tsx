@@ -10,11 +10,12 @@ interface ListViewProps {
   onEventClick: (event: TechEvent) => void;
   searchQuery: string;
   onReset: () => void;
+  onQuickFilter?: (searchTerm: string) => void;
 }
 
 const ITEMS_PER_PAGE = 20;
 
-const ListView: React.FC<ListViewProps> = ({ events, onEventClick, searchQuery, onReset }) => {
+const ListView: React.FC<ListViewProps> = ({ events, onEventClick, searchQuery, onReset, onQuickFilter }) => {
   const [displayedItems, setDisplayedItems] = useState(ITEMS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -65,6 +66,7 @@ const ListView: React.FC<ListViewProps> = ({ events, onEventClick, searchQuery, 
         type={searchQuery ? 'search' : 'filter'}
         searchQuery={searchQuery}
         onReset={onReset}
+        onQuickFilter={onQuickFilter}
       />
     );
   }

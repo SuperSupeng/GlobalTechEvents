@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { Zap, ChevronDown, Loader2, MessageCircle, Rss } from 'lucide-react';
+import { Zap, ChevronDown, Loader2, MessageCircle, Rss, Bot } from 'lucide-react';
 import { TechEvent, ViewMode } from './types';
 import { useEvents, useLocations } from './hooks/useEvents';
 import Calendar from './components/Calendar';
@@ -26,6 +26,7 @@ import { useToast } from './hooks/useToast';
 import { formatCalendarFollowers, useCalendarFollowers } from './hooks/useCalendarFollowers';
 import { CALENDAR_SUBSCRIBERS_LABEL, WHATSAPP_GROUP_URL } from './config/constants';
 import { trackOutboundClick } from './utils/analytics';
+import { getHomeSEO, updateMetaTags } from './utils/seo';
 
 const App: React.FC = () => {
   const getInitialRoute = (): {
@@ -84,7 +85,7 @@ const App: React.FC = () => {
     setSeoEventPage(null);
     window.history.pushState({}, '', '/');
     window.scrollTo(0, 0);
-    document.title = 'GlobalTechEvents - Your Gateway to Tech Events Worldwide';
+    document.title = 'GlobalTechEvents — Major tech events in one calendar';
   };
 
   const navigateToHomeAndScrollToCalendar = () => {
@@ -99,7 +100,7 @@ const App: React.FC = () => {
     setSeoEventPage(null);
     window.history.pushState({}, '', '/resources');
     window.scrollTo(0, 0);
-    document.title = 'Resources - GlobalTechEvents';
+    document.title = 'Resources for tracking major tech events | GlobalTechEvents';
   };
 
   const navigateToEventsHub = () => {
@@ -108,6 +109,22 @@ const App: React.FC = () => {
     window.history.pushState({}, '', '/events');
     window.scrollTo(0, 0);
     document.title = 'Tech Events Directory | GlobalTechEvents';
+  };
+
+  const openAgentFeed = () => {
+    setComingSoonFeature('Agent feed');
+  };
+
+  const applyExploreChip = (term: string) => {
+    if (term === 'Featured') {
+      setTagFilter('Featured');
+      setSearchQuery('');
+    } else {
+      setSearchQuery(term);
+      setTagFilter('');
+    }
+    setFormatFilter('all');
+    setLocationFilter('all');
   };
 
   const openWhatsApp = (ctaLabel: string, pageType: string) => {
@@ -180,14 +197,24 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  React.useEffect(() => {
+    if (currentPage === 'home') {
+      updateMetaTags(getHomeSEO());
+    }
+  }, [currentPage]);
+
   const splitText = (text: string) => {
-    return text.split(' ').map((word, wordIndex) => (
-      <span key={`word-${wordIndex}`} className="inline-block mr-3 last:mr-0">
-        {word.split('').map((char, charIndex) => (
-          <span key={`char-${wordIndex}-${charIndex}`} className="char-hover">
-            {char}
-          </span>
-        ))}
+    const words = text.split(' ');
+    return words.map((word, wordIndex) => (
+      <span key={`word-${wordIndex}`}>
+        <span className="inline-block">
+          {word.split('').map((char, charIndex) => (
+            <span key={`char-${wordIndex}-${charIndex}`} className="char-hover">
+              {char}
+            </span>
+          ))}
+        </span>
+        {wordIndex < words.length - 1 ? ' ' : null}
       </span>
     ));
   };
@@ -212,6 +239,7 @@ const App: React.FC = () => {
           onResourcesClick={navigateToResources}
           onSubmitClick={navigateToEventsHub}
           onEventsHubClick={navigateToEventsHub}
+          onAgentFeedClick={openAgentFeed}
         />
         <EventsHubPage onToast={success} />
         <Footer
@@ -219,6 +247,7 @@ const App: React.FC = () => {
           onEventsClick={navigateToEventsHub}
           onNewsletterClick={navigateToEventsHub}
           onAPIClick={() => setComingSoonFeature('API Access')}
+          onAgentFeedClick={openAgentFeed}
           onSubmitClick={navigateToEventsHub}
           onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
           onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', 'events_hub')}
@@ -266,6 +295,7 @@ const App: React.FC = () => {
         onResourcesClick={navigateToResources}
         onSubmitClick={navigateToEventsHub}
         onEventsHubClick={navigateToEventsHub}
+        onAgentFeedClick={openAgentFeed}
       />
 
       <main className="relative z-10">
@@ -282,7 +312,7 @@ const App: React.FC = () => {
             </motion.div>
 
             <h1
-              className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif italic mb-6 sm:mb-8 leading-[1.05] text-white relative z-10"
+              className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif italic mb-6 sm:mb-8 leading-[1.05] text-white relative z-10"
               onMouseMove={(event) => {
                 const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
                 const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -304,10 +334,13 @@ const App: React.FC = () => {
               }}
             >
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.2 }}>
-                {splitText("The World's")}
+                {splitText("The world's major")}
               </motion.div>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.4 }} className="hero-accent block">
-                {splitText('Tech Events')} <span className="font-sans italic">{splitText('Matrix')}</span>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.4 }}>
+                {splitText('tech events,')}
+              </motion.div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.55 }} className="hero-accent block">
+                {splitText('in one calendar')}
               </motion.div>
             </h1>
 
@@ -315,9 +348,9 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.6 }}
-              className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]"
+              className="text-base sm:text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]"
             >
-              Your gateway to the world's tech events. Conferences, hackathons, meetups—all in one calendar, across every timezone.
+              A unified calendar of globally known tech conferences and industry events. Subscribe once, sync everywhere—or follow the Agent-friendly feed and WhatsApp updates.
             </motion.p>
 
             <motion.div
@@ -329,6 +362,14 @@ const App: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full">
                 <button onClick={scrollToCalendar} className="btn-primary flex items-center gap-2 w-full sm:w-auto">
                   View Calendar <Zap size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={openAgentFeed}
+                  className="btn-secondary flex items-center gap-2 w-full sm:w-auto"
+                >
+                  <Bot size={18} />
+                  Agent feed
                 </button>
                 <button
                   onClick={() => openWhatsApp('Hero Join WhatsApp', 'home')}
@@ -402,6 +443,14 @@ const App: React.FC = () => {
               </button>
               <button
                 type="button"
+                onClick={openAgentFeed}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
+              >
+                <Bot size={16} />
+                Agent feed
+              </button>
+              <button
+                type="button"
                 onClick={() => openWhatsApp('Calendar row Join WhatsApp', 'home')}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
               >
@@ -438,11 +487,11 @@ const App: React.FC = () => {
                 <AnimatePresence mode="wait">
                   {viewMode === 'month' ? (
                     <motion.div key="month-view" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-                      <Calendar events={filteredEvents} onEventClick={setSelectedEvent} />
+                      <Calendar events={filteredEvents} onEventClick={setSelectedEvent} onQuickFilter={applyExploreChip} />
                     </motion.div>
                   ) : viewMode === 'week' ? (
                     <motion.div key="week-view" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-                      <WeekView events={filteredEvents} />
+                      <WeekView events={filteredEvents} onQuickFilter={applyExploreChip} />
                     </motion.div>
                   ) : (
                     <motion.div key="list-view" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
@@ -450,8 +499,10 @@ const App: React.FC = () => {
                         events={filteredEvents}
                         onEventClick={setSelectedEvent}
                         searchQuery={searchQuery}
+                        onQuickFilter={applyExploreChip}
                         onReset={() => {
                           setSearchQuery('');
+                          setTagFilter('');
                           setFormatFilter('all');
                           setLocationFilter('all');
                         }}
@@ -470,6 +521,7 @@ const App: React.FC = () => {
         onEventsClick={navigateToEventsHub}
         onNewsletterClick={navigateToEventsHub}
         onAPIClick={() => setComingSoonFeature('API Access')}
+        onAgentFeedClick={openAgentFeed}
         onSubmitClick={navigateToEventsHub}
         onSponsorshipsClick={() => setComingSoonFeature('Sponsorships')}
         onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', 'home')}

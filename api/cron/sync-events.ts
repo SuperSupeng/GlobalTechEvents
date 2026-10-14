@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { runEventSync } from '../_lib/event-sync';
+import { runEventSync } from '../_lib/event-sync.js';
 
 function isAuthorized(req: VercelRequest) {
   if (req.headers['x-vercel-cron']) {

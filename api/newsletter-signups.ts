@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getMissingSupabaseEnv, getSupabaseAdmin } from './_lib/supabase-admin';
+import { getMissingSupabaseEnv, getSupabaseAdmin } from './_lib/supabase-admin.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

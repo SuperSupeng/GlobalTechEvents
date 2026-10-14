@@ -76,6 +76,11 @@ function buildGuideJsonLd(guide) {
     description: guide.author?.bio || '',
   };
   if (guide.author?.avatar?.src) author.image = guide.author.avatar.src;
+  const profileUrl = String(guide.author?.url || '').trim();
+  if (profileUrl) {
+    author.url = profileUrl;
+    author.sameAs = [profileUrl];
+  }
   const article = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -162,9 +167,17 @@ function renderGuidePage(guide) {
   const authorLabel = guide.author?.placeholder
     ? '<p class="eyebrow">Placeholder author — not a published byline</p>'
     : '';
-  const avatar = guide.author?.avatar?.src
-    ? `<img class="avatar" src="${escapeHtml(guide.author.avatar.src)}" alt="${escapeHtml(guide.author.avatar.alt || guide.author.name || '')}" width="64" height="64" />`
+  const authorName = guide.author?.name || '';
+  const authorBio = guide.author?.bio || '';
+  const authorUrl = String(guide.author?.url || '').trim();
+  const avatarSrc = guide.author?.avatar?.src || '';
+  const avatarAlt = guide.author?.avatar?.alt || authorName;
+  const avatarHtml = avatarSrc
+    ? `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${authorUrl ? '' : escapeHtml(avatarAlt)}" width="40" height="40" />`
     : '';
+  const authorIdentity = authorUrl
+    ? `<a class="identity" href="${escapeHtml(authorUrl)}" target="_blank" rel="noopener noreferrer">${avatarHtml}<span class="copy"><span class="name">${escapeHtml(authorName)}<span class="sr-only"> (opens in a new tab)</span></span><span class="bio">${escapeHtml(authorBio)}</span></span></a>`
+    : `<div class="identity">${avatarSrc ? `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(avatarAlt)}" width="40" height="40" />` : ''}<span class="copy"><span class="name">${escapeHtml(authorName)}</span><span class="bio">${escapeHtml(authorBio)}</span></span></div>`;
   const faq = (guide.faq || [])
     .map(
       (item) => `<article class="card"><h3>${escapeHtml(item.question)}</h3><p>${escapeHtml(item.answer)}</p></article>`,
@@ -215,12 +228,18 @@ function renderGuidePage(guide) {
       p, li, td { color: rgba(255,255,255,.84); }
       .card, .slot { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px; margin: 12px 0; }
       .slot { border-style: dashed; color: rgba(255,255,255,.6); }
+      .byline { margin: 0 0 28px; }
+      .byline .identity { display: flex; align-items: center; gap: 12px; max-width: 100%; color: inherit; text-decoration: none; }
+      .byline a.identity:hover .name { color: #fdba74; }
+      .byline .copy { min-width: 0; }
+      .byline .name { display: block; font-weight: 600; font-size: 15px; line-height: 1.25; color: #fff; }
+      .byline .bio { display: block; margin-top: 2px; font-size: 14px; line-height: 1.35; font-weight: 400; color: rgba(255,255,255,.62); }
+      .byline .avatar { width: 40px; height: 40px; border-radius: 999px; object-fit: cover; flex: none; border: 1px solid rgba(255,255,255,.15); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
       table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
       th, td { border-bottom: 1px solid rgba(255,255,255,.1); text-align: left; padding: 8px; vertical-align: top; }
       caption { text-align: left; color: rgba(255,255,255,.6); margin-bottom: 8px; }
       img { max-width: 100%; border-radius: 16px; }
-      .author { display: flex; gap: 16px; align-items: flex-start; }
-      .avatar { width: 64px; height: 64px; border-radius: 999px; object-fit: cover; flex: none; }
     </style>
   </head>
   <body>
@@ -236,16 +255,9 @@ function renderGuidePage(guide) {
       <p class="eyebrow">${indexable ? 'Guide' : 'Draft shell'}</p>
       <h1>${escapeHtml(guide.title)}</h1>
       <p><strong>As of ${escapeHtml(guide.asOf)}</strong></p>
-      <section class="card">
-        <h2>Author</h2>
+      <section class="byline" aria-label="Author">
         ${authorLabel}
-        <div class="author">
-          ${avatar}
-          <div>
-            <p><strong>${escapeHtml(guide.author?.name || '')}</strong></p>
-            <p>${escapeHtml(guide.author?.bio || '')}</p>
-          </div>
-        </div>
+        ${authorIdentity}
       </section>
       <p>${escapeHtml(guide.description || '')}</p>
       ${cover}

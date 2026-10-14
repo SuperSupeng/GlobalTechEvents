@@ -12,6 +12,8 @@ export interface GuideAuthor {
   bio: string;
   /** True when the byline is a labeled placeholder, not a real editor. */
   placeholder: boolean;
+  /** Optional profile URL (for example LinkedIn). Rendered as the byline link. */
+  url?: string;
   /** Optional portrait. Same shape as a cover image. */
   avatar?: GuideImage | null;
 }

@@ -16,6 +16,11 @@ export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
   if (guide.author.avatar?.src) {
     author.image = guide.author.avatar.src;
   }
+  const profileUrl = guide.author.url?.trim();
+  if (profileUrl) {
+    author.url = profileUrl;
+    author.sameAs = [profileUrl];
+  }
   const article: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',

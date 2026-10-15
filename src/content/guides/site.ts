@@ -7,3 +7,7 @@ export function guidesIndexCanonicalUrl(): string {
 export function guideCanonicalUrl(slug: string): string {
   return `${GUIDE_SITE_ORIGIN}/guides/${slug}`;
 }
+
+export function absoluteSiteUrl(src: string): string {
+  return new URL(src, GUIDE_SITE_ORIGIN).href;
+}

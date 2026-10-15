@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { evaluateGuidePublishGate } from '../content/guides/publishGate';
 import { clearGuideDocumentHooks, mountGuideJsonLd, setGuideRobots } from '../content/guides/jsonld';
 import { guideCanonicalUrl } from '../content/guides/site';
-import type { Guide, GuideAuthor } from '../content/guides/types';
+import { renderableReaderTable } from '../content/guides/readerTable';
+import type { Guide, GuideAuthor, ReaderTable } from '../content/guides/types';
 import { updateMetaTags } from '../utils/seo';
 
 interface GuidePageProps {
@@ -15,24 +16,6 @@ const DEFAULT_DRAFT_NOTICE =
   'Draft shell — not a published guide. This page does not rank conferences and does not state dates, prices, or speakers.';
 
 function GuideAuthorByline({ author }: { author: GuideAuthor }) {
-  const profileUrl = author.url?.trim() ?? '';
-  const portraitClass = 'h-10 w-10 shrink-0 rounded-full object-cover border border-white/15';
-
-  const identity = (
-    <>
-      {author.avatar?.src ? (
-        <img src={author.avatar.src} alt="" width={40} height={40} className={portraitClass} />
-      ) : null}
-      <span className="min-w-0">
-        <span className="block text-[15px] font-medium leading-tight text-white group-hover:text-primary-light">
-          {author.name}
-          {profileUrl ? <span className="sr-only"> (opens in a new tab)</span> : null}
-        </span>
-        <span className="mt-0.5 block text-sm font-normal leading-snug text-white/60">{author.bio}</span>
-      </span>
-    </>
-  );
-
   return (
     <section className="mb-8" aria-label="Author">
       {author.placeholder && (
@@ -40,33 +23,50 @@ function GuideAuthorByline({ author }: { author: GuideAuthor }) {
           Placeholder author — not a published byline
         </p>
       )}
-      {profileUrl ? (
-        <a
-          href={profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex max-w-full items-center gap-3 rounded-2xl text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-        >
-          {identity}
-        </a>
-      ) : (
-        <div className="flex max-w-full items-center gap-3">
-          {author.avatar?.src ? (
-            <img
-              src={author.avatar.src}
-              alt={author.avatar.alt || author.name}
-              width={40}
-              height={40}
-              className={portraitClass}
-            />
-          ) : null}
-          <div className="min-w-0">
-            <p className="text-[15px] font-medium leading-tight text-white">{author.name}</p>
-            <p className="mt-0.5 text-sm leading-snug text-white/60">{author.bio}</p>
-          </div>
-        </div>
-      )}
+      <div className="min-w-0">
+        <p className="text-[15px] font-medium leading-tight text-white">{author.name}</p>
+        <p className="mt-0.5 text-sm leading-snug text-white/60">{author.bio}</p>
+      </div>
     </section>
+  );
+}
+
+function GuideSectionTable({ table }: { table: ReaderTable }) {
+  const view = renderableReaderTable(table);
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-white/10">
+      <table className="w-full text-sm text-left">
+        <caption className="text-left text-white/55 px-4 py-3">{view.caption}</caption>
+        <thead className="bg-white/5 text-white/80">
+          <tr>
+            {view.headers.map((column) => (
+              <th key={column} scope="col" className="px-3 py-2 font-medium whitespace-nowrap">
+                {column}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {view.rows.length === 0 ? (
+            <tr>
+              <td className="px-3 py-4 text-white/55" colSpan={view.headers.length}>
+                No rows yet. This table is a column template, not a published comparison.
+              </td>
+            </tr>
+          ) : (
+            view.rows.map((row, rowIndex) => (
+              <tr key={`row-${rowIndex}`} className="border-t border-white/10">
+                {row.map((cell, columnIndex) => (
+                  <td key={`${columnIndex}-${rowIndex}`} className="px-3 py-3 text-white/80 align-top">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -164,41 +164,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
                   {paragraph}
                 </p>
               ))}
-              {section.id === 'comparison-table' && guide.comparisonTable && (
-                <div className="overflow-x-auto rounded-2xl border border-white/10">
-                  <table className="w-full text-sm text-left">
-                    <caption className="text-left text-white/55 px-4 py-3">{guide.comparisonTable.caption}</caption>
-                    <thead className="bg-white/5 text-white/80">
-                      <tr>
-                        {guide.comparisonTable.columns.map((column) => (
-                          <th key={column} scope="col" className="px-3 py-2 font-medium whitespace-nowrap">
-                            {column}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {guide.comparisonTable.rows.length === 0 ? (
-                        <tr>
-                          <td className="px-3 py-4 text-white/55" colSpan={guide.comparisonTable.columns.length}>
-                            No rows yet. This table is a column template, not a published comparison.
-                          </td>
-                        </tr>
-                      ) : (
-                        guide.comparisonTable.rows.map((row, rowIndex) => (
-                          <tr key={`${section.id}-row-${rowIndex}`} className="border-t border-white/10">
-                            {guide.comparisonTable?.columns.map((column, columnIndex) => (
-                              <td key={`${column}-${rowIndex}`} className="px-3 py-3 text-white/80 align-top">
-                                {row[columnIndex] ?? ''}
-                              </td>
-                            ))}
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              {section.table && <GuideSectionTable table={section.table} />}
               {section.subsections && section.subsections.length > 0 && (
                 <div className="mt-4 space-y-4">
                   {section.subsections.map((subsection) => (

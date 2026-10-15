@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:seo": "node scripts/generate-seo-static-pages.mjs",
+    "build:seo": "tsx scripts/generate-seo-static-pages.mjs",
     "build": "npm run build:seo && tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

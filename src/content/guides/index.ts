@@ -6,12 +6,13 @@ import type { Guide } from './types';
  * Add a guide:
  * 1. Copy `best-ai-conferences-2026.json` to `<slug>.json`. The filename (without .json) must match `slug`.
  * 2. Set the H1 (`title`), opening lead (`description`), `asOf`, author, H2/H3 `sections`, `faq`, and `internalLinks`.
+ *    Put a comparison on `section.table`. Column labels come from `readerTable.ts`, not from the JSON.
  * 3. Leave `status` as `draft`, `author.placeholder` true, and `intentAnswered` false until a real editor signs it.
  *    Drafts render at `/guides/<slug>` and on the index, with `noindex` and no sitemap URL.
  * 4. Fill cover and body images (each with alt). Replace FAQ answers that start with "Not published."
  * 5. Set `status` to `published` and `intentAnswered` to true only when every publish-gate check passes
  *    (`evaluateGuidePublishGate` in `publishGate.ts`).
- * 6. Refresh crawlable files with `npm run build:seo`, or `node scripts/generate-seo-static-pages.mjs --guides-only`
+ * 6. Refresh crawlable files with `npm run build:seo`, or `npx tsx scripts/generate-seo-static-pages.mjs --guides-only`
  *    when event pages do not need a rebuild. Published guides are the only guide URLs added to the sitemap.
  */
 const guideModules = import.meta.glob('./*.json', {

@@ -14,8 +14,8 @@ import type { Guide } from './types';
  *    (`evaluateGuidePublishGate` in `publishGate.ts`).
  * 6. Refresh crawlable files with `npm run build:seo`, or `npx tsx scripts/generate-seo-static-pages.mjs --guides-only`
  *    when event pages do not need a rebuild. Published guides are the only guide URLs added to the sitemap.
- *    `build:seo` also writes the home shell in `index.html`, `public/events/index.html`, and `public/llms.txt`.
- *    `--hubs-only` refreshes those three from local data without refetching events.
+ *    `build:seo` also writes the home shell in `index.html`, `public/events/index.html`, `public/for-agents/index.html`, and `public/llms.txt`.
+ *    `--hubs-only` refreshes those files from local data without refetching events.
  */
 const guideModules = import.meta.glob('./*.json', {
   eager: true,

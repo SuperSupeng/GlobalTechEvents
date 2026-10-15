@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Copy a prompt for the live event catalog | GlobalTechEvents</title>
+    <meta name="description" content="Copy a prompt for ChatGPT, Claude, or Cursor that fetches the public GlobalTechEvents catalog. No API key." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.globaltechevents.xyz/for-agents" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Copy a prompt for the live event catalog | GlobalTechEvents" />
+    <meta property="og:description" content="Copy a prompt for ChatGPT, Claude, or Cursor that fetches the public GlobalTechEvents catalog. No API key." />
+    <meta property="og:url" content="https://www.globaltechevents.xyz/for-agents" />
+    <meta property="og:site_name" content="GlobalTechEvents" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Copy a prompt for the live event catalog","url":"https://www.globaltechevents.xyz/for-agents","description":"Copy a prompt for ChatGPT, Claude, or Cursor that fetches the public GlobalTechEvents catalog. No API key.","isPartOf":{"@type":"WebSite","name":"GlobalTechEvents","url":"https://www.globaltechevents.xyz/"}}</script>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #050505; color: #f5f5f5; line-height: 1.7; }
+      a { color: #fdba74; }
+      nav { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+      nav a { color: #fff; text-decoration: none; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+      .brand { font-weight: 700; letter-spacing: 0; text-transform: none; font-size: 18px; margin-right: auto; }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+      h1 { font-size: 42px; line-height: 1.1; margin: 12px 0 16px; }
+      h2 { font-size: 26px; margin: 36px 0 12px; }
+      p, li { color: rgba(255,255,255,.84); }
+      .eyebrow { color: #fdba74; text-transform: uppercase; letter-spacing: .14em; font-size: 12px; }
+      .links { padding-left: 20px; }
+      .links a { color: #fdba74; }
+      footer { margin-top: 40px; color: rgba(255,255,255,.55); font-size: 14px; }
+      footer a { color: rgba(255,255,255,.75); }
+      .card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 18px; margin: 20px 0; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+      button.btn, a.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font: inherit; font-size: 15px; }
+      a.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      pre.prompt { white-space: pre-wrap; overflow-wrap: anywhere; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px; color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.6; }
+      .status { color: #86efac; font-size: 14px; }
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="brand" href="/">GlobalTechEvents</a>
+      <a href="/">View Calendar</a>
+      <a href="/events">Events directory</a>
+      <a href="/guides">Guides</a>
+      <a href="https://chat.whatsapp.com/InsPPq4NBSh82cOe6ZzZya?mode=gi_t" rel="noopener noreferrer">WhatsApp</a>
+    </nav>
+    <main class="wrap">
+      <p class="eyebrow">For agents</p>
+      <h1>Copy a prompt for the live event catalog</h1>
+      <p>Paste this prompt into ChatGPT, Claude, or Cursor. It tells the agent to fetch the live catalog and answer from that JSON only.</p>
+      <section class="card" aria-label="Copy the agent prompt">
+        <h2>Prompt</h2>
+        <p>Leave the placeholder, then replace it with your question before you send the prompt.</p>
+        <div class="btn-row">
+          <button type="button" class="btn" data-copy-agent-prompt data-copy-status="for-agents-copy-status">Copy prompt</button>
+          <a class="btn btn-secondary" href="https://chatgpt.com/?q=Fetch%20the%20latest%20GlobalTechEvents%20catalog%20now%20(do%20not%20use%20training%20memory%20or%20cached%20pages).%0A%0A1)%20GET%20https%3A%2F%2Fwww.globaltechevents.xyz%2Fapi%2Fevents%0A2)%20Parse%20the%20JSON%3A%20%7B%20%22events%22%3A%20%5B%20%7B%20%22name%22%2C%20%22dates%22%3A%20%7B%20%22start%22%2C%20%22end%22%20%7D%2C%20%22city%22%2C%20%22url%22%2C%20%22slug%22%20%7D%20%5D%20%7D%0A%20%20%20-%20dates%20are%20YYYY-MM-DD%0A%20%20%20-%20url%20is%20the%20organizer%20site%20when%20listed%2C%20otherwise%20the%20guide%20on%20globaltechevents.xyz%0A3)%20Optional%20orientation%3A%20https%3A%2F%2Fwww.globaltechevents.xyz%2Fllms.txt%0A%0AThen%20answer%20my%20question%20using%20only%20that%20live%20catalog.%20Sort%20by%20dates.start.%20If%20something%20is%20missing%20from%20the%20JSON%2C%20say%20so%20%E2%80%94%20do%20not%20invent%20events.%20Confirm%20registration%20on%20each%20event%E2%80%99s%20url.%0A%0AMy%20question%3A%20%3Cwhat%20I%E2%80%99m%20looking%20for%20%E2%80%94%20e.g.%20%E2%80%9CAI%20%2F%20cloud%20events%20in%20Europe%20after%20Oct%202026%E2%80%9D%3E" target="_blank" rel="noopener noreferrer">Open in ChatGPT</a>
+          <a class="btn btn-secondary" href="https://claude.ai/new?q=Fetch%20the%20latest%20GlobalTechEvents%20catalog%20now%20(do%20not%20use%20training%20memory%20or%20cached%20pages).%0A%0A1)%20GET%20https%3A%2F%2Fwww.globaltechevents.xyz%2Fapi%2Fevents%0A2)%20Parse%20the%20JSON%3A%20%7B%20%22events%22%3A%20%5B%20%7B%20%22name%22%2C%20%22dates%22%3A%20%7B%20%22start%22%2C%20%22end%22%20%7D%2C%20%22city%22%2C%20%22url%22%2C%20%22slug%22%20%7D%20%5D%20%7D%0A%20%20%20-%20dates%20are%20YYYY-MM-DD%0A%20%20%20-%20url%20is%20the%20organizer%20site%20when%20listed%2C%20otherwise%20the%20guide%20on%20globaltechevents.xyz%0A3)%20Optional%20orientation%3A%20https%3A%2F%2Fwww.globaltechevents.xyz%2Fllms.txt%0A%0AThen%20answer%20my%20question%20using%20only%20that%20live%20catalog.%20Sort%20by%20dates.start.%20If%20something%20is%20missing%20from%20the%20JSON%2C%20say%20so%20%E2%80%94%20do%20not%20invent%20events.%20Confirm%20registration%20on%20each%20event%E2%80%99s%20url.%0A%0AMy%20question%3A%20%3Cwhat%20I%E2%80%99m%20looking%20for%20%E2%80%94%20e.g.%20%E2%80%9CAI%20%2F%20cloud%20events%20in%20Europe%20after%20Oct%202026%E2%80%9D%3E" target="_blank" rel="noopener noreferrer">Open in Claude</a>
+          <span id="for-agents-copy-status" class="status" role="status"></span>
+        </div>
+        <pre class="prompt">Fetch the latest GlobalTechEvents catalog now (do not use training memory or cached pages).
+
+1) GET https://www.globaltechevents.xyz/api/events
+2) Parse the JSON: { &quot;events&quot;: [ { &quot;name&quot;, &quot;dates&quot;: { &quot;start&quot;, &quot;end&quot; }, &quot;city&quot;, &quot;url&quot;, &quot;slug&quot; } ] }
+   - dates are YYYY-MM-DD
+   - url is the organizer site when listed, otherwise the guide on globaltechevents.xyz
+3) Optional orientation: https://www.globaltechevents.xyz/llms.txt
+
+Then answer my question using only that live catalog. Sort by dates.start. If something is missing from the JSON, say so — do not invent events. Confirm registration on each event’s url.
+
+My question: &lt;what I’m looking for — e.g. “AI / cloud events in Europe after Oct 2026”&gt;</pre>
+      </section>
+      <section class="card" aria-label="Public catalog">
+        <h2>Public catalog</h2>
+        <p>Public. No API key.</p>
+        <ul class="links">
+          <li><a href="https://www.globaltechevents.xyz/api/events">https://www.globaltechevents.xyz/api/events</a></li>
+          <li><a href="https://www.globaltechevents.xyz/llms.txt">/llms.txt</a> — https://www.globaltechevents.xyz/llms.txt</li>
+        </ul>
+      </section>
+      <footer>
+        <a href="/events">Events directory</a>
+        ·
+        <a href="/privacy">Privacy</a>
+        ·
+        <a href="/terms">Terms</a>
+      </footer>
+    </main>
+    <script type="application/json" id="gte-agent-prompt">"Fetch the latest GlobalTechEvents catalog now (do not use training memory or cached pages).\n\n1) GET https://www.globaltechevents.xyz/api/events\n2) Parse the JSON: { \"events\": [ { \"name\", \"dates\": { \"start\", \"end\" }, \"city\", \"url\", \"slug\" } ] }\n   - dates are YYYY-MM-DD\n   - url is the organizer site when listed, otherwise the guide on globaltechevents.xyz\n3) Optional orientation: https://www.globaltechevents.xyz/llms.txt\n\nThen answer my question using only that live catalog. Sort by dates.start. If something is missing from the JSON, say so — do not invent events. Confirm registration on each event’s url.\n\nMy question: \u003cwhat I’m looking for — e.g. “AI / cloud events in Europe after Oct 2026”>"</script>
+    <script>
+      (function () {
+        var node = document.getElementById('gte-agent-prompt');
+        var buttons = document.querySelectorAll('[data-copy-agent-prompt]');
+        if (!node || !buttons.length) return;
+        var prompt = JSON.parse(node.textContent || '""');
+        function copyText(text) {
+          if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+          }
+          return new Promise(function (resolve, reject) {
+            var area = document.createElement('textarea');
+            area.value = text;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            var ok = document.execCommand('copy');
+            document.body.removeChild(area);
+            if (ok) resolve();
+            else reject(new Error('copy failed'));
+          });
+        }
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var statusId = button.getAttribute('data-copy-status');
+            var status = statusId ? document.getElementById(statusId) : null;
+            copyText(prompt).then(function () {
+              if (status) status.textContent = 'Copied';
+            }).catch(function () {
+              if (status) status.textContent = 'Select the prompt and copy it manually.';
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

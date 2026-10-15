@@ -3,6 +3,7 @@ import { ArrowUpRight, Mail, Send, Sparkles } from 'lucide-react';
 import { submitEventSubmission, submitNewsletterSignup } from '../api/leadForms';
 import { ALL_SEO_EVENT_PAGES } from '../data/seoEventPages';
 import { createEventSlug, trackCustomEvent, trackOutboundClick } from '../utils/analytics';
+import CopyAgentPromptButton from '../components/CopyAgentPromptButton';
 import { WHATSAPP_GROUP_URL } from '../config/constants';
 
 interface EventsHubPageProps {
@@ -118,6 +119,20 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
             </a>
             <a href="#newsletter-form" className="btn-secondary inline-flex items-center justify-center gap-2">
               Join Newsletter <Mail size={18} />
+            </a>
+          </div>
+        </section>
+
+        <section className="mb-12 glass-panel p-6 sm:p-8" aria-label="Agent handoff">
+          <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">For agents</p>
+          <h2 className="text-2xl sm:text-3xl font-serif italic mb-3">Ask ChatGPT, Claude, or Cursor</h2>
+          <p className="text-white/75 leading-relaxed max-w-3xl mb-5">
+            Copy a prompt that fetches the live catalog. The catalog is public. No API key.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <CopyAgentPromptButton />
+            <a href="/for-agents" className="btn-secondary inline-flex items-center justify-center">
+              Open handoff page
             </a>
           </div>
         </section>

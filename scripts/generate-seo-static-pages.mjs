@@ -356,7 +356,7 @@ function renderPage(page) {
 }
 
 function generateSitemap(pages, guides = []) {
-  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events', '/guides'];
+  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events', '/guides', '/for-agents'];
   const today = new Date().toISOString().slice(0, 10);
   const urls = [
     ...staticUrls.map((p) => `${SITE_URL}${p}`),

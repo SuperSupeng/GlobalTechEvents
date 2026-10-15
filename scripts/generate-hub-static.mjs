@@ -2,6 +2,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { loadAuthors, loadGuides } from './generate-guide-static.mjs';
 import { evaluateGuidePublishGate } from '../src/content/guides/publishGate.ts';
+import {
+  AGENT_HANDOFF_DESCRIPTION,
+  AGENT_HANDOFF_PROMPT,
+  AGENT_HANDOFF_TITLE,
+  EVENTS_API_URL,
+  FOR_AGENTS_CANONICAL_URL,
+  LLMS_TXT_URL,
+  agentHandoffChatGptUrl,
+  agentHandoffClaudeUrl,
+} from '../src/content/agentHandoff.ts';
 
 const PUBLIC_DIR = path.resolve('public');
 const EVENTS_DIR = path.join(PUBLIC_DIR, 'events');
@@ -106,6 +116,12 @@ const HUB_CSS = `
       .links a { color: #fdba74; }
       footer { margin-top: 40px; color: rgba(255,255,255,.55); font-size: 14px; }
       footer a { color: rgba(255,255,255,.75); }
+      .card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 18px; margin: 20px 0; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+      button.btn, a.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font: inherit; font-size: 15px; }
+      a.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      pre.prompt { white-space: pre-wrap; overflow-wrap: anywhere; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px; color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.6; }
+      .status { color: #86efac; font-size: 14px; }
 `;
 
 function renderEventsHub(events, guides) {
@@ -173,6 +189,16 @@ function renderEventsHub(events, guides) {
       <p class="eyebrow">Events directory</p>
       <h1>Tech events directory</h1>
       <p>Guides for the major tech conferences on the GlobalTechEvents calendar. Open an event for dates and location, then confirm registration on the official site.</p>
+      <aside class="card" aria-label="Agent handoff">
+        <p class="eyebrow">For agents</p>
+        <h2>Ask ChatGPT, Claude, or Cursor</h2>
+        <p>Copy a prompt that fetches the live catalog. The catalog is public. No API key.</p>
+        <div class="btn-row">
+          <button type="button" class="btn" data-copy-agent-prompt data-copy-status="events-copy-status">Copy prompt</button>
+          <a class="btn btn-secondary" href="/for-agents">Open handoff page</a>
+          <span id="events-copy-status" class="status" role="status"></span>
+        </div>
+      </aside>
       <h2>Start here</h2>
       <ul class="links">
         <li><a href="/">Event calendar</a></li>
@@ -192,6 +218,7 @@ function renderEventsHub(events, guides) {
         <a href="/terms">Terms</a>
       </footer>
     </main>
+    ${agentPromptEmbed()}
   </body>
 </html>`;
 }
@@ -268,6 +295,7 @@ function renderLlmsTxt(events, guides) {
     `- [Home calendar](${SITE_URL}/): Major tech events in one calendar.`,
     `- [Events directory](${SITE_URL}/events): Index of crawlable event guides.`,
     `- [Guides](${SITE_URL}/guides): Evergreen compare and best-of guides.`,
+    `- [For agents](${SITE_URL}/for-agents): Humans can copy a prompt on this page for ChatGPT, Claude, or Cursor that fetches the live catalog.`,
     '',
     '## Guides',
     '',
@@ -333,6 +361,160 @@ function renderLlmsTxt(events, guides) {
   return `${lines.join('\n')}\n`;
 }
 
+function agentPromptEmbed() {
+  return `<script type="application/json" id="gte-agent-prompt">${jsonForScript(AGENT_HANDOFF_PROMPT)}</script>
+    <script>
+      (function () {
+        var node = document.getElementById('gte-agent-prompt');
+        var buttons = document.querySelectorAll('[data-copy-agent-prompt]');
+        if (!node || !buttons.length) return;
+        var prompt = JSON.parse(node.textContent || '""');
+        function copyText(text) {
+          if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+          }
+          return new Promise(function (resolve, reject) {
+            var area = document.createElement('textarea');
+            area.value = text;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            var ok = document.execCommand('copy');
+            document.body.removeChild(area);
+            if (ok) resolve();
+            else reject(new Error('copy failed'));
+          });
+        }
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var statusId = button.getAttribute('data-copy-status');
+            var status = statusId ? document.getElementById(statusId) : null;
+            copyText(prompt).then(function () {
+              if (status) status.textContent = 'Copied';
+            }).catch(function () {
+              if (status) status.textContent = 'Select the prompt and copy it manually.';
+            });
+          });
+        });
+      })();
+    </script>`;
+}
+
+function renderForAgentsPage() {
+  const chatGptUrl = agentHandoffChatGptUrl();
+  const claudeUrl = agentHandoffClaudeUrl();
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Copy a prompt for the live event catalog',
+    url: FOR_AGENTS_CANONICAL_URL,
+    description: AGENT_HANDOFF_DESCRIPTION,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'GlobalTechEvents',
+      url: `${SITE_URL}/`,
+    },
+  };
+  const whatsapp = readWhatsAppUrl();
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(AGENT_HANDOFF_TITLE)}</title>
+    <meta name="description" content="${escapeHtml(AGENT_HANDOFF_DESCRIPTION)}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="${FOR_AGENTS_CANONICAL_URL}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="${escapeHtml(AGENT_HANDOFF_TITLE)}" />
+    <meta property="og:description" content="${escapeHtml(AGENT_HANDOFF_DESCRIPTION)}" />
+    <meta property="og:url" content="${FOR_AGENTS_CANONICAL_URL}" />
+    <meta property="og:site_name" content="GlobalTechEvents" />
+    <script type="application/ld+json">${jsonForScript(pageSchema)}</script>
+    <style>${HUB_CSS}
+    </style>
+  </head>
+  <body>
+    ${renderNav(whatsapp)}
+    <main class="wrap">
+      <p class="eyebrow">For agents</p>
+      <h1>Copy a prompt for the live event catalog</h1>
+      <p>Paste this prompt into ChatGPT, Claude, or Cursor. It tells the agent to fetch the live catalog and answer from that JSON only.</p>
+      <section class="card" aria-label="Copy the agent prompt">
+        <h2>Prompt</h2>
+        <p>Leave the placeholder, then replace it with your question before you send the prompt.</p>
+        <div class="btn-row">
+          <button type="button" class="btn" data-copy-agent-prompt data-copy-status="for-agents-copy-status">Copy prompt</button>
+          <a class="btn btn-secondary" href="${escapeHtml(chatGptUrl)}" target="_blank" rel="noopener noreferrer">Open in ChatGPT</a>
+          <a class="btn btn-secondary" href="${escapeHtml(claudeUrl)}" target="_blank" rel="noopener noreferrer">Open in Claude</a>
+          <span id="for-agents-copy-status" class="status" role="status"></span>
+        </div>
+        <pre class="prompt">${escapeHtml(AGENT_HANDOFF_PROMPT)}</pre>
+      </section>
+      <section class="card" aria-label="Public catalog">
+        <h2>Public catalog</h2>
+        <p>Public. No API key.</p>
+        <ul class="links">
+          <li><a href="${escapeHtml(EVENTS_API_URL)}">${escapeHtml(EVENTS_API_URL)}</a></li>
+          <li><a href="${escapeHtml(LLMS_TXT_URL)}">/llms.txt</a> — ${escapeHtml(LLMS_TXT_URL)}</li>
+        </ul>
+      </section>
+      <footer>
+        <a href="/events">Events directory</a>
+        ·
+        <a href="/privacy">Privacy</a>
+        ·
+        <a href="/terms">Terms</a>
+      </footer>
+    </main>
+    ${agentPromptEmbed()}
+  </body>
+</html>`;
+}
+
+function assertForAgentsHtml(html) {
+  assertEnglish('public/for-agents/index.html', html);
+  if (!/<h1>Copy a prompt for the live event catalog<\/h1>/.test(html)) {
+    throw new Error('For-agents shell is missing its unique H1.');
+  }
+  if (html.includes("The world's major tech events, in one calendar")) {
+    throw new Error('For-agents shell still contains the homepage H1.');
+  }
+  if (!html.includes('>Copy prompt<')) {
+    throw new Error('For-agents shell is missing the Copy prompt control.');
+  }
+  if (!html.includes(EVENTS_API_URL) || !html.includes('Public. No API key.')) {
+    throw new Error('For-agents shell must show the public catalog URL and that no API key is required.');
+  }
+  if (!html.includes('href="/llms.txt"') && !html.includes(LLMS_TXT_URL)) {
+    throw new Error('For-agents shell is missing /llms.txt.');
+  }
+  if (!html.includes('https://chatgpt.com/?q=') || !html.includes('https://claude.ai/new?q=')) {
+    throw new Error('For-agents shell is missing ChatGPT or Claude deep links.');
+  }
+  const match = html.match(/<script type="application\/json" id="gte-agent-prompt">([\s\S]*?)<\/script>/);
+  if (!match) throw new Error('For-agents shell is missing the prompt payload.');
+  const parsed = JSON.parse(match[1]);
+  if (parsed !== AGENT_HANDOFF_PROMPT) {
+    throw new Error('For-agents prompt payload does not match the canonical prompt.');
+  }
+}
+
+function ensureForAgentsInSitemap() {
+  const sitemapPath = path.join(PUBLIC_DIR, 'sitemap.xml');
+  if (!fs.existsSync(sitemapPath)) return;
+  let xml = fs.readFileSync(sitemapPath, 'utf8');
+  const loc = FOR_AGENTS_CANONICAL_URL;
+  if (xml.includes(`<loc>${loc}</loc>`)) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const block = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.3</priority>\n  </url>\n`;
+  xml = xml.replace('</urlset>', `${block}</urlset>`);
+  fs.writeFileSync(sitemapPath, xml);
+}
+
 export function writeHubStaticPages() {
   const events = loadEventPages();
   const guides = liveGuides(loadGuides());
@@ -347,6 +529,15 @@ export function writeHubStaticPages() {
     throw new Error('Events hub is missing the live Best AI conferences 2026 link.');
   }
   fs.writeFileSync(path.join(EVENTS_DIR, 'index.html'), eventsHtml);
+  if (!eventsHtml.includes('>Copy prompt<') || !eventsHtml.includes('href="/for-agents"')) {
+    throw new Error('Events hub is missing the agent handoff callout.');
+  }
+
+  const forAgentsDir = path.join(PUBLIC_DIR, 'for-agents');
+  fs.mkdirSync(forAgentsDir, { recursive: true });
+  const forAgentsHtml = renderForAgentsPage();
+  assertForAgentsHtml(forAgentsHtml);
+  fs.writeFileSync(path.join(forAgentsDir, 'index.html'), forAgentsHtml);
 
   upsertHomeShell(renderHomeShell(guides));
 
@@ -361,12 +552,16 @@ export function writeHubStaticPages() {
   if (!llms.includes(`${SITE_URL}/api/events`)) {
     throw new Error('llms.txt is missing the live GET /api/events catalog.');
   }
+  if (!llms.includes(`${SITE_URL}/for-agents`)) {
+    throw new Error('llms.txt is missing the human handoff page at /for-agents.');
+  }
   if (/agent feed is not published|not available yet|feed\.xml|agent-feed/i.test(llms)) {
     throw new Error('llms.txt still describes the catalog as unpublished or invents a feed URL.');
   }
   fs.writeFileSync(path.join(PUBLIC_DIR, 'llms.txt'), llms);
+  ensureForAgentsInSitemap();
 
   console.log(
-    `Hub shells: home + /events (${events.length} event links, ${guides.length} live guides) and public/llms.txt`,
+    `Hub shells: home + /events (${events.length} event links, ${guides.length} live guides), /for-agents, and public/llms.txt`,
   );
 }

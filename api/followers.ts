@@ -19,8 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const body = await loadCalendarDownloadsBody(getSupabaseAdmin(), new Date().toISOString());
-  // A cached 503 would keep the wall hidden after the database recovers.
+  const body = await loadCalendarDownloadsBody(getSupabaseAdmin());
   res.setHeader('Cache-Control', body.ok ? 'public, s-maxage=300, stale-while-revalidate=600' : 'no-store');
   return res.status(body.ok ? 200 : 503).json(body);
 }

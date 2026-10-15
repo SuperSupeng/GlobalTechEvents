@@ -174,6 +174,30 @@ CRON_SECRET=...                    # 推荐；手动触发 /api/cron/sync-events
 
 ---
 
+## Public events feed
+
+`GET /api/events` returns the event catalog that the SEO event pages use. No key is required. The route does not filter or paginate.
+
+```bash
+curl -sS "https://www.globaltechevents.xyz/api/events"
+```
+
+```json
+{
+  "events": [
+    {
+      "name": "CES 2026",
+      "dates": { "start": "2026-01-06", "end": "2026-01-09" },
+      "city": "Las Vegas",
+      "url": "https://www.ces.tech/",
+      "slug": "ces-2026"
+    }
+  ]
+}
+```
+
+Each item has `name`, `dates.start`, `dates.end`, `city`, `url`, and `slug`. `url` is the official site when the catalog has one. Otherwise `url` is the site event page. The list is sorted by start date, then slug.
+
 ## 相关文档
 
 - 活动数据自动更新：`docs/event-sync.md`

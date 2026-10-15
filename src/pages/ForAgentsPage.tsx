@@ -43,10 +43,10 @@ const ForAgentsPage: React.FC = () => {
           <p className="text-white/70 leading-relaxed mb-5">
             Leave the placeholder, then replace it with your question before you send the prompt.
           </p>
-          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-5">
-            <CopyAgentPromptButton />
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-5 min-w-0">
+            <CopyAgentPromptButton className="btn-primary inline-flex max-w-full items-center justify-center whitespace-normal text-center" />
             <a
-              className="btn-secondary inline-flex items-center justify-center"
+              className="btn-secondary inline-flex max-w-full items-center justify-center whitespace-normal text-center"
               href={agentHandoffChatGptUrl()}
               target="_blank"
               rel="noopener noreferrer"
@@ -54,7 +54,7 @@ const ForAgentsPage: React.FC = () => {
               Open in ChatGPT
             </a>
             <a
-              className="btn-secondary inline-flex items-center justify-center"
+              className="btn-secondary inline-flex max-w-full items-center justify-center whitespace-normal text-center"
               href={agentHandoffClaudeUrl()}
               target="_blank"
               rel="noopener noreferrer"
@@ -62,7 +62,7 @@ const ForAgentsPage: React.FC = () => {
               Open in Claude
             </a>
           </div>
-          <pre className="whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-black/40 p-4 text-sm leading-relaxed text-white/85 font-mono">
+          <pre className="max-w-full whitespace-pre-wrap [overflow-wrap:anywhere] rounded-2xl border border-white/10 bg-black/40 p-4 text-sm leading-relaxed text-white/85 font-mono">
             {AGENT_HANDOFF_PROMPT}
           </pre>
         </section>
@@ -72,7 +72,7 @@ const ForAgentsPage: React.FC = () => {
           <p className="text-white/80 leading-relaxed mb-4">
             Public. No API key.
           </p>
-          <ul className="space-y-3 text-white/80">
+          <ul className="space-y-3 text-white/80 [overflow-wrap:anywhere]">
             <li>
               <a className="text-primary-light hover:text-white underline underline-offset-4" href={EVENTS_API_URL}>
                 {EVENTS_API_URL}

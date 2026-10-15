@@ -402,17 +402,20 @@ const App: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex flex-col items-center mb-16 sm:mb-0"
             >
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full">
-                <button onClick={scrollToCalendar} className="btn-primary flex items-center gap-2 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-4 sm:gap-6 w-full">
+                <button onClick={scrollToCalendar} className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto max-w-full whitespace-normal text-center">
                   View Calendar <Zap size={18} />
                 </button>
                 <button
                   onClick={() => openWhatsApp('Hero Join WhatsApp', 'home')}
-                  className="btn-secondary flex items-center gap-2 w-full sm:w-auto group"
+                  className="btn-secondary flex items-center justify-center gap-2 w-full sm:w-auto max-w-full whitespace-normal text-center group"
                 >
                   <MessageCircle size={18} className="group-hover:rotate-12 transition-transform" />
                   Join WhatsApp
                 </button>
+                <a href="/for-agents" className="btn-secondary flex items-center justify-center gap-2 w-full sm:w-auto max-w-full whitespace-normal text-center">
+                  Copy an agent prompt
+                </a>
               </div>
               {calendarSubscriberProof('mt-5 text-sm text-white/70 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]')}
             </motion.div>

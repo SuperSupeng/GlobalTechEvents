@@ -12,10 +12,6 @@ export interface GuideAuthor {
   bio: string;
   /** True when the byline is a labeled placeholder, not a real editor. */
   placeholder: boolean;
-  /** Optional profile URL (for example LinkedIn). Rendered as the byline link. */
-  url?: string;
-  /** Optional portrait. Same shape as a cover image. */
-  avatar?: GuideImage | null;
 }
 
 export interface GuideFaqItem {
@@ -32,6 +28,7 @@ export interface GuideSection {
   id: string;
   heading: string;
   paragraphs?: string[];
+  table?: ReaderTable;
   subsections?: GuideSubsection[];
 }
 
@@ -40,11 +37,20 @@ export interface GuideLink {
   label: string;
 }
 
-export interface GuideComparisonTable {
+export interface ReaderRow {
+  event: string;
+  dates: string;
+  city: string;
+  bestFor: string;
+  aiFocus: string;
+  costBand: string;
+  verdict: string;
+}
+
+export interface ReaderTable {
   caption: string;
-  columns: string[];
   /** Leave empty until rows are verified. Do not invent dates, prices, or rankings. */
-  rows: string[][];
+  rows: ReaderRow[];
 }
 
 export interface Guide {
@@ -64,7 +70,6 @@ export interface Guide {
   coverImage?: GuideImage | null;
   bodyImages?: GuideImage[];
   sections: GuideSection[];
-  comparisonTable?: GuideComparisonTable | null;
   faq: GuideFaqItem[];
   internalLinks: GuideLink[];
 }

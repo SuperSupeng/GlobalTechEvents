@@ -1,5 +1,5 @@
 import type { Guide } from './types';
-import { GUIDE_SITE_ORIGIN, guideCanonicalUrl } from './site';
+import { GUIDE_SITE_ORIGIN, absoluteSiteUrl, guideCanonicalUrl } from './site';
 
 export interface GuideJsonLd {
   article: Record<string, unknown>;
@@ -9,18 +9,10 @@ export interface GuideJsonLd {
 export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
   const canonical = guideCanonicalUrl(guide.slug);
   const author: Record<string, unknown> = {
-    '@type': 'Person',
+    '@type': 'Organization',
     name: guide.author.name,
     description: guide.author.bio,
   };
-  if (guide.author.avatar?.src) {
-    author.image = guide.author.avatar.src;
-  }
-  const profileUrl = guide.author.url?.trim();
-  if (profileUrl) {
-    author.url = profileUrl;
-    author.sameAs = [profileUrl];
-  }
   const article: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -45,7 +37,7 @@ export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
   }
 
   if (guide.coverImage?.src) {
-    article.image = [guide.coverImage.src];
+    article.image = [absoluteSiteUrl(guide.coverImage.src)];
   }
 
   const faqPage =

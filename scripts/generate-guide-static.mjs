@@ -1,12 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { buildGuideJsonLd } from '../src/content/guides/jsonld.ts';
+import { evaluateGuidePublishGate } from '../src/content/guides/publishGate.ts';
+import { renderableReaderTable } from '../src/content/guides/readerTable.ts';
+import { GUIDE_SITE_ORIGIN as SITE_URL } from '../src/content/guides/site.ts';
 
 const GUIDE_CONTENT_DIR = path.resolve('src/content/guides');
 const PUBLIC_DIR = path.resolve('public');
 const GUIDES_OUTPUT_DIR = path.join(PUBLIC_DIR, 'guides');
-const SITE_URL = 'https://www.globaltechevents.xyz';
-
-const STUB_ANSWER = /^not published\b/i;
 
 function escapeHtml(value) {
   return String(value)
@@ -15,10 +16,6 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-function hasText(value) {
-  return Boolean(value && String(value).trim());
 }
 
 export function loadGuides() {
@@ -37,85 +34,10 @@ export function loadGuides() {
     });
 }
 
-/** Keep in sync with src/content/guides/publishGate.ts */
-export function isGuideIndexable(guide) {
-  if (!guide || guide.status !== 'published') return false;
-  if (!guide.author || guide.author.placeholder) return false;
-  if (!hasText(guide.author.name) || !hasText(guide.author.bio)) return false;
-  if (!guide.coverImage?.src || !guide.coverImage?.alt) return false;
-  if (!Array.isArray(guide.bodyImages) || guide.bodyImages.length < 1) return false;
-  if (guide.bodyImages.some((image) => !hasText(image?.src) || !hasText(image?.alt))) return false;
-  if (!hasText(guide.title) || !/^\d{4}-\d{2}-\d{2}$/.test(guide.asOf || '')) return false;
-  if (guide.intentAnswered !== true || !hasText(guide.description)) return false;
-  if (!Array.isArray(guide.sections) || guide.sections.length < 1) return false;
-  if (guide.sections.some((section) => !hasText(section?.heading))) return false;
-  if (!Array.isArray(guide.faq) || guide.faq.length < 3) return false;
-  if (
-    guide.faq.some((item) => {
-      const answer = String(item?.answer || '').trim();
-      return !hasText(item?.question) || !answer || STUB_ANSWER.test(answer);
-    })
-  ) {
-    return false;
-  }
-  const internal = (guide.internalLinks || []).filter((link) => String(link?.href || '').startsWith('/') && hasText(link?.label));
-  return internal.length >= 2;
-}
-
 function readWhatsAppUrl() {
   const raw = fs.readFileSync(path.resolve('src/config/constants.ts'), 'utf8');
   const match = raw.match(/WHATSAPP_GROUP_URL = '([^']+)'/);
   return match?.[1] || `${SITE_URL}/`;
-}
-
-function buildGuideJsonLd(guide) {
-  const canonical = `${SITE_URL}/guides/${guide.slug}`;
-  const author = {
-    '@type': 'Person',
-    name: guide.author?.name || '',
-    description: guide.author?.bio || '',
-  };
-  if (guide.author?.avatar?.src) author.image = guide.author.avatar.src;
-  const profileUrl = String(guide.author?.url || '').trim();
-  if (profileUrl) {
-    author.url = profileUrl;
-    author.sameAs = [profileUrl];
-  }
-  const article = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: guide.title,
-    description: guide.description,
-    inLanguage: guide.language || 'en',
-    dateModified: guide.asOf,
-    author,
-    publisher: {
-      '@type': 'Organization',
-      name: 'GlobalTechEvents',
-      url: SITE_URL,
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': canonical,
-    },
-  };
-  if (guide.status === 'published') article.datePublished = guide.asOf;
-  if (guide.coverImage?.src) article.image = [guide.coverImage.src];
-
-  const faqPage =
-    Array.isArray(guide.faq) && guide.faq.length > 0
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: guide.faq.map((item) => ({
-            '@type': 'Question',
-            name: item.question,
-            acceptedAnswer: { '@type': 'Answer', text: item.answer },
-          })),
-        }
-      : null;
-
-  return { article, faqPage };
 }
 
 function renderSections(guide) {
@@ -129,32 +51,27 @@ function renderSections(guide) {
             ${(subsection.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}`,
         )
         .join('');
-      const table =
-        section.id === 'comparison-table' && guide.comparisonTable
-          ? renderTable(guide.comparisonTable)
-          : '';
+      const table = section.table ? renderTable(section.table) : '';
       return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${table}${subsections}</section>`;
     })
     .join('');
 }
 
 function renderTable(table) {
-  const head = (table.columns || []).map((column) => `<th>${escapeHtml(column)}</th>`).join('');
+  const view = renderableReaderTable(table);
+  const head = view.headers.map((column) => `<th>${escapeHtml(column)}</th>`).join('');
   const rows =
-    Array.isArray(table.rows) && table.rows.length > 0
-      ? table.rows
-          .map(
-            (row) =>
-              `<tr>${(table.columns || []).map((_, index) => `<td>${escapeHtml(row[index] || '')}</td>`).join('')}</tr>`,
-          )
+    view.rows.length > 0
+      ? view.rows
+          .map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`)
           .join('')
-      : `<tr><td colspan="${(table.columns || []).length}">No rows yet. This table is a column template, not a published comparison.</td></tr>`;
-  return `<table><caption>${escapeHtml(table.caption || '')}</caption><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>`;
+      : `<tr><td colspan="${view.headers.length}">No rows yet. This table is a column template, not a published comparison.</td></tr>`;
+  return `<table><caption>${escapeHtml(view.caption)}</caption><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function renderGuidePage(guide) {
   const canonical = `${SITE_URL}/guides/${guide.slug}`;
-  const indexable = isGuideIndexable(guide);
+  const indexable = evaluateGuidePublishGate(guide).indexable;
   const { article, faqPage } = buildGuideJsonLd(guide);
   const jsonForScript = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
   const schemas = [article, faqPage]
@@ -169,15 +86,7 @@ function renderGuidePage(guide) {
     : '';
   const authorName = guide.author?.name || '';
   const authorBio = guide.author?.bio || '';
-  const authorUrl = String(guide.author?.url || '').trim();
-  const avatarSrc = guide.author?.avatar?.src || '';
-  const avatarAlt = guide.author?.avatar?.alt || authorName;
-  const avatarHtml = avatarSrc
-    ? `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${authorUrl ? '' : escapeHtml(avatarAlt)}" width="40" height="40" />`
-    : '';
-  const authorIdentity = authorUrl
-    ? `<a class="identity" href="${escapeHtml(authorUrl)}" target="_blank" rel="noopener noreferrer">${avatarHtml}<span class="copy"><span class="name">${escapeHtml(authorName)}<span class="sr-only"> (opens in a new tab)</span></span><span class="bio">${escapeHtml(authorBio)}</span></span></a>`
-    : `<div class="identity">${avatarSrc ? `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(avatarAlt)}" width="40" height="40" />` : ''}<span class="copy"><span class="name">${escapeHtml(authorName)}</span><span class="bio">${escapeHtml(authorBio)}</span></span></div>`;
+  const authorIdentity = `<div class="identity"><span class="copy"><span class="name">${escapeHtml(authorName)}</span><span class="bio">${escapeHtml(authorBio)}</span></span></div>`;
   const faq = (guide.faq || [])
     .map(
       (item) => `<article class="card"><h3>${escapeHtml(item.question)}</h3><p>${escapeHtml(item.answer)}</p></article>`,
@@ -230,12 +139,9 @@ function renderGuidePage(guide) {
       .slot { border-style: dashed; color: rgba(255,255,255,.6); }
       .byline { margin: 0 0 28px; }
       .byline .identity { display: flex; align-items: center; gap: 12px; max-width: 100%; color: inherit; text-decoration: none; }
-      .byline a.identity:hover .name { color: #fdba74; }
       .byline .copy { min-width: 0; }
       .byline .name { display: block; font-weight: 600; font-size: 15px; line-height: 1.25; color: #fff; }
       .byline .bio { display: block; margin-top: 2px; font-size: 14px; line-height: 1.35; font-weight: 400; color: rgba(255,255,255,.62); }
-      .byline .avatar { width: 40px; height: 40px; border-radius: 999px; object-fit: cover; flex: none; border: 1px solid rgba(255,255,255,.15); }
-      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
       table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
       th, td { border-bottom: 1px solid rgba(255,255,255,.1); text-align: left; padding: 8px; vertical-align: top; }
       caption { text-align: left; color: rgba(255,255,255,.6); margin-bottom: 8px; }
@@ -277,7 +183,7 @@ function renderGuidesIndex(guides) {
       ? '<article class="card"><h2>No guides yet</h2><p>Nothing on this page is a ranking.</p></article>'
       : guides
           .map((guide) => {
-            const draft = !isGuideIndexable(guide);
+            const draft = !evaluateGuidePublishGate(guide).indexable;
             return `<article class="card">
               <p class="eyebrow">${draft ? 'Draft shell · not a published ranking' : 'Published guide'}</p>
               <h2>${escapeHtml(guide.title)}</h2>
@@ -371,7 +277,7 @@ export function writeGuideStaticPages() {
 }
 
 export function indexableGuideUrls(guides) {
-  return guides.filter(isGuideIndexable).map((guide) => `${SITE_URL}/guides/${guide.slug}`);
+  return guides.filter((guide) => evaluateGuidePublishGate(guide).indexable).map((guide) => `${SITE_URL}/guides/${guide.slug}`);
 }
 
 export function ensureGuidesInExistingSitemap(guides) {

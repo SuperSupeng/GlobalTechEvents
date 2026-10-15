@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ensureGuidesInExistingSitemap, indexableAuthorUrls, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 import { writeHubStaticPages } from './generate-hub-static.mjs';
+import { ensureShellsInExistingSitemap, indexableShellUrls, writeIndexableShells } from './generate-indexable-shells.mjs';
 
 const SOURCE = path.resolve('src/data/seoEventPages.ts');
 const GENERATED_SOURCE = path.resolve('src/data/generatedSEOEventPages.json');
@@ -362,6 +363,7 @@ function generateSitemap(pages, guides = []) {
     ...pages.map((page) => `${SITE_URL}/events/${page.slug}`),
     ...indexableGuideUrls(guides),
     ...indexableAuthorUrls(),
+    ...indexableShellUrls(),
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -374,7 +376,8 @@ ${urls
     const isGuidePage = url.includes('/guides/');
     const isGuidesHub = url.endsWith('/guides');
     const isAuthorPage = url.includes('/authors/');
-    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage ? 'weekly' : 'monthly';
+    const isIndexableShell = url.includes('/cities/') || url.includes('/tracks/');
+    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell ? 'weekly' : 'monthly';
     const priority = isHome
       ? '1.0'
       : isEventPage || isGuidePage
@@ -383,7 +386,7 @@ ${urls
           ? '0.6'
         : isEventsHub
           ? '0.9'
-          : isGuidesHub
+          : isGuidesHub || isIndexableShell
             ? '0.7'
             : '0.3';
     return `  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
@@ -514,11 +517,13 @@ async function main() {
   }
 
   const guides = writeGuideStaticPages();
+  const shells = writeIndexableShells(allPages);
   fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), generateSitemap(allPages, guides));
   writeGeneratedSource(allPages);
   writeHubStaticPages();
   console.log(`Generated ${allPages.length} crawlable SEO pages and sitemap entries into public/events/*`);
   console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
+  console.log(`Generated ${shells.length} indexable city and track shells`);
 }
 
 if (process.argv.includes('--hubs-only')) {
@@ -538,6 +543,11 @@ if (process.argv.includes('--hubs-only')) {
     console.error(error);
     process.exit(1);
   }
+} else if (process.argv.includes('--shells-only')) {
+  const pages = JSON.parse(fs.readFileSync(GENERATED_SOURCE, 'utf8'));
+  const shells = writeIndexableShells(pages);
+  ensureShellsInExistingSitemap();
+  console.log(`Generated ${shells.length} indexable city and track shells`);
 } else {
   main().catch((error) => {
     console.error(error);

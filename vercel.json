@@ -55,11 +55,11 @@
       "destination": "/guides/:slug/index.html"
     },
     {
-      "source": "/authors/:slug",
+      "source": "/authors/:slug([^./]+)",
       "destination": "/authors/:slug/index.html"
     },
     {
-      "source": "/authors/:slug/",
+      "source": "/authors/:slug([^./]+)/",
       "destination": "/authors/:slug/index.html"
     },
     {
@@ -189,7 +189,7 @@
       ]
     },
     {
-      "source": "/authors/:slug",
+      "source": "/authors/:slug([^./]+)",
       "headers": [
         {
           "key": "Content-Type",

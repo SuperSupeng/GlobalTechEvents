@@ -518,6 +518,9 @@ function ensureForAgentsInSitemap() {
 export function writeHubStaticPages() {
   const events = loadEventPages();
   const guides = liveGuides(loadGuides());
+  if (!renderHomeShell(guides).includes('href="/for-agents"')) {
+    throw new Error('Home shell is missing the /for-agents link.');
+  }
   fs.mkdirSync(EVENTS_DIR, { recursive: true });
 
   const eventsHtml = renderEventsHub(events, guides);

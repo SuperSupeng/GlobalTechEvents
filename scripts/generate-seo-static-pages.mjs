@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ensureGuidesInExistingSitemap, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
+import { writeHubStaticPages } from './generate-hub-static.mjs';
 
 const SOURCE = path.resolve('src/data/seoEventPages.ts');
 const GENERATED_SOURCE = path.resolve('src/data/generatedSEOEventPages.json');
@@ -500,14 +501,28 @@ async function main() {
   const guides = writeGuideStaticPages();
   fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), generateSitemap(allPages, guides));
   writeGeneratedSource(allPages);
+  writeHubStaticPages();
   console.log(`Generated ${allPages.length} crawlable SEO pages and sitemap entries into public/events/*`);
   console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
 }
 
-if (process.argv.includes('--guides-only')) {
-  const guides = writeGuideStaticPages();
-  ensureGuidesInExistingSitemap(guides);
-  console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
+if (process.argv.includes('--hubs-only')) {
+  try {
+    writeHubStaticPages();
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+} else if (process.argv.includes('--guides-only')) {
+  try {
+    const guides = writeGuideStaticPages();
+    ensureGuidesInExistingSitemap(guides);
+    writeHubStaticPages();
+    console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 } else {
   main().catch((error) => {
     console.error(error);

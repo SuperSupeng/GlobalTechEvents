@@ -8,13 +8,47 @@
     <meta name="description" content="Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals." />
     <meta name="keywords" content="tech events calendar, global conferences, industry events, ICS subscribe" />
     <meta name="theme-color" content="#ff7a18" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GlobalTechEvents" />
+    <meta property="og:title" content="GlobalTechEvents — Major tech events in one calendar" />
+    <meta property="og:description" content="Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals." />
     <title>GlobalTechEvents — Major tech events in one calendar</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "GlobalTechEvents",
+        "url": "https://www.globaltechevents.xyz/",
+        "description": "Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals."
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#030303] text-slate-100 font-sans">
-    <div id="root"></div>
+    <div id="root">
+      <!-- gte:home-shell:start -->
+      <main id="gte-home-shell" style="max-width:860px;margin:0 auto;padding:48px 20px 80px;font-family:Inter,system-ui,sans-serif;line-height:1.7;">
+        <p style="letter-spacing:.14em;text-transform:uppercase;font-size:12px;margin:0 0 12px;">GlobalTechEvents</p>
+        <h1 style="font-size:40px;line-height:1.15;margin:0 0 16px;">The world's major tech events, in one calendar</h1>
+        <p style="margin:0 0 20px;">A unified calendar of globally known tech conferences and industry events. Subscribe once, sync everywhere, and follow updates on WhatsApp.</p>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="/events">Events directory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/guides/best-ai-conferences-2026">Best AI conferences 2026</a></li>
+            <li><a href="/resources">Resources</a></li>
+          </ul>
+        </nav>
+      </main>
+      <script>
+        if (location.pathname !== '/' && location.pathname !== '') {
+          document.getElementById('gte-home-shell')?.remove();
+        }
+      </script>
+      <!-- gte:home-shell:end -->
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

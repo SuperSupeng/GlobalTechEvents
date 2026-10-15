@@ -1,0 +1,111 @@
+# GlobalTechEvents
+
+> Unified calendar of globally known major tech events, with an events directory and evergreen conference guides.
+
+GlobalTechEvents publishes English pages for the home calendar, the events directory, and conference guides. Confirm dates and registration on the organizer site.
+
+An agent feed is not published. Use the pages below.
+
+## Hubs
+
+- [Home calendar](https://www.globaltechevents.xyz/): Major tech events in one calendar.
+- [Events directory](https://www.globaltechevents.xyz/events): Index of crawlable event guides.
+- [Guides](https://www.globaltechevents.xyz/guides): Evergreen compare and best-of guides.
+
+## Guides
+
+- [Best AI conferences 2026](https://www.globaltechevents.xyz/guides/best-ai-conferences-2026): Three industry AI conferences are still ahead in 2026. Web Summit is Nov 9 to 12 in Lisbon, AWS re:Invent is Nov 30 to Dec 4 in Las Vegas, and GITEX GLOBAL is Dec 7 to 11 in Dubai. Use the first table to pick one to three of those, then use the held section only to decide which 2026 editions are worth repeating next cycle.
+
+## Event guides
+
+Each item below is a crawlable event guide. The events directory and the sitemap list the same set.
+
+- [CES 2026](https://www.globaltechevents.xyz/events/ces-2026): January 6, 2026, Las Vegas, United States
+- [AI Summit Tokyo](https://www.globaltechevents.xyz/events/ai-summit-tokyo): January 25, 2026, Tokyo, Japan
+- [TechGALA Japan 2026](https://www.globaltechevents.xyz/events/techgala-japan-2026): January 26, 2026, Nagoya, Japan
+- [GitHub Universe 2026](https://www.globaltechevents.xyz/events/github-universe-2026): January 27, 2026, San Francisco, USA
+- [sTARTUp Day 2026](https://www.globaltechevents.xyz/events/startup-day-2026): January 27, 2026, Tartu, Estonia
+- [TypeScript Deep Dive Workshop](https://www.globaltechevents.xyz/events/typescript-deep-dive-workshop): January 27, 2026, Online
+- [AWS Re:Invent Recap](https://www.globaltechevents.xyz/events/aws-reinvent-recap): January 28, 2026, Online
+- [React Conf 2026](https://www.globaltechevents.xyz/events/react-conf-2026): January 28, 2026, New York, USA
+- [Python Data Science Bootcamp](https://www.globaltechevents.xyz/events/python-data-science-bootcamp): January 29, 2026, London, UK
+- [Rust for Systems Programming](https://www.globaltechevents.xyz/events/rust-for-systems-programming): January 29, 2026, Online
+- [DevOps Days Berlin](https://www.globaltechevents.xyz/events/devops-days-berlin): January 30, 2026, Berlin, Germany
+- [Mobile Dev Summit](https://www.globaltechevents.xyz/events/mobile-dev-summit): January 30, 2026, New York, USA
+- [GraphQL API Design Patterns](https://www.globaltechevents.xyz/events/graphql-api-design-patterns): January 31, 2026, Online
+- [Web Summit Qatar 2026](https://www.globaltechevents.xyz/events/web-summit-qatar-2026): January 31, 2026, Doha, Qatar
+- [Cybersecurity Hackathon](https://www.globaltechevents.xyz/events/cybersecurity-hackathon): February 1, 2026, Berlin, Germany
+- [Web3 Summit Singapore](https://www.globaltechevents.xyz/events/web3-summit-singapore): February 3, 2026, Singapore
+- [Cloud Native Webinar](https://www.globaltechevents.xyz/events/cloud-native-webinar): February 5, 2026, Online
+- [LEAP 2026](https://www.globaltechevents.xyz/events/leap-2026): February 9, 2026, Riyadh, Saudi Arabia
+- [Africa Tech Summit Nairobi 2026](https://www.globaltechevents.xyz/events/africa-tech-summit-nairobi-2026): February 10, 2026, Nairobi, Kenya
+- [Techarena 2026](https://www.globaltechevents.xyz/events/techarena-2026): February 10, 2026, Stockholm, Sweden
+- [4YFN Barcelona 2026](https://www.globaltechevents.xyz/events/4yfn-barcelona-2026): March 1, 2026, Barcelona, Spain
+- [Startup Mahakumbh 2026](https://www.globaltechevents.xyz/events/startup-mahakumbh-2026): March 8, 2026, New Delhi, India
+- [JUMPSTARTER 2026](https://www.globaltechevents.xyz/events/jumpstarter-2026): March 11, 2026, Wan Chai, Hong Kong
+- [SXSW 2026](https://www.globaltechevents.xyz/events/sxsw-2026): March 12, 2026, Austin, United States
+- [START Summit 2026](https://www.globaltechevents.xyz/events/start-summit-2026): March 18, 2026, St. Gallen, Switzerland
+- [Skinnovation 2026](https://www.globaltechevents.xyz/events/skinnovation-2026): March 24, 2026, Innsbruck, Austria
+- [TechChill 2026](https://www.globaltechevents.xyz/events/techchill-2026): March 24, 2026, Riga, Latvia
+- [Takeoff Tokyo 2026](https://www.globaltechevents.xyz/events/takeoff-tokyo-2026): March 30, 2026, Tokyo, Japan
+- [Tech.eu Summit London 2026](https://www.globaltechevents.xyz/events/techeu-summit-london-2026): April 20, 2026, London, United Kingdom
+- [Wolves Summit 2026](https://www.globaltechevents.xyz/events/wolves-summit-2026): April 20, 2026, Warsaw, Poland
+- [eMerge Americas 2026](https://www.globaltechevents.xyz/events/emerge-americas-2026): April 23, 2026, Miami Beach, United States
+- [SusHi Tech Tokyo 2026](https://www.globaltechevents.xyz/events/sushi-tech-tokyo-2026): April 26, 2026, Tokyo, Japan
+- [Startup Grind Global Conference 2026](https://www.globaltechevents.xyz/events/startup-grind-global-conference-2026): April 27, 2026, Redwood City, United States
+- [Iceland Innovation Week 2026](https://www.globaltechevents.xyz/events/iceland-innovation-week-2026): April 28, 2026, Reykjavik, Iceland
+- [Google I/O 2026](https://www.globaltechevents.xyz/events/google-io-2026): May 1, 2026, Mountain View, United States
+- [Turing Fest 2026](https://www.globaltechevents.xyz/events/turing-fest-2026): May 5, 2026, Edinburgh, United Kingdom
+- [EU-Startups Summit 2026](https://www.globaltechevents.xyz/events/eu-startups-summit-2026): May 6, 2026, Valletta, Malta
+- [Podim Conference 2026](https://www.globaltechevents.xyz/events/podim-conference-2026): May 10, 2026, Maribor, Slovenia
+- [Web Summit Vancouver 2026](https://www.globaltechevents.xyz/events/web-summit-vancouver-2026): May 11, 2026, Vancouver, Canada
+- [ViennaUP 2026](https://www.globaltechevents.xyz/events/viennaup-2026): May 17, 2026, Vienna, Austria
+- [Infoshare 2026](https://www.globaltechevents.xyz/events/infoshare-2026): May 19, 2026, Gdansk, Poland
+- [Latitude59 2026](https://www.globaltechevents.xyz/events/latitude59-2026): May 20, 2026, Tallinn, Estonia
+- [BEYOND Expo 2026](https://www.globaltechevents.xyz/events/beyond-expo-2026): May 26, 2026, Macau, China
+- [Dublin Tech Summit 2026](https://www.globaltechevents.xyz/events/dublin-tech-summit-2026): May 26, 2026, Dublin, Ireland
+- [Tech Week NYC 2026](https://www.globaltechevents.xyz/events/tech-week-nyc-2026): June 1, 2026, New York, United States
+- [South Summit Madrid 2026](https://www.globaltechevents.xyz/events/south-summit-madrid-2026): June 2, 2026, Madrid, Spain
+- [London Tech Week 2026](https://www.globaltechevents.xyz/events/london-tech-week-2026): June 7, 2026, London, United Kingdom
+- [Apple WWDC 2026](https://www.globaltechevents.xyz/events/apple-wwdc-2026): June 8, 2026, Online
+- [AI Summit London 2026](https://www.globaltechevents.xyz/events/ai-summit-london-2026): June 9, 2026, London, United Kingdom
+- [DeveloperWeek New York 2026](https://www.globaltechevents.xyz/events/developerweek-new-york-2026): June 9, 2026, New York City, United States
+- [Arctic15 2026](https://www.globaltechevents.xyz/events/arctic15-2026): June 10, 2026, Helsinki, Finland
+- [Hello Tomorrow Global Summit 2026](https://www.globaltechevents.xyz/events/hello-tomorrow-global-summit-2026): June 10, 2026, Amsterdam, Netherlands
+- [NextRise Seoul 2026](https://www.globaltechevents.xyz/events/nextrise-seoul-2026): June 17, 2026, Seoul, South Korea
+- [VivaTech 2026](https://www.globaltechevents.xyz/events/vivatech-2026): June 17, 2026, Paris, France
+- [Techsylvania 2026](https://www.globaltechevents.xyz/events/techsylvania-2026): June 23, 2026, Cluj-Napoca, Romania
+- [GITEX AI Europe 2026](https://www.globaltechevents.xyz/events/gitex-ai-europe-2026): June 30, 2026, Berlin, Germany
+- [IVS 2026 Kyoto](https://www.globaltechevents.xyz/events/ivs-2026-kyoto): June 30, 2026, Kyoto, Japan
+- [StartupFest 2026](https://www.globaltechevents.xyz/events/startupfest-2026): July 8, 2026, Montreal, Canada
+- [HICOOL 2026 Global Entrepreneur Summit](https://www.globaltechevents.xyz/events/hicool-2026-global-entrepreneur-summit): July 31, 2026, Beijing, China
+- [TechBBQ 2026](https://www.globaltechevents.xyz/events/techbbq-2026): August 25, 2026, Copenhagen, Denmark
+- [Techsauce Global Summit 2026](https://www.globaltechevents.xyz/events/techsauce-global-summit-2026): August 25, 2026, Bangkok, Thailand
+- [S-Tron Shanghai 2026](https://www.globaltechevents.xyz/events/s-tron-shanghai-2026): September 21, 2026, Shanghai, China
+- [Elevate Festival 2026](https://www.globaltechevents.xyz/events/elevate-festival-2026): September 22, 2026, Toronto, Canada
+- [Italian Tech Week 2026](https://www.globaltechevents.xyz/events/italian-tech-week-2026): September 23, 2026, Turin, Italy
+- [Bits & Pretzels 2026](https://www.globaltechevents.xyz/events/bits-pretzels-2026): September 27, 2026, Munich, Germany
+- [Spark Festival 2026](https://www.globaltechevents.xyz/events/spark-festival-2026): September 27, 2026, Sydney, Australia
+- [Sifted Summit 2026](https://www.globaltechevents.xyz/events/sifted-summit-2026): September 29, 2026, London, United Kingdom
+- [Tech Week SF 2026](https://www.globaltechevents.xyz/events/tech-week-sf-2026): October 5, 2026, San Francisco, United States
+- [Auckland Startup Week 2026](https://www.globaltechevents.xyz/events/auckland-startup-week-2026): October 11, 2026, Auckland, New Zealand
+- [TechCrunch Disrupt 2026](https://www.globaltechevents.xyz/events/techcrunch-disrupt-2026): October 13, 2026, San Francisco, United States
+- [Birmingham Tech Week 2026](https://www.globaltechevents.xyz/events/birmingham-tech-week-2026): October 18, 2026, Birmingham, United Kingdom
+- [Tech in Asia Conference 2026](https://www.globaltechevents.xyz/events/tech-in-asia-conference-2026): October 20, 2026, Jakarta, Indonesia
+- [SWITCH 2026](https://www.globaltechevents.xyz/events/switch-2026): October 27, 2026, Singapore
+- [Web Summit Lisbon 2026](https://www.globaltechevents.xyz/events/web-summit-lisbon-2026): November 9, 2026, Lisbon, Portugal
+- [Web Summit 2026](https://www.globaltechevents.xyz/events/web-summit-2026): November 11, 2026, Lisbon, Portugal
+- [Africa Tech Festival 2026](https://www.globaltechevents.xyz/events/africa-tech-festival-2026): November 16, 2026, Cape Town, South Africa
+- [Slush 2026](https://www.globaltechevents.xyz/events/slush-2026): November 17, 2026, Helsinki, Finland
+- [West Tech Fest 2026](https://www.globaltechevents.xyz/events/west-tech-fest-2026): December 6, 2026, Perth, Australia
+- [Expand North Star 2026](https://www.globaltechevents.xyz/events/expand-north-star-2026): December 7, 2026, Dubai, United Arab Emirates
+- [COMEUP 2026](https://www.globaltechevents.xyz/events/comeup-2026): December 8, 2026, Seoul, South Korea
+- [Huddle Global 2026](https://www.globaltechevents.xyz/events/huddle-global-2026): December 9, 2026, Trivandrum, India
+
+## Other crawlable pages
+
+- [Resources](https://www.globaltechevents.xyz/resources): How to follow the calendar.
+- [Privacy](https://www.globaltechevents.xyz/privacy): Privacy policy.
+- [Terms](https://www.globaltechevents.xyz/terms): Terms of service.
+- [Sitemap](https://www.globaltechevents.xyz/sitemap.xml): Indexable URLs.
+

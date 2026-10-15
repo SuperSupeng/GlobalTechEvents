@@ -79,6 +79,14 @@
       "destination": "/tracks/ai/index.html"
     },
     {
+      "source": "/for-agents",
+      "destination": "/for-agents/index.html"
+    },
+    {
+      "source": "/for-agents/",
+      "destination": "/for-agents/index.html"
+    },
+    {
       "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$).*)",
       "destination": "/index.html"
     }
@@ -216,6 +224,19 @@
     },
     {
       "source": "/tracks/ai",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/for-agents",
       "headers": [
         {
           "key": "Content-Type",

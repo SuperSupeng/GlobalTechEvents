@@ -17,6 +17,7 @@ import TermsOfService from './pages/TermsOfService';
 import Resources from './pages/Resources';
 import SEOEventPage from './pages/SEOEventPage';
 import EventsHubPage from './pages/EventsHubPage';
+import ForAgentsPage from './pages/ForAgentsPage';
 import GuidesIndexPage from './pages/GuidesIndexPage';
 import GuidePage from './pages/GuidePage';
 import AuthorPage from './pages/AuthorPage';
@@ -213,6 +214,32 @@ const App: React.FC = () => {
 
   if (currentPage === 'resources') {
     return <Resources onBack={navigateToHome} />;
+  }
+
+  if (currentPage === 'forAgents') {
+    return (
+      <>
+        <Navbar
+          onExploreClick={navigateToHomeAndScrollToCalendar}
+          onResourcesClick={navigateToResources}
+          onSubmitClick={navigateToEventsHub}
+          onEventsHubClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
+        />
+        <ForAgentsPage />
+        <Footer
+          onCalendarClick={navigateToHomeAndScrollToCalendar}
+          onEventsClick={navigateToEventsHub}
+          onGuidesClick={navigateToGuides}
+          onNewsletterClick={navigateToEventsHub}
+          onSubmitClick={navigateToEventsHub}
+          onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', 'for_agents')}
+          onPrivacyClick={navigateToPrivacy}
+          onTermsClick={navigateToTerms}
+        />
+        <Toast toasts={toasts} onRemove={removeToast} />
+      </>
+    );
   }
 
   if (currentPage === 'eventsHub') {

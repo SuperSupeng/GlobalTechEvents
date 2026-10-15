@@ -9,10 +9,11 @@ export type AppPage =
   | 'eventsHub'
   | 'guidesIndex'
   | 'guide'
-  | 'author';
+  | 'author'
+  | 'forAgents';
 
 export type ResolvedAppRoute =
-  | { page: 'home' | 'privacy' | 'terms' | 'resources' | 'eventsHub' | 'guidesIndex' }
+  | { page: 'home' | 'privacy' | 'terms' | 'resources' | 'eventsHub' | 'guidesIndex' | 'forAgents' }
   | { page: 'guide'; slug: string }
   | { page: 'author'; slug: string }
   | { page: 'seoEvent'; seoEventPage: SEOEventPageData };
@@ -23,6 +24,7 @@ export function resolveAppRoute(pathname: string): ResolvedAppRoute {
   if (pathname === '/resources') return { page: 'resources' };
   if (pathname === '/events' || pathname === '/events/') return { page: 'eventsHub' };
   if (pathname === '/guides' || pathname === '/guides/') return { page: 'guidesIndex' };
+  if (pathname === '/for-agents' || pathname === '/for-agents/') return { page: 'forAgents' };
 
   const guideMatch = pathname.match(/^\/guides\/([a-z0-9-]+)\/?$/i);
   if (guideMatch) return { page: 'guide', slug: guideMatch[1].toLowerCase() };

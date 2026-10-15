@@ -15,7 +15,21 @@ interface GuidePageProps {
 const DEFAULT_DRAFT_NOTICE =
   'Draft shell — not a published guide. This page does not rank conferences and does not state dates, prices, or speakers.';
 
-function GuideAuthorByline({ author }: { author: GuideAuthor }) {
+function GuideAuthorByline({ author, onNavigate }: { author: GuideAuthor; onNavigate: (href: string) => void }) {
+  const profileHref = author.slug ? `/authors/${author.slug}` : undefined;
+  const linkedIn = author.sameAs?.find((href) => href.includes('linkedin.com'));
+  const identity = (
+    <>
+      {author.image ? (
+        <img src={author.image} alt={author.name} className="h-12 w-12 rounded-full object-cover border border-white/10" />
+      ) : null}
+      <div className="min-w-0">
+        <p className="text-[15px] font-medium leading-tight text-white">{author.name}</p>
+        <p className="mt-0.5 text-sm leading-snug text-white/60">{author.bio}</p>
+      </div>
+    </>
+  );
+
   return (
     <section className="mb-8" aria-label="Author">
       {author.placeholder && (
@@ -23,10 +37,28 @@ function GuideAuthorByline({ author }: { author: GuideAuthor }) {
           Placeholder author — not a published byline
         </p>
       )}
-      <div className="min-w-0">
-        <p className="text-[15px] font-medium leading-tight text-white">{author.name}</p>
-        <p className="mt-0.5 text-sm leading-snug text-white/60">{author.bio}</p>
-      </div>
+      {profileHref ? (
+        <a
+          href={profileHref}
+          rel="author"
+          className="flex items-center gap-3 max-w-full text-inherit no-underline"
+          onClick={(event) => {
+            event.preventDefault();
+            onNavigate(profileHref);
+          }}
+        >
+          {identity}
+        </a>
+      ) : (
+        <div className="flex items-center gap-3">{identity}</div>
+      )}
+      {linkedIn ? (
+        <p className="mt-2 text-sm">
+          <a href={linkedIn} className="text-primary-light hover:text-white underline underline-offset-4" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+        </p>
+      ) : null}
     </section>
   );
 }
@@ -138,7 +170,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
             <span className="font-medium text-white">As of {guide.asOf}</span>
           </p>
 
-          <GuideAuthorByline author={guide.author} />
+          <GuideAuthorByline author={guide.author} onNavigate={onNavigate} />
 
           <p className="text-lg text-white/80 leading-relaxed mb-8">{guide.description}</p>
 

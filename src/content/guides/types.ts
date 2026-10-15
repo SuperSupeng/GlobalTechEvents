@@ -12,6 +12,11 @@ export interface GuideAuthor {
   bio: string;
   /** True when the byline is a labeled placeholder, not a real editor. */
   placeholder: boolean;
+  /** Author-page slug. Set for a Person byline. Omit for an Organization desk byline. */
+  slug?: string;
+  url?: string;
+  image?: string;
+  sameAs?: string[];
 }
 
 export interface GuideFaqItem {

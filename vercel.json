@@ -43,6 +43,14 @@
       "destination": "/guides/:slug/index.html"
     },
     {
+      "source": "/authors/:slug",
+      "destination": "/authors/:slug/index.html"
+    },
+    {
+      "source": "/authors/:slug/",
+      "destination": "/authors/:slug/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -119,6 +127,19 @@
     },
     {
       "source": "/guides/:slug",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/authors/:slug",
       "headers": [
         {
           "key": "Content-Type",

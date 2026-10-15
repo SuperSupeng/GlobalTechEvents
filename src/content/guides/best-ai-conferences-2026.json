@@ -5,14 +5,24 @@
   "template": "compare",
   "title": "Best AI conferences 2026",
   "seoTitle": "Best AI Conferences 2026: GTC, DevDay, Cloud Summits Compared | GlobalTechEvents",
-  "description": "Three industry AI conferences are still ahead in 2026. Web Summit is Nov 9 to 12 in Lisbon, AWS re:Invent is Nov 30 to Dec 4 in Las Vegas, and GITEX GLOBAL is Dec 7 to 11 in Dubai. Use the first table to pick one to three of those, then use the held section only to decide which 2026 editions are worth repeating next cycle.",
+  "description": "If a friend asked which AI conference is still worth a flight in 2026, I would not hand them the whole year. As of 2026-10-15 I would look at three: Lisbon, Nov 9 to 12, if you need founders and press; Las Vegas, Nov 30 to Dec 4, if AWS is already your estate; Dubai, Dec 7 to 11, if the buyer is in the Gulf. I would skip the other two the moment that is not your room.",
   "intentAnswered": true,
   "primaryKeyword": "best AI conferences 2026",
   "asOf": "2026-10-15",
   "author": {
-    "name": "GlobalTechEvents Editorial",
-    "bio": "Desk comparisons for GlobalTechEvents. Dates come from organizer sites.",
-    "placeholder": false
+    "name": "Darren Su",
+    "bio": "Co-founder of AGI Villa and MatchPoint; Head of City Ecosystem at Datawhale; n8n Ambassador.",
+    "placeholder": false,
+    "slug": "darren-su",
+    "url": "https://www.globaltechevents.xyz/authors/darren-su",
+    "image": "/authors/darren-su.jpg",
+    "sameAs": [
+      "https://www.darren-su.com",
+      "https://x.com/zenshipai",
+      "https://darrensu101.substack.com",
+      "https://www.linkedin.com/in/darrenzenshipai",
+      "https://github.com/SuperSupeng"
+    ]
   },
   "coverImage": {
     "src": "/guides/best-ai-conferences-2026/cover.jpg",
@@ -27,9 +37,9 @@
   "sections": [
     {
       "id": "upcoming",
-      "heading": "What to book before 2026 ends",
+      "heading": "What I would still book",
       "paragraphs": [
-        "As of 2026-10-15 these three editions have not run. The dates are the organizer dates already used on this page. A date that is missing here is unknown."
+        "As of 2026-10-15 these three have not run. The dates are organizer dates. If a date were missing I would leave it blank, because I will not guess. I would choose from this table before I reopen a week that already happened. Those sit further down, for next cycle."
       ],
       "table": {
         "caption": "Upcoming industry AI conferences for the rest of 2026. Official dates only. Cost bands are rough, not ticket quotes.",
@@ -41,7 +51,7 @@
             "bestFor": "Founders and press",
             "aiFocus": "AI as one track inside a general tech expo",
             "costBand": "$$ to $$$",
-            "verdict": "Go for Lisbon founder-and-press density in early November. Skip if you need one vendor's roadmap."
+            "verdict": "Go for Lisbon founder-and-press density, Nov 9 to 12, with AI as one hall inside a general expo. Skip if this trip has to come home with one vendor's roadmap."
           },
           {
             "event": "AWS re:Invent",
@@ -50,7 +60,7 @@
             "bestFor": "Teams who run on AWS",
             "aiFocus": "What AWS will sell next year",
             "costBand": "$$$",
-            "verdict": "Go for the five-day AWS shipping week. Skip if you do not run on AWS."
+            "verdict": "Go for five Las Vegas days on what AWS will sell next year. Skip the moment your estate is Azure or Google Cloud."
           },
           {
             "event": "GITEX GLOBAL",
@@ -59,49 +69,49 @@
             "bestFor": "Gulf government and enterprise buyers",
             "aiFocus": "Meetings on a December expo floor",
             "costBand": "$$$",
-            "verdict": "Go for a December Dubai floor aimed at Gulf buyers. Skip if your buyers are Bay Area engineers."
+            "verdict": "Go for the December Dubai floor when the meetings are Gulf government and enterprise buyers. Skip if those buyers are Bay Area engineers. A stream misses the point, which is the floor."
           }
         ]
       }
     },
     {
       "id": "how-to-pick",
-      "heading": "How to pick one to three",
+      "heading": "How I would pick one to three",
       "paragraphs": [
-        "Leave with one flagship and one regional trip. Add a third event only when you already have named meetings there."
+        "I would leave with one flagship and, if the people are in another city, one regional trip. A third event only when the meetings already have names. I am not handing you a scoring rubric. I just keep watching calendars fill up with weeks nobody can explain on Monday."
       ],
       "subsections": [
         {
-          "heading": "Builders",
+          "heading": "If you build the product",
           "paragraphs": [
-            "If you call the OpenAI API, the one-day Fort Mason briefing is the room, and it already ran, so watch the recap unless you are planning next cycle. If you ship Copilot or Azure, the two-day San Francisco builder briefing is the match. If the product is GPUs or physical AI, the San Jose week is the match."
+            "Call the OpenAI API, and the room was one day at Fort Mason. It already ran, so I would watch the recap unless you are planning the next one. Ship Copilot or Azure, and the match was the two-day San Francisco briefing, also already over. If the product is GPUs or physical AI, Lisbon in November will not save you. I would wait for San Jose."
           ]
         },
         {
-          "heading": "Enterprise buyers",
+          "heading": "If you are the buyer",
           "paragraphs": [
-            "Book the five-day Las Vegas week only when AWS is the estate. Book the December Dubai floor when the buyer is in the Gulf. The Salesforce week and the Google Cloud week already ran. Repeat one of them next cycle only if that estate is yours."
+            "The five-day Las Vegas week is the one I would still book, and only when AWS is the estate. The December Dubai floor is the one I would book when the buyer is in the Gulf. Salesforce and Google Cloud already happened this year. I would repeat one of them next cycle only if that estate is actually yours. I would not attend all three cloud weeks to feel current."
           ]
         },
         {
-          "heading": "Founders and press",
+          "heading": "If you are raising, or writing about it",
           "paragraphs": [
-            "Lisbon in early November is the upcoming founder-and-press week. Paris and the January Las Vegas consumer floor already ran. Pick the city where your next customers will stand."
+            "Lisbon in early November is the founder-and-press week that has not happened yet. Paris and the January Las Vegas consumer floor already ran. I would pick the city where the next customers will be standing. A fuller program in the wrong city is still a skip."
           ]
         },
         {
-          "heading": "When a stream is enough",
+          "heading": "When I would stay home",
           "paragraphs": [
-            "Watch a recap when the value is the keynote. Fly when the value is a floor or a meeting you can name. That is the Dubai expo, the Lisbon halls, and any partner meeting already on your calendar. When a date moves, check the event calendar before you book flights."
+            "I watch a recap when the value is the keynote. I get on a plane when the value is a floor, or a meeting I can name before I book. That is Dubai, Lisbon, and any partner meeting already sitting on the calendar. Fort Mason is the one I am happy to watch if I am not shipping on that API. When a date moves, I check the organizer before I touch a flight. If a date is missing on this page, I left it blank. The event calendar is where I recheck before I book."
           ]
         }
       ]
     },
     {
       "id": "held",
-      "heading": "Already held · use for next cycle",
+      "heading": "Already held, for next cycle",
       "paragraphs": [
-        "These 2026 editions have already run. They are not a plan for this quarter. Read a row only to decide whether the next edition earns a trip."
+        "These 2026 editions have already run. I would not use them as a plan for this quarter. Read a row only to decide whether the next edition earns a flight."
       ],
       "table": {
         "caption": "2026 editions that already ran, as of 2026-10-15. Use them to plan the next cycle. Official dates only.",
@@ -113,7 +123,7 @@
             "bestFor": "Product teams and press who need launch theater",
             "aiFocus": "Consumer and hardware launches",
             "costBand": "$$$",
-            "verdict": "Next cycle only if you need the January consumer-electronics launch floor. Watch recaps for headlines."
+            "verdict": "Next cycle only if you need the January Las Vegas consumer-electronics launch floor. Watch the recap if you only wanted headlines. Stay home if you ship a cloud API."
           },
           {
             "event": "NVIDIA GTC",
@@ -122,7 +132,7 @@
             "bestFor": "Teams whose product is the accelerator",
             "aiFocus": "GPUs, AI factories, and physical AI",
             "costBand": "$$$",
-            "verdict": "Next cycle if GPUs, AI factories, or physical AI are the product. Skip for an API day."
+            "verdict": "Next cycle if the product is the accelerator: GPUs, an AI factory, or physical AI, in San Jose in March. Skip when you wanted an application API day."
           },
           {
             "event": "Google Cloud Next",
@@ -131,7 +141,7 @@
             "bestFor": "Buyers of Gemini on Google Cloud",
             "aiFocus": "Gemini and Google Cloud purchasing",
             "costBand": "$$$",
-            "verdict": "Next cycle only for Gemini and Google Cloud buying. Skip on AWS or Azure."
+            "verdict": "Next cycle only for a Gemini purchase on Google Cloud. Skip it if the estate is AWS or Azure instead of adding a third cloud week."
           },
           {
             "event": "Microsoft Build",
@@ -140,7 +150,7 @@
             "bestFor": "Builders who ship Copilot or Azure",
             "aiFocus": "A two-day Copilot and Azure briefing",
             "costBand": "$$ to $$$",
-            "verdict": "Next cycle for a two-day Copilot and Azure builder briefing. Skip outside that stack."
+            "verdict": "Next cycle for the two-day San Francisco Copilot and Azure briefing. Skip if you came for GPUs or a startup expo."
           },
           {
             "event": "SuperAI",
@@ -149,7 +159,7 @@
             "bestFor": "People who need the Asia industry room",
             "aiFocus": "Meetings at Marina Bay Sands",
             "costBand": "$$ to $$$",
-            "verdict": "Next cycle when the room you need is Marina Bay, not a US campus."
+            "verdict": "Next cycle when the people you need are at Marina Bay, not on a US campus. I would not book it as a substitute for the San Jose chip week."
           },
           {
             "event": "Databricks Data + AI Summit",
@@ -158,7 +168,7 @@
             "bestFor": "Teams whose job is the lakehouse",
             "aiFocus": "Data platform AI at Moscone",
             "costBand": "$$$",
-            "verdict": "Next cycle if the lakehouse platform is the job. Skip for a model-lab or a launch floor."
+            "verdict": "Next cycle if the job is the lakehouse at Moscone. Skip for a model-lab audience or a consumer launch floor."
           },
           {
             "event": "VivaTech",
@@ -167,7 +177,7 @@
             "bestFor": "European founders and press",
             "aiFocus": "Founder density plus a public festival day",
             "costBand": "$$ to $$$",
-            "verdict": "Next cycle for Paris founder density plus a public festival day. Skip for a closed API briefing."
+            "verdict": "Next cycle for Paris founder density, with a public festival day after the professional days. Skip when you need a closed vendor API briefing."
           },
           {
             "event": "Dreamforce",
@@ -176,7 +186,7 @@
             "bestFor": "Buyers inside the Salesforce estate",
             "aiFocus": "Agentforce and that CRM",
             "costBand": "$$$",
-            "verdict": "Next cycle only if Agentforce and Salesforce are the buy."
+            "verdict": "Next cycle only if Agentforce inside Salesforce is the purchase. GPU builders and API builders are in the wrong room."
           },
           {
             "event": "OpenAI DevDay",
@@ -192,81 +202,81 @@
     },
     {
       "id": "snapshots",
-      "heading": "Flagship snapshots",
+      "heading": "The weeks I keep arguing about",
       "paragraphs": [
-        "Use a snapshot when the table cell is too short to decide the trip."
+        "The table cell is the short version. This is where I say why I would or would not get on the plane."
       ],
       "subsections": [
         {
           "heading": "NVIDIA GTC",
           "paragraphs": [
-            "The March San Jose week is the one place on this list where the agenda is chips, clusters, and machines that use them. Go next cycle if a GPU supply plan, an AI factory, or a robotics stack is why you travel. Skip it when you wanted an application API keynote. The two-day Copilot briefing and the Fort Mason day will not tell you the accelerator roadmap, and this week will not replace them."
+            "March 16 to 19, 2026, San Jose. The week is chips, clusters, and the machines that use them. I would go next cycle if a GPU supply plan, an AI factory, or a robotics stack is the reason for the flight. I would skip it if what you wanted was an application API keynote. The mistake I keep seeing is treating this as the default AI week. The two-day Copilot briefing will not tell you the accelerator plan, and this week will not replace Fort Mason."
           ]
         },
         {
           "heading": "OpenAI DevDay",
           "paragraphs": [
-            "The 2026 edition was one day at Fort Mason, not a week on a convention campus. Go next cycle only if your product calls the OpenAI API and you want that room. If you are comparing models you do not ship, watch the recap. A single day does not pay for a vague tour of San Francisco, and it is the wrong week when your platform is Azure, AWS, or a data lake."
+            "September 29, 2026, one day at Fort Mason. I would go next cycle only if your product calls the OpenAI API and you want that room. If you are comparing models you do not ship, watch the recap. I am still not sure a single day pays for a vague tour of San Francisco. It is the wrong week when your platform is Azure, AWS, or a data lake."
           ]
         },
         {
           "heading": "AWS re:Invent",
           "paragraphs": [
-            "This is the trip still on the calendar. Five days in Las Vegas, Nov 30 to Dec 4, exist to hear what AWS will sell next year and to meet the partners who implement it. Go if AWS is where the workload runs. Skip if it does not. Lisbon will not brief you on that roadmap, and this week will not give you Lisbon-style founder density."
+            "November 30 to December 4, 2026, five days in Las Vegas. Still ahead as of this page. The week exists to hear what AWS will sell next year and to meet the partners who implement it. I would go if AWS is where the workload runs. I would skip if it does not. A team that adds this week because it is the last famous one of the year, on an Azure estate, is the pitfall I would talk you out of. Lisbon will not brief you on that roadmap, and this week will not give you Lisbon founder density."
           ]
         },
         {
           "heading": "Microsoft Build",
           "paragraphs": [
-            "The 2026 edition was Jun 2 to 3 in San Francisco, a short developer briefing for Copilot, agent tooling, and Azure. Go next cycle if that is the stack you ship. Skip if you came for GPUs or for a startup expo. Two days is enough for the API story and a poor use of a long-haul flight for anyone outside that stack."
+            "June 2 to 3, 2026, San Francisco. A short developer briefing for Copilot, agent tooling, and Azure. I would fly next cycle if that is the stack you ship. I would skip if you came for GPUs or for a startup expo. Two days is enough for the API story. It is a poor use of a long-haul ticket for anyone outside that stack."
           ]
         },
         {
           "heading": "SuperAI",
           "paragraphs": [
-            "The 2026 edition was Jun 10 to 11 at Marina Bay Sands. The reason to go next cycle is the Asia industry room, not a hyperscaler keynote. Choose it over a US campus week when the customers, hires, or investors you need are in Singapore. Skip it as a stand-in for the San Jose chip week or the five-day AWS week. Those answer different questions on different continents."
+            "June 10 to 11, 2026, Marina Bay Sands. I accompanied the SuperAI team through Hangzhou and Shanghai before that edition, including Zhejiang University, ModelScope, Qwen, and MiniMax, and I represented Datawhale at the Singapore conference. I wrote up five observations from the China visit. One that still decides this row for me: if the relationship only exists for those two days, I would not fly. I would go next cycle when the customers, hires, or investors you need are in that Asia industry room. I would not use it as a stand-in for the San Jose chip week or the five-day AWS week. Those are different questions, on different continents."
           ]
         },
         {
           "heading": "CES",
           "paragraphs": [
-            "The January Las Vegas floor already ran. Next cycle it is still the consumer and hardware launch stage, which is why press and product teams go and why an infra team should stay home. Watch the recap when you only need the headlines."
+            "January 6 to 9, 2026, Las Vegas. Already ran. Next cycle it is still the consumer and hardware launch stage. That is why press and product teams go, and why I would tell an infra team to stay home. If you only need the headlines, watch the recap."
           ]
         },
         {
           "heading": "Google Cloud Next",
           "paragraphs": [
-            "The April Las Vegas edition already ran. Next cycle, go for Gemini and Google Cloud purchasing decisions. If the estate is AWS or Azure, skip it instead of adding a third cloud week."
+            "April 22 to 24, 2026, Las Vegas. Already ran. Next cycle I would go for a Gemini purchase on Google Cloud. If the estate is AWS or Azure, I would skip it. Adding a third cloud week is how a year disappears."
           ]
         },
         {
           "heading": "Databricks Data + AI Summit",
           "paragraphs": [
-            "The mid-June Moscone week already ran. Next cycle it is for teams whose job is the lakehouse and the models on top of it. It is the wrong room for a model-lab audience and the wrong room for a consumer launch floor."
+            "June 15 to 18, 2026, Moscone. Already ran. Next cycle I would go if the job is the lakehouse and the models sitting on it. I would skip it for a model-lab audience, and I would skip it for a consumer launch floor. Those rooms do not answer a platform question."
           ]
         },
         {
           "heading": "VivaTech",
           "paragraphs": [
-            "Paris already ran. Professional days were Jun 17 to 19 and the public festival day was Jun 20. Next cycle, go for European founder and press density. Skip it when you need a closed vendor API briefing."
+            "Paris already ran. Professional days were June 17 to 19, and the public festival day was June 20. Next cycle I would go for European founder and press density. I would skip it when you need a closed vendor API briefing. The public day is a different crowd from the professional days, and I would not book the flight for the festival day alone."
           ]
         },
         {
           "heading": "Dreamforce",
           "paragraphs": [
-            "Mid-September in San Francisco already ran. Next cycle, go only when Agentforce and the Salesforce estate are the purchase. GPU builders and API builders are in the wrong room."
+            "September 15 to 17, 2026, San Francisco. Already ran. Next cycle I would go only when Agentforce and the Salesforce estate are the purchase. If you build GPUs, or you live in an API that is not theirs, you are in the wrong room."
           ]
         },
         {
           "heading": "Web Summit",
           "paragraphs": [
-            "Still upcoming, Nov 9 to 12 in Lisbon. Go for founder and press density, and treat AI as a track inside a general tech expo. Skip it when the trip has to produce one vendor's roadmap."
+            "November 9 to 12, 2026, Lisbon. Still ahead. I would go for founder and press density, and I would treat AI as one hall inside a general tech expo. I would skip it when the trip has to produce one vendor's roadmap. If your buyer is a Gulf ministry, I would wait for Dubai in December. If your buyer is an AWS architect, I would wait for the Las Vegas week."
           ]
         },
         {
           "heading": "GITEX GLOBAL",
           "paragraphs": [
-            "Still upcoming, Dec 7 to 11 in Dubai. Go when Gulf government and enterprise buyers are the meetings. Skip when the buyers are Bay Area engineering teams. A stream is a weak substitute because the point is the floor."
+            "December 7 to 11, 2026, Dubai. Still ahead. I would go when the meetings are Gulf government and enterprise buyers. I would skip when the buyers are Bay Area engineering teams. A livestream is a weak substitute, because the point is the floor. I also would not fly Dubai the week after the AWS week unless those Gulf meetings already have names. Two long trips in December is how people come home with badges and nothing decided."
           ]
         }
       ]
@@ -275,41 +285,41 @@
       "id": "academic",
       "heading": "Academic weeks are a different job",
       "paragraphs": [
-        "NeurIPS, ICML, and CVPR are not in either table. They run on papers and review deadlines. Use them when the work product is a paper. Use this page when the work product is a product decision, a partnership, or a purchase."
+        "NeurIPS, ICML, and CVPR are not in either table. They run on papers and review deadlines. I would use them when the work product is a paper. I would use this page when the work product is a product decision, a partnership, or a purchase. I do not have a clever way to rank those against Lisbon. Different job."
       ]
     },
     {
       "id": "outside-shortlist",
-      "heading": "Events with an AI track that are not this shortlist",
+      "heading": "Hardware weeks I left off",
       "paragraphs": [
-        "MWC, COMPUTEX, and similar hardware weeks carry AI sessions and still do not belong in these two tables. Smaller builder meetings such as AI Engineer also stay off this page. If the decision is one of the twelve brands above, stay here. If it is a hardware week, use the events directory."
+        "MWC, COMPUTEX, and the other hardware weeks have AI sessions, and I still left them out of these two tables. Smaller builder meetings such as AI Engineer stay off this page too. If your decision is one of the twelve brands above, stay here. If it is a hardware week, use the events directory. I would rather send you to the right list than pretend this page covers every badge."
       ]
     }
   ],
   "faq": [
     {
       "question": "How do I pick one to three instead of the whole list?",
-      "answer": "Start from the stack you ship and the city your buyers visit. Book at most one upcoming event unless you already have named meetings at a second. Use the held table only to mark next year's repeat, not to plan this quarter."
+      "answer": "I start from the stack you ship and the city your buyers actually visit. I would book at most one upcoming event unless you already have named meetings at a second. The held table is for marking next year's repeat. It is not a plan for this quarter. I lean toward one flagship and, if you need it, one regional trip. A third badge is how the calendar gets crowded and the meetings get vague."
     },
     {
       "question": "When is watching remote enough?",
-      "answer": "Watch when the value is a keynote or an API announcement. Fly when the value is a floor or a meeting you can name. A recap covers the one-day Fort Mason API briefing. It does not cover a Dubai expo or a Lisbon founder week."
+      "answer": "I watch when the value is a keynote or an API announcement. I fly when the value is a floor or a meeting I can name. A recap covers the one-day Fort Mason API briefing for me if I am not shipping on that API. It does not cover a Dubai expo or a Lisbon founder week."
     },
     {
       "question": "Should I choose an academic conference or an industry one?",
-      "answer": "Choose NeurIPS, ICML, or CVPR when you are submitting or hearing papers. Choose a row on this page when you are deciding a product, a stack, or a partnership. They solve different jobs."
+      "answer": "I would choose NeurIPS, ICML, or CVPR when you are submitting or hearing papers. I would choose a row on this page when you are deciding a product, a stack, or a partnership. They solve different jobs, and I would not pretend one list ranks both."
     },
     {
       "question": "Which 2026 AI conferences can I still book?",
-      "answer": "As of 2026-10-15, Web Summit, AWS re:Invent, and GITEX GLOBAL have not run. The other nine editions on this page already happened."
+      "answer": "As of 2026-10-15, I would still book Web Summit, AWS re:Invent, and GITEX GLOBAL. The other nine editions on this page already happened. I would not let a writeup of a week that is over talk you into a flight this quarter."
     },
     {
       "question": "What if my stack is not AWS, Google, or Microsoft?",
-      "answer": "Then the five-day Las Vegas AWS week, the April Google Cloud week, and the two-day Copilot briefing are skips. Look at the March San Jose week for hardware and infra, Fort Mason if you call the OpenAI API, Marina Bay or Lisbon for a regional room, and Dubai if the buyer is in the Gulf."
+      "answer": "Then I would skip the five-day Las Vegas AWS week, the April Google Cloud week, and the two-day Copilot briefing. I would look at the March San Jose week for hardware and infra, Fort Mason if you call the OpenAI API, Marina Bay or Lisbon for a regional room, and Dubai if the buyer is in the Gulf."
     },
     {
       "question": "What if a date here is wrong?",
-      "answer": "This page uses organizer dates and leaves unknowns blank rather than filling them in. The as-of date is 2026-10-15. Check the organizer site before you book. The Paris week is Jun 17 to 20, with professional days Jun 17 to 19 and a public day on Jun 20."
+      "answer": "I use organizer dates and I leave unknowns blank rather than filling them in. The as-of date is 2026-10-15. Check the organizer site before you book. The Paris week is Jun 17 to 20, with professional days Jun 17 to 19 and a public day on Jun 20. If I do not have a date, you will not see me guess one."
     }
   ],
   "internalLinks": [

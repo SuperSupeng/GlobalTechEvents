@@ -8,11 +8,13 @@ export type AppPage =
   | 'seoEvent'
   | 'eventsHub'
   | 'guidesIndex'
-  | 'guide';
+  | 'guide'
+  | 'author';
 
 export type ResolvedAppRoute =
   | { page: 'home' | 'privacy' | 'terms' | 'resources' | 'eventsHub' | 'guidesIndex' }
   | { page: 'guide'; slug: string }
+  | { page: 'author'; slug: string }
   | { page: 'seoEvent'; seoEventPage: SEOEventPageData };
 
 export function resolveAppRoute(pathname: string): ResolvedAppRoute {
@@ -24,6 +26,9 @@ export function resolveAppRoute(pathname: string): ResolvedAppRoute {
 
   const guideMatch = pathname.match(/^\/guides\/([a-z0-9-]+)\/?$/i);
   if (guideMatch) return { page: 'guide', slug: guideMatch[1].toLowerCase() };
+
+  const authorMatch = pathname.match(/^\/authors\/([a-z0-9-]+)\/?$/i);
+  if (authorMatch) return { page: 'author', slug: authorMatch[1].toLowerCase() };
 
   const seoEventPage = getSEOEventPageByPath(pathname);
   if (seoEventPage) return { page: 'seoEvent', seoEventPage };

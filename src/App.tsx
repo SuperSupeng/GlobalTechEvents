@@ -404,7 +404,7 @@ const App: React.FC = () => {
                   Copy an agent prompt
                 </a>
               </div>
-              <CalendarDownloadProof className="mt-5 text-sm text-white/70 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]" />
+              <CalendarDownloadProof className="mt-5 max-w-xl text-center text-sm text-white/70 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]" />
             </motion.div>
           </div>
 
@@ -457,23 +457,25 @@ const App: React.FC = () => {
             <div className="text-white/70 text-sm">
               {filteredEvents.length > 0 && <span>{filteredEvents.length} events found</span>}
             </div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <CalendarDownloadProof className="text-sm text-white/70" />
-              <button
-                onClick={() => setShowSubscribeModal(true)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 rounded-full text-primary-light hover:text-white transition-all text-sm font-medium"
-              >
-                <Rss size={16} />
-                Subscribe to Calendar
-              </button>
-              <button
-                type="button"
-                onClick={() => openWhatsApp('Calendar row Join WhatsApp', 'home')}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
-              >
-                <MessageCircle size={16} />
-                Join WhatsApp
-              </button>
+            <div className="flex max-w-md flex-col items-start gap-2 sm:items-end">
+              <CalendarDownloadProof className="text-sm text-white/70 sm:text-right" />
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <button
+                  onClick={() => setShowSubscribeModal(true)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 rounded-full text-primary-light hover:text-white transition-all text-sm font-medium"
+                >
+                  <Rss size={16} />
+                  Subscribe to Calendar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openWhatsApp('Calendar row Join WhatsApp', 'home')}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-all text-sm font-medium"
+                >
+                  <MessageCircle size={16} />
+                  Join WhatsApp
+                </button>
+              </div>
             </div>
           </div>
 

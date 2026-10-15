@@ -46,13 +46,25 @@ assert.deepEqual(body, measuredBody, 'measured row becomes the public body');
 assert.equal(body.followers, body.all_time.downloads, 'followers and all_time.downloads are the same count');
 assert.equal(
   text(proofSentenceFromBody(JSON.parse(JSON.stringify(body)))),
-  '1,336 calendar downloads from about 205 unique IPs',
+  '1,336 calendar downloads from about 205 unique IPs. In the last 7 days, 45 calendar downloads from about 13 unique IPs',
   'public body becomes the wall sentence',
 );
 assert.equal(
   text(proofSentenceFromBody(okBody({ downloads: 1, approx_unique_ips: 1 }))),
   '1 calendar download from about 1 unique IP',
   'singular forms',
+);
+assert.equal(
+  text(
+    proofSentenceFromBody({
+      ok: true,
+      all_time: { downloads: 2, approx_unique_ips: 1 },
+      recent: { days: 1, downloads: 1, approx_unique_ips: 1 },
+      generated_at: AT,
+    }),
+  ),
+  '2 calendar downloads from about 1 unique IP. In the last day, 1 calendar download from about 1 unique IP',
+  'a one-day window uses the singular',
 );
 assert.equal(proofSentenceFromBody(okBody({ downloads: 0, approx_unique_ips: 0 })), null, 'zero hides the wall');
 assert.equal(
@@ -62,7 +74,7 @@ assert.equal(
 );
 assert.equal(
   text(proofSentenceFromBody({ ...measuredBody, followers: 1, label: 'calendar_subscribers', source: 'other' })),
-  '1,336 calendar downloads from about 205 unique IPs',
+  '1,336 calendar downloads from about 205 unique IPs. In the last 7 days, 45 calendar downloads from about 13 unique IPs',
   'followers, label, and source do not change the sentence',
 );
 assert.equal(

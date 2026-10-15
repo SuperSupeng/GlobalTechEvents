@@ -164,15 +164,27 @@ function toBody(stats: CalendarDownloadStats | null, generatedAt: string): Calen
   };
 }
 
-function describe(stats: CalendarDownloadStats): ProofSentence | null {
-  const { downloads, approxUniqueIps } = stats.allTime;
-  if (approxUniqueIps === 0) return null;
+function windowClause(tally: DownloadTally): ProofPart[] {
   return [
-    { figure: formatCount(downloads) },
-    downloads === 1 ? ' calendar download from about ' : ' calendar downloads from about ',
-    { figure: formatCount(approxUniqueIps) },
-    approxUniqueIps === 1 ? ' unique IP' : ' unique IPs',
+    { figure: formatCount(tally.downloads) },
+    tally.downloads === 1 ? ' calendar download from about ' : ' calendar downloads from about ',
+    { figure: formatCount(tally.approxUniqueIps) },
+    tally.approxUniqueIps === 1 ? ' unique IP' : ' unique IPs',
   ];
+}
+
+function describe(stats: CalendarDownloadStats): ProofSentence | null {
+  if (stats.allTime.approxUniqueIps === 0) return null;
+  const parts: ProofPart[] = windowClause(stats.allTime);
+  if (stats.recent.approxUniqueIps > 0) {
+    parts.push(
+      ...(stats.recent.days === 1
+        ? ['. In the last day, ']
+        : ['. In the last ', { figure: formatCount(stats.recent.days) }, ' days, ']),
+    );
+    parts.push(...windowClause(stats.recent));
+  }
+  return parts;
 }
 
 // Hard-coded en-US so every visitor reads the same grouping.

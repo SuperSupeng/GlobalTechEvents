@@ -29,22 +29,26 @@ const measuredBody = await loadCalendarDownloadsBody(rowClient(measured));
 assert.deepEqual(calls, [['count_ics_downloads', { p_window_days: 7 }]], 'count_ics_downloads with a 7 day window');
 assert.deepEqual(
   measuredBody,
-  { ok: true, at_least: 200, label: 'people_added_this_calendar' },
+  { ok: true, at_least: 1300, label: 'people_added_this_calendar' },
   'measured row public body',
 );
-assertWall(measuredBody, '200+', '200+ people added this calendar');
+assertWall(measuredBody, '1,300+', '1,300+ people added this calendar');
 
 const floors = [
-  { unique: 1, downloads: 1336, atLeast: 0, figure: null, joined: null },
-  { unique: 9, downloads: 99, atLeast: 0, figure: null, joined: null },
-  { unique: 13, downloads: 205, atLeast: 10, figure: '10+', joined: '10+ people added this calendar' },
-  { unique: 99, downloads: 205, atLeast: 90, figure: '90+', joined: '90+ people added this calendar' },
-  { unique: 205, downloads: 1336, atLeast: 200, figure: '200+', joined: '200+ people added this calendar' },
-  { unique: 1336, downloads: 12345, atLeast: 1300, figure: '1,300+', joined: '1,300+ people added this calendar' },
-  { unique: 12345, downloads: 99999, atLeast: 12000, figure: '12,000+', joined: '12,000+ people added this calendar' },
+  { downloads: 0, unique: 0, atLeast: 0, figure: null },
+  { downloads: 9, unique: 9, atLeast: 0, figure: null },
+  { downloads: 13, unique: 1, atLeast: 10, figure: '10+' },
+  { downloads: 99, unique: 0, atLeast: 90, figure: '90+' },
+  { downloads: 205, unique: 205, atLeast: 200, figure: '200+' },
+  { downloads: 300, unique: 205, atLeast: 300, figure: '300+' },
+  { downloads: 1336, unique: 0, atLeast: 1300, figure: '1,300+' },
+  { downloads: 1336, unique: 1336, atLeast: 1300, figure: '1,300+' },
+  { downloads: 1399, unique: 205, atLeast: 1300, figure: '1,300+' },
+  { downloads: 1400, unique: 205, atLeast: 1400, figure: '1,400+' },
+  { downloads: 12345, unique: 205, atLeast: 12000, figure: '12,000+' },
 ];
 
-for (const { unique, downloads, atLeast, figure, joined } of floors) {
+for (const { downloads, unique, atLeast, figure } of floors) {
   const body = await loadCalendarDownloadsBody(
     rowClient({
       all_time_downloads: downloads,
@@ -56,29 +60,14 @@ for (const { unique, downloads, atLeast, figure, joined } of floors) {
   assert.deepEqual(
     body,
     { ok: true, at_least: atLeast, label: 'people_added_this_calendar' },
-    `unique ${unique} publishes ${atLeast}`,
+    `downloads ${downloads} publishes ${atLeast}`,
   );
   if (figure === null) {
-    assert.equal(wall(body), null, `unique ${unique} hides the wall`);
+    assert.equal(wall(body), null, `downloads ${downloads} hides the wall`);
   } else {
-    assertWall(body, figure, joined);
+    assertWall(body, figure, `${figure} people added this calendar`);
   }
 }
-
-const zeroUnique = await loadCalendarDownloadsBody(
-  rowClient({
-    all_time_downloads: 1336,
-    all_time_distinct_ip_hashes: 0,
-    recent_downloads: 45,
-    recent_distinct_ip_hashes: 13,
-  }),
-);
-assert.deepEqual(
-  zeroUnique,
-  { ok: true, at_least: 0, label: 'people_added_this_calendar' },
-  'zero unique IPs still ok',
-);
-assert.equal(wall(zeroUnique), null, 'zero unique IPs hides the wall');
 
 assert.deepEqual(
   await loadCalendarDownloadsBody(
@@ -92,14 +81,34 @@ assert.deepEqual(
   FAILURE,
   'unique above downloads',
 );
+assert.deepEqual(
+  await loadCalendarDownloadsBody(
+    rowClient({
+      ...measured,
+      all_time_distinct_ip_hashes: 1337,
+    }),
+  ),
+  FAILURE,
+  'unique 1337 above downloads 1336',
+);
 
-for (const bad of ['1336', '205', '01336', '1336.0', ' ', '', '-1', -1]) {
-  assert.deepEqual(
-    await loadCalendarDownloadsBody(rowClient({ ...measured, all_time_downloads: bad })),
-    FAILURE,
-    `rejected count ${JSON.stringify(bad)}`,
-  );
+for (const column of ['all_time_downloads', 'all_time_distinct_ip_hashes']) {
+  for (const bad of ['1336', '205', '01336', '1336.0', ' ', '', '-1', -1]) {
+    assert.deepEqual(
+      await loadCalendarDownloadsBody(rowClient({ ...measured, [column]: bad })),
+      FAILURE,
+      `rejected ${column} ${JSON.stringify(bad)}`,
+    );
+  }
 }
+
+const missingUnique = { ...measured };
+delete missingUnique.all_time_distinct_ip_hashes;
+assert.deepEqual(
+  await loadCalendarDownloadsBody(rowClient(missingUnique)),
+  FAILURE,
+  'omitted all_time_distinct_ip_hashes',
+);
 
 assert.deepEqual(await loadCalendarDownloadsBody(null), FAILURE, 'missing client');
 assert.deepEqual(

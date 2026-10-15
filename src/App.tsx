@@ -19,7 +19,9 @@ import SEOEventPage from './pages/SEOEventPage';
 import EventsHubPage from './pages/EventsHubPage';
 import GuidesIndexPage from './pages/GuidesIndexPage';
 import GuidePage from './pages/GuidePage';
+import AuthorPage from './pages/AuthorPage';
 import { getGuideBySlug, listGuides } from './content/guides';
+import { getAuthorBySlug } from './content/authors';
 import { resolveAppRoute, type AppPage } from './routing/resolveAppRoute';
 import type { SEOEventPageData } from './data/seoEventPages';
 import QuickFilters from './components/QuickFilters';
@@ -45,6 +47,7 @@ const App: React.FC = () => {
     initialRoute.page === 'seoEvent' ? initialRoute.seoEventPage : null,
   );
   const [guideSlug, setGuideSlug] = useState<string | null>(initialRoute.page === 'guide' ? initialRoute.slug : null);
+  const [authorSlug, setAuthorSlug] = useState<string | null>(initialRoute.page === 'author' ? initialRoute.slug : null);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const { toasts, removeToast, success } = useToast();
@@ -60,6 +63,7 @@ const App: React.FC = () => {
     setCurrentPage(next.page);
     setSeoEventPage(next.page === 'seoEvent' ? next.seoEventPage : null);
     setGuideSlug(next.page === 'guide' ? next.slug : null);
+    setAuthorSlug(next.page === 'author' ? next.slug : null);
   };
 
   const navigateToPath = (pathname: string, title?: string) => {
@@ -170,6 +174,7 @@ const App: React.FC = () => {
       setCurrentPage(next.page);
       setSeoEventPage(next.page === 'seoEvent' ? next.seoEventPage : null);
       setGuideSlug(next.page === 'guide' ? next.slug : null);
+      setAuthorSlug(next.page === 'author' ? next.slug : null);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -240,8 +245,9 @@ const App: React.FC = () => {
     return <SEOEventPage page={seoEventPage} onBackHome={navigateToHome} onToast={success} />;
   }
 
-  if (currentPage === 'guidesIndex' || currentPage === 'guide') {
+  if (currentPage === 'guidesIndex' || currentPage === 'guide' || currentPage === 'author') {
     const activeGuide = guideSlug ? getGuideBySlug(guideSlug) ?? null : null;
+    const activeAuthor = authorSlug ? getAuthorBySlug(authorSlug) ?? null : null;
     return (
       <>
         <Navbar
@@ -253,6 +259,8 @@ const App: React.FC = () => {
         />
         {currentPage === 'guidesIndex' ? (
           <GuidesIndexPage guides={listGuides()} onOpenGuide={(slug) => navigateToPath(`/guides/${slug}`)} />
+        ) : currentPage === 'author' ? (
+          <AuthorPage author={activeAuthor} slug={authorSlug ?? ''} onNavigate={navigateToHref} />
         ) : (
           <GuidePage guide={activeGuide} slug={guideSlug ?? ''} onNavigate={navigateToHref} />
         )}
@@ -262,7 +270,12 @@ const App: React.FC = () => {
           onGuidesClick={navigateToGuides}
           onNewsletterClick={navigateToEventsHub}
           onSubmitClick={navigateToEventsHub}
-          onWhatsAppClick={() => openWhatsApp('Footer WhatsApp', currentPage === 'guidesIndex' ? 'guides_index' : 'guide')}
+          onWhatsAppClick={() =>
+            openWhatsApp(
+              'Footer WhatsApp',
+              currentPage === 'guidesIndex' ? 'guides_index' : currentPage === 'author' ? 'author' : 'guide',
+            )
+          }
           onPrivacyClick={navigateToPrivacy}
           onTermsClick={navigateToTerms}
         />

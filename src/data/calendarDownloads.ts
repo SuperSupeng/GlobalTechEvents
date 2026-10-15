@@ -8,10 +8,9 @@ const LABEL = 'people_added_this_calendar' as const;
 
 type CountClient = Pick<SupabaseClient, 'rpc'>;
 
-interface DownloadTally {
-  readonly downloads: number;
-  readonly approxUniqueIps: number;
-}
+declare const verifiedDownloads: unique symbol;
+
+type VerifiedDownloads = number & { readonly [verifiedDownloads]: true };
 
 declare const publishedFloor: unique symbol;
 
@@ -41,9 +40,9 @@ export async function loadCalendarDownloadsBody(
       .rpc(COUNT_RPC, { p_window_days: RECENT_WINDOW_DAYS })
       .single();
     if (error) throw error;
-    const tally = tallyFromRow(data);
-    if (!tally) throw new Error(`${COUNT_RPC} returned ${JSON.stringify(data)}`);
-    return toBody(floorForPublic(tally.approxUniqueIps));
+    const downloads = downloadsFromRow(data);
+    if (downloads === null) throw new Error(`${COUNT_RPC} returned ${JSON.stringify(data)}`);
+    return toBody(floorForPublic(downloads));
   } catch (error) {
     console.error('Calendar download stats unavailable', error);
     return toBody(null);
@@ -56,12 +55,12 @@ export function proofSentenceFromBody(body: unknown): ProofSentence | null {
   return [{ figure: `${formatCount(atLeast)}+` }, ' people added this calendar'];
 }
 
-function tallyFromRow(row: unknown): DownloadTally | null {
+function downloadsFromRow(row: unknown): VerifiedDownloads | null {
   if (!isRecord(row)) return null;
   const downloads = parseCount(row.all_time_downloads);
-  const approxUniqueIps = parseCount(row.all_time_distinct_ip_hashes);
-  if (downloads === null || approxUniqueIps === null || approxUniqueIps > downloads) return null;
-  return { downloads, approxUniqueIps };
+  const uniqueIps = parseCount(row.all_time_distinct_ip_hashes);
+  if (downloads === null || uniqueIps === null || uniqueIps > downloads) return null;
+  return downloads as VerifiedDownloads;
 }
 
 function atLeastFromBody(body: unknown): number | null {
@@ -69,7 +68,7 @@ function atLeastFromBody(body: unknown): number | null {
   return parseCount(body.at_least);
 }
 
-function floorForPublic(exact: number): PublishedFloor {
+function floorForPublic(exact: VerifiedDownloads): PublishedFloor {
   const step = 10 ** Math.max(1, String(exact).length - 2);
   const floor = Math.floor(exact / step) * step;
   return floor as PublishedFloor;

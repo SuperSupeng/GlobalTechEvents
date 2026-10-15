@@ -473,15 +473,26 @@ function buildGenericPage(event, usedSlugs) {
 function mergePages(manualPages, events) {
   const manualByTitle = new Map(manualPages.map((page) => [normalizeTitle(page.eventName), page]));
   const usedSlugs = new Set();
+  const consumedManualSlugs = new Set();
 
-  return events.map((event) => {
+  const fromEvents = events.map((event) => {
     const manual = manualByTitle.get(normalizeTitle(event.title));
     if (manual) {
       usedSlugs.add(manual.slug);
+      consumedManualSlugs.add(manual.slug);
       return manual;
     }
     return buildGenericPage(event, usedSlugs);
   });
+
+  const unmatchedManualPages = [];
+  for (const page of manualPages) {
+    if (consumedManualSlugs.has(page.slug) || usedSlugs.has(page.slug)) continue;
+    usedSlugs.add(page.slug);
+    unmatchedManualPages.push(page);
+  }
+
+  return [...fromEvents, ...unmatchedManualPages];
 }
 
 function writeGeneratedSource(allPages) {

@@ -4,7 +4,7 @@
 
 GlobalTechEvents publishes English pages for the home calendar, the events directory, and conference guides. Confirm dates and registration on the organizer site.
 
-An agent feed is not published. Use the pages below.
+The public event catalog is live. GET https://www.globaltechevents.xyz/api/events returns JSON: an events array. Each item has name, dates.start, dates.end (YYYY-MM-DD), city, url, and slug. url is the organizer site when one is listed, otherwise the event guide on this site.
 
 ## Hubs
 
@@ -14,7 +14,7 @@ An agent feed is not published. Use the pages below.
 
 ## Guides
 
-- [Best AI conferences 2026](https://www.globaltechevents.xyz/guides/best-ai-conferences-2026): Three industry AI conferences are still ahead in 2026. Web Summit is Nov 9 to 12 in Lisbon, AWS re:Invent is Nov 30 to Dec 4 in Las Vegas, and GITEX GLOBAL is Dec 7 to 11 in Dubai. Use the first table to pick one to three of those, then use the held section only to decide which 2026 editions are worth repeating next cycle.
+- [Best AI conferences 2026](https://www.globaltechevents.xyz/guides/best-ai-conferences-2026): If a friend asked which AI conference is still worth a flight in 2026, I would not hand them the whole year. As of 2026-10-15 I would look at three: Lisbon, Nov 9 to 12, if you need founders and press; Las Vegas, Nov 30 to Dec 4, if AWS is already your estate; Dubai, Dec 7 to 11, if the buyer is in the Gulf. I would skip the other two the moment that is not your room.
 
 ## Event guides
 
@@ -101,6 +101,14 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [Expand North Star 2026](https://www.globaltechevents.xyz/events/expand-north-star-2026): December 7, 2026, Dubai, United Arab Emirates
 - [COMEUP 2026](https://www.globaltechevents.xyz/events/comeup-2026): December 8, 2026, Seoul, South Korea
 - [Huddle Global 2026](https://www.globaltechevents.xyz/events/huddle-global-2026): December 9, 2026, Trivandrum, India
+
+## Event catalog
+
+- [Public event JSON](https://www.globaltechevents.xyz/api/events): Live GET catalog. Response shape is `{ "events": [{ "name", "dates": { "start", "end" }, "city", "url", "slug" }] }`.
+
+## Authors
+
+- [Darren Su](https://www.globaltechevents.xyz/authors/darren-su): Author page.
 
 ## Other crawlable pages
 

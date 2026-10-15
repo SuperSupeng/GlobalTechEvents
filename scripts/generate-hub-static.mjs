@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadGuides } from './generate-guide-static.mjs';
+import { loadAuthors, loadGuides } from './generate-guide-static.mjs';
 import { evaluateGuidePublishGate } from '../src/content/guides/publishGate.ts';
 
 const PUBLIC_DIR = path.resolve('public');
@@ -261,7 +261,7 @@ function renderLlmsTxt(events, guides) {
     '',
     'GlobalTechEvents publishes English pages for the home calendar, the events directory, and conference guides. Confirm dates and registration on the organizer site.',
     '',
-    'An agent feed is not published. Use the pages below.',
+    `The public event catalog is live. GET ${SITE_URL}/api/events returns JSON: an events array. Each item has name, dates.start, dates.end (YYYY-MM-DD), city, url, and slug. url is the organizer site when one is listed, otherwise the event guide on this site.`,
     '',
     '## Hubs',
     '',
@@ -305,6 +305,20 @@ function renderLlmsTxt(events, guides) {
     }
   }
 
+  const authors = loadAuthors();
+  lines.push('', '## Event catalog', '');
+  lines.push(
+    `- [Public event JSON](${SITE_URL}/api/events): Live GET catalog. Response shape is \`{ "events": [{ "name", "dates": { "start", "end" }, "city", "url", "slug" }] }\`.`,
+  );
+
+  if (authors.length > 0) {
+    lines.push('', '## Authors', '');
+    for (const author of authors) {
+      const href = String(author.url || `${SITE_URL}/authors/${author.slug}`);
+      lines.push(`- [${markdownLabel(author.name)}](${href}): Author page.`);
+    }
+  }
+
   lines.push(
     '',
     '## Other crawlable pages',
@@ -344,8 +358,11 @@ export function writeHubStaticPages() {
   if (guides.some((guide) => guide.slug === 'best-ai-conferences-2026') && !llms.includes(`${SITE_URL}/guides/best-ai-conferences-2026`)) {
     throw new Error('llms.txt is missing the live Best AI conferences 2026 URL.');
   }
-  if (/\/feed(?:\.xml)?\b|agent-feed|\/agents?\b/i.test(llms)) {
-    throw new Error('llms.txt invented an agent or feed URL.');
+  if (!llms.includes(`${SITE_URL}/api/events`)) {
+    throw new Error('llms.txt is missing the live GET /api/events catalog.');
+  }
+  if (/agent feed is not published|not available yet|feed\.xml|agent-feed/i.test(llms)) {
+    throw new Error('llms.txt still describes the catalog as unpublished or invents a feed URL.');
   }
   fs.writeFileSync(path.join(PUBLIC_DIR, 'llms.txt'), llms);
 

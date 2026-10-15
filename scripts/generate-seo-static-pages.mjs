@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ensureGuidesInExistingSitemap, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
+import { ensureGuidesInExistingSitemap, indexableAuthorUrls, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 import { writeHubStaticPages } from './generate-hub-static.mjs';
 
 const SOURCE = path.resolve('src/data/seoEventPages.ts');
@@ -361,6 +361,7 @@ function generateSitemap(pages, guides = []) {
     ...staticUrls.map((p) => `${SITE_URL}${p}`),
     ...pages.map((page) => `${SITE_URL}/events/${page.slug}`),
     ...indexableGuideUrls(guides),
+    ...indexableAuthorUrls(),
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -372,11 +373,14 @@ ${urls
     const isEventsHub = url.endsWith('/events');
     const isGuidePage = url.includes('/guides/');
     const isGuidesHub = url.endsWith('/guides');
-    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub ? 'weekly' : 'monthly';
+    const isAuthorPage = url.includes('/authors/');
+    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage ? 'weekly' : 'monthly';
     const priority = isHome
       ? '1.0'
       : isEventPage || isGuidePage
         ? '0.8'
+        : isAuthorPage
+          ? '0.6'
         : isEventsHub
           ? '0.9'
           : isGuidesHub

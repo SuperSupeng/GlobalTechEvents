@@ -6,13 +6,30 @@ export interface GuideJsonLd {
   faqPage: Record<string, unknown> | null;
 }
 
-export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
-  const canonical = guideCanonicalUrl(guide.slug);
-  const author: Record<string, unknown> = {
+function articleAuthor(guide: Guide): Record<string, unknown> {
+  if (guide.author.slug && guide.author.url) {
+    const person: Record<string, unknown> = {
+      '@type': 'Person',
+      '@id': `${guide.author.url}#person`,
+      name: guide.author.name,
+      url: guide.author.url,
+      description: guide.author.bio,
+    };
+    if (guide.author.image) person.image = absoluteSiteUrl(guide.author.image);
+    if (guide.author.sameAs && guide.author.sameAs.length > 0) person.sameAs = guide.author.sameAs;
+    return person;
+  }
+
+  return {
     '@type': 'Organization',
     name: guide.author.name,
     description: guide.author.bio,
   };
+}
+
+export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
+  const canonical = guideCanonicalUrl(guide.slug);
+  const author = articleAuthor(guide);
   const article: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -36,8 +53,12 @@ export function buildGuideJsonLd(guide: Guide): GuideJsonLd {
     article.datePublished = guide.asOf;
   }
 
-  if (guide.coverImage?.src) {
-    article.image = [absoluteSiteUrl(guide.coverImage.src)];
+  const images = [
+    ...(guide.coverImage?.src ? [guide.coverImage.src] : []),
+    ...(guide.bodyImages ?? []).map((image) => image.src).filter(Boolean),
+  ];
+  if (images.length > 0) {
+    article.image = images.map((src) => absoluteSiteUrl(src));
   }
 
   const faqPage =

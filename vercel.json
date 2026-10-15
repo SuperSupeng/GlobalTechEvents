@@ -55,6 +55,14 @@
       "destination": "/guides/:slug/index.html"
     },
     {
+      "source": "/authors/:slug",
+      "destination": "/authors/:slug/index.html"
+    },
+    {
+      "source": "/authors/:slug/",
+      "destination": "/authors/:slug/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -165,11 +173,37 @@
       ]
     },
     {
+      "source": "/authors/:slug",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
       "source": "/api/calendar",
       "headers": [
         {
           "key": "Content-Type",
           "value": "text/calendar; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/api/events",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json; charset=utf-8"
         },
         {
           "key": "Cache-Control",

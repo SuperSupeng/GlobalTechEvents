@@ -1,0 +1,66 @@
+{
+  "name": "Darren Su",
+  "slug": "darren-su",
+  "headline": "Connecting global founders and builders with China's AI ecosystem.",
+  "bio": "Co-founder of AGI Villa and MatchPoint; Head of City Ecosystem at Datawhale; n8n Ambassador.",
+  "about": [
+    "I co-founded AGI Villa and MatchPoint, and I am Head of City Ecosystem at Datawhale.",
+    "I accompanied the SuperAI team through universities, open-source communities, and AI companies in Hangzhou and Shanghai, including Zhejiang University, ModelScope, Qwen, and MiniMax, then represented Datawhale at their conference in Singapore.",
+    "I wrote five observations from those conversations. One that still sits with me: a conference week is a weak substitute for a relationship the rest of the year.",
+    "GlobalTechEvents is the index I use to pull technology conferences and community events into one calendar.",
+    "Datawhale AI+X Events is the shared calendar for AI meetups, workshops, hackathons, and university, city, and industry events.",
+    "In 2026 I also wrote about running 31 agents, including the tasks that failed and the automations I stopped."
+  ],
+  "avatar": {
+    "src": "/authors/darren-su.jpg",
+    "alt": "Darren Su"
+  },
+  "sameAs": [
+    "https://www.darren-su.com",
+    "https://x.com/zenshipai",
+    "https://darrensu101.substack.com",
+    "https://www.linkedin.com/in/darrenzenshipai",
+    "https://github.com/SuperSupeng"
+  ],
+  "knowsAbout": [
+    "AI conferences",
+    "China AI ecosystem",
+    "founder networks",
+    "tech events"
+  ],
+  "affiliations": [
+    { "name": "AGI Villa", "role": "Co-founder" },
+    { "name": "MatchPoint", "role": "Co-founder" },
+    { "name": "Datawhale", "role": "Head of City Ecosystem" },
+    { "name": "GlobalTechEvents", "url": "https://www.globaltechevents.xyz" }
+  ],
+  "url": "https://www.globaltechevents.xyz/authors/darren-su",
+  "guides": [
+    {
+      "href": "/guides/best-ai-conferences-2026",
+      "label": "Best AI conferences 2026"
+    }
+  ],
+  "evidence": [
+    {
+      "href": "https://www.globaltechevents.xyz/",
+      "label": "GlobalTechEvents calendar",
+      "note": "The index I use when a conference week is still bookable."
+    },
+    {
+      "href": "https://www.darren-su.com/en/work/superai-china",
+      "label": "SuperAI China visit",
+      "note": "I accompanied the SuperAI team through Hangzhou and Shanghai, then represented Datawhale at their conference in Singapore."
+    },
+    {
+      "href": "https://www.darren-su.com/en/blog/superai-china-ecosystem-visit",
+      "label": "Five observations from Hangzhou and Shanghai",
+      "note": "Field note from that China visit. A two-day conference does not carry the relationship by itself."
+    },
+    {
+      "href": "https://aixevents.datawhale.cn/",
+      "label": "Datawhale AI+X Events",
+      "note": "Meetups, workshops, hackathons, and university, city, and industry events. A different list from the flagship weeks."
+    }
+  ]
+}

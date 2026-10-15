@@ -63,7 +63,23 @@
       "destination": "/authors/:slug/index.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/cities/san-francisco",
+      "destination": "/cities/san-francisco/index.html"
+    },
+    {
+      "source": "/cities/san-francisco/",
+      "destination": "/cities/san-francisco/index.html"
+    },
+    {
+      "source": "/tracks/ai",
+      "destination": "/tracks/ai/index.html"
+    },
+    {
+      "source": "/tracks/ai/",
+      "destination": "/tracks/ai/index.html"
+    },
+    {
+      "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$).*)",
       "destination": "/index.html"
     }
   ],
@@ -174,6 +190,32 @@
     },
     {
       "source": "/authors/:slug",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/cities/san-francisco",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/tracks/ai",
       "headers": [
         {
           "key": "Content-Type",

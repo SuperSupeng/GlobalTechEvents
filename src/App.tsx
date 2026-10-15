@@ -29,8 +29,8 @@ import QuickFilters from './components/QuickFilters';
 import FeaturedEvents from './components/FeaturedEvents';
 import SubscribeModal from './components/SubscribeModal';
 import { useToast } from './hooks/useToast';
-import { formatCalendarFollowers, useCalendarFollowers } from './hooks/useCalendarFollowers';
-import { CALENDAR_SUBSCRIBERS_LABEL, WHATSAPP_GROUP_URL } from './config/constants';
+import CalendarDownloadProof from './components/CalendarDownloadProof';
+import { WHATSAPP_GROUP_URL } from './config/constants';
 import { trackOutboundClick } from './utils/analytics';
 import { getHomeSEO, updateMetaTags } from './utils/seo';
 
@@ -153,19 +153,6 @@ const App: React.FC = () => {
   });
 
   const { data: allLocations = [] } = useLocations();
-  const calendarFollowers = useCalendarFollowers(currentPage === 'home');
-
-  const calendarSubscriberProof = (className: string) => {
-    if (calendarFollowers === null) return null;
-
-    return (
-      <p className={className}>
-        <span className="font-medium text-white/90 tabular-nums">{formatCalendarFollowers(calendarFollowers)}</span>
-        {' '}
-        {CALENDAR_SUBSCRIBERS_LABEL}
-      </p>
-    );
-  };
 
   const filteredEvents = useMemo(() => events, [events]);
 
@@ -417,7 +404,7 @@ const App: React.FC = () => {
                   Copy an agent prompt
                 </a>
               </div>
-              {calendarSubscriberProof('mt-5 text-sm text-white/70 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]')}
+              <CalendarDownloadProof className="mt-5 text-sm text-white/70 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]" />
             </motion.div>
           </div>
 
@@ -471,7 +458,7 @@ const App: React.FC = () => {
               {filteredEvents.length > 0 && <span>{filteredEvents.length} events found</span>}
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              {calendarSubscriberProof('text-sm text-white/70')}
+              <CalendarDownloadProof className="text-sm text-white/70" />
               <button
                 onClick={() => setShowSubscribeModal(true)}
                 className="flex items-center gap-2 px-5 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 rounded-full text-primary-light hover:text-white transition-all text-sm font-medium"

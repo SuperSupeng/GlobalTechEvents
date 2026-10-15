@@ -131,6 +131,7 @@ END:VEVENT
   return ics;
 }
 
+// Changing the hash input gives every IP a new hash and inflates the /api/followers unique-IP count.
 function hashIp(ip: string): string {
   return createHash('sha256').update(ip + process.env.IP_HASH_SALT || 'default-salt').digest('hex').slice(0, 16);
 }

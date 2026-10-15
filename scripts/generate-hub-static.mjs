@@ -113,14 +113,15 @@ const HUB_CSS = `
       p, li { color: rgba(255,255,255,.84); }
       .eyebrow { color: #fdba74; text-transform: uppercase; letter-spacing: .14em; font-size: 12px; }
       .links { padding-left: 20px; }
+      .links li { overflow-wrap: anywhere; }
       .links a { color: #fdba74; }
       footer { margin-top: 40px; color: rgba(255,255,255,.55); font-size: 14px; }
       footer a { color: rgba(255,255,255,.75); }
       .card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 18px; margin: 20px 0; }
       .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
-      button.btn, a.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font: inherit; font-size: 15px; }
+      button.btn, a.btn { display: inline-flex; align-items: center; justify-content: center; max-width: 100%; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font: inherit; font-size: 15px; white-space: normal; text-align: center; }
       a.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
-      pre.prompt { white-space: pre-wrap; overflow-wrap: anywhere; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px; color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.6; }
+      pre.prompt { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 16px; color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.6; }
       .status { color: #86efac; font-size: 14px; }
 `;
 
@@ -238,6 +239,7 @@ function renderHomeShell(guides) {
         <nav aria-label="Primary">
           <ul>
             <li><a href="/events">Events directory</a></li>
+            <li><a href="/for-agents">Copy an agent prompt</a></li>
             <li><a href="/guides">Guides</a></li>
             ${guideLinks}
             <li><a href="/resources">Resources</a></li>

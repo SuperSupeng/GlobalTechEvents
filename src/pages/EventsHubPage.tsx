@@ -129,9 +129,9 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
           <p className="text-white/75 leading-relaxed max-w-3xl mb-5">
             Copy a prompt that fetches the live catalog. The catalog is public. No API key.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <CopyAgentPromptButton />
-            <a href="/for-agents" className="btn-secondary inline-flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 min-w-0">
+            <CopyAgentPromptButton className="btn-primary inline-flex max-w-full items-center justify-center whitespace-normal text-center" />
+            <a href="/for-agents" className="btn-secondary inline-flex max-w-full items-center justify-center whitespace-normal text-center">
               Open handoff page
             </a>
           </div>

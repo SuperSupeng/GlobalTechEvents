@@ -79,6 +79,22 @@
       "destination": "/tracks/ai/index.html"
     },
     {
+      "source": "/topics/ai",
+      "destination": "/topics/ai/index.html"
+    },
+    {
+      "source": "/topics/ai/",
+      "destination": "/topics/ai/index.html"
+    },
+    {
+      "source": "/topics/ai-agents",
+      "destination": "/topics/ai-agents/index.html"
+    },
+    {
+      "source": "/topics/ai-agents/",
+      "destination": "/topics/ai-agents/index.html"
+    },
+    {
       "source": "/for-agents",
       "destination": "/for-agents/index.html"
     },
@@ -224,6 +240,32 @@
     },
     {
       "source": "/tracks/ai",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/topics/ai",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/topics/ai-agents",
       "headers": [
         {
           "key": "Content-Type",

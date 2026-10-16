@@ -159,7 +159,14 @@ function buildIcsContent(page) {
   ].join('\r\n');
 }
 
-function renderPage(page) {
+function readWhatsAppUrl() {
+  const raw = fs.readFileSync(path.resolve('src/config/constants.ts'), 'utf8');
+  const match = raw.match(/WHATSAPP_GROUP_URL = '([^']+)'/);
+  if (!match) throw new Error('WHATSAPP_GROUP_URL missing from src/config/constants.ts');
+  return match[1];
+}
+
+function renderPage(page, whatsappUrl) {
   const canonical = `${SITE_URL}/events/${page.slug}`;
   const jsonLd = JSON.stringify(buildJsonLd(page));
   const googleCalendarUrl = buildGoogleCalendarUrl(page);
@@ -250,6 +257,7 @@ function renderPage(page) {
           ${registrationButton}
           <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
           <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
+          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>
         </div>
         <p class="muted">Always confirm details on the official site.</p>
       </section>
@@ -504,6 +512,7 @@ function writeGeneratedSource(allPages) {
 
 async function main() {
   const manualPages = loadManualPages();
+  const whatsappUrl = readWhatsAppUrl();
   const events = await fetchEvents();
   const allPages = mergePages(manualPages, events);
 
@@ -513,7 +522,7 @@ async function main() {
   for (const page of allPages) {
     const outDir = path.join(EVENTS_DIR, page.slug);
     fs.mkdirSync(outDir, { recursive: true });
-    fs.writeFileSync(path.join(outDir, 'index.html'), renderPage(page));
+    fs.writeFileSync(path.join(outDir, 'index.html'), renderPage(page, whatsappUrl));
   }
 
   const guides = writeGuideStaticPages();

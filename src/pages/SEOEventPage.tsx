@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Calendar, ChevronDown, Download, Globe, MapPin, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, ChevronDown, Download, Globe, MapPin, MessageCircle, Tag } from 'lucide-react';
 import Logo from '../components/Logo';
+import { WHATSAPP_GROUP_URL } from '../config/constants';
 import type { SEOEventPageData } from '../data/seoEventPages';
 import { injectSchema, updateMetaTags } from '../utils/seo';
 import { trackAddToCalendar, trackLandingPageView, trackOutboundClick } from '../utils/analytics';
@@ -208,6 +209,24 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
                 </div>
               )}
             </div>
+            <a
+              href={WHATSAPP_GROUP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackOutboundClick({
+                  sourcePage: window.location.pathname,
+                  pageType: 'seo_event_page',
+                  targetUrl: WHATSAPP_GROUP_URL,
+                  eventSlug: page.slug,
+                  ctaLabel: 'Join WhatsApp',
+                })
+              }
+              className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
+            >
+              <MessageCircle size={18} />
+              Join WhatsApp
+            </a>
             {page.registrationUrl && (
               <a
                 href={page.registrationUrl}

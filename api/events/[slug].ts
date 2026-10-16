@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { WHATSAPP_GROUP_URL } from '../../src/config/constants.js';
 import { getSEOEventPageBySlug } from '../../src/data/seoEventPages.js';
 
 function escapeHtml(value: string): string {
@@ -313,6 +314,7 @@ function renderEventHtml(slug: string) {
         <p>${description}</p>
         <div class="actions">
           <a class="button button-primary" href="${officialUrl}" target="_blank" rel="noreferrer">Official Website</a>
+          <a class="button button-secondary" href="${escapeHtml(WHATSAPP_GROUP_URL)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
           ${registrationUrl ? `<a class="button button-secondary" href="${registrationUrl}" target="_blank" rel="noreferrer">Registration</a>` : ''}
         </div>
         <div class="footer-note">Last updated: ${escapeHtml(new Date().toLocaleDateString('en-US', { timeZone: 'UTC' }))}</div>

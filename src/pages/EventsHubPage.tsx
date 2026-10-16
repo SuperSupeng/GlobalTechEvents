@@ -139,7 +139,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
 
         <section className="mb-12">
           <div className="flex items-center gap-2 mb-5 text-white/70 uppercase tracking-[0.2em] text-xs">
-            <Sparkles size={14} /> 81 Event Guides
+            <Sparkles size={14} /> {featuredEvents.length} Event Guides
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {featuredEvents.map((eventItem) => (

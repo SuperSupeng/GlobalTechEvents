@@ -1,5 +1,21 @@
 import generatedSEOEventPages from './generatedSEOEventPages.json' with { type: 'json' };
 
+export interface SEOEventStop {
+  name: string;
+  startDate: string;
+  endDate: string;
+  city: string;
+  country: string;
+  format: 'offline' | 'online' | 'hybrid';
+  officialUrl: string;
+  detail: string;
+}
+
+export interface SEOEventSourceLink {
+  label: string;
+  url: string;
+}
+
 export interface SEOEventPageData {
   slug: string;
   eventName: string;
@@ -19,6 +35,8 @@ export interface SEOEventPageData {
   whoShouldAttend: string[];
   topics: string[];
   faq: Array<{ q: string; a: string }>;
+  stops?: SEOEventStop[];
+  sources?: SEOEventSourceLink[];
 }
 
 export const SEO_EVENT_PAGES: SEOEventPageData[] = [
@@ -561,6 +579,151 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       { q: 'When is NRF 2027?', a: 'NRF 2027: Retail\'s Big Show is 10-12 January 2027.' },
       { q: 'Where is NRF 2027?', a: 'It is at the Jacob K. Javits Convention Center in New York City.' },
       { q: 'Where do I register?', a: 'Use the official NRF Big Show site for passes and agenda updates.' },
+    ],
+  },
+  {
+    slug: 'anthropic-events',
+    eventName: 'Anthropic events',
+    shortName: 'Anthropic',
+    startDate: '2026-05-06',
+    endDate: '2026-06-11',
+    city: 'San Francisco, London, and Tokyo',
+    country: 'International',
+    format: 'hybrid',
+    officialUrl: 'https://claude.com/code-with-claude',
+    primaryKeyword: 'Anthropic events',
+    secondaryKeywords: ['Code with Claude 2026', 'Claude developer conference', 'Anthropic developer event'],
+    seoTitle: 'Anthropic Events and Code with Claude 2026 | GlobalTechEvents',
+    metaDescription:
+      'Code with Claude 2026 listed San Francisco, London, and Tokyo. Official city pages only, with no single venue.',
+    whyItMatters:
+      'Code with Claude is the Anthropic developer series for people shipping on Claude. The 2026 pages list one-day stops in San Francisco on 6 May, London on 19 May, and Tokyo on 10 June, plus a second in-person day in each city. Those dates have already passed. Go if you need the official Claude Code and platform sessions. Skip travel, because this is not one venue and no 2027 date is printed on the linked pages.',
+    whoShouldAttend: [
+      'Developers shipping on the Claude API or Claude Code',
+      'Product leads comparing model platforms',
+      'Founders looking for the Extended session recordings',
+    ],
+    topics: ['AI', 'Claude', 'Developer Tools', 'Agents', 'APIs'],
+    sources: [
+      { label: 'Code with Claude series page', url: 'https://claude.com/code-with-claude' },
+      {
+        label: 'Anthropic page for the San Francisco livestream',
+        url: 'https://www.anthropic.com/events/code-with-claude',
+      },
+    ],
+    stops: [
+      {
+        name: 'Code with Claude San Francisco',
+        startDate: '2026-05-06',
+        endDate: '2026-05-06',
+        city: 'San Francisco',
+        country: 'United States',
+        format: 'hybrid',
+        officialUrl: 'https://claude.com/code-with-claude/san-francisco',
+        detail: 'In person. Anthropic.com prints a livestream at 9:00am PT.',
+      },
+      {
+        name: 'Code with Claude: Extended San Francisco',
+        startDate: '2026-05-07',
+        endDate: '2026-05-07',
+        city: 'San Francisco',
+        country: 'United States',
+        format: 'offline',
+        officialUrl: 'https://claude.com/code-with-claude/san-francisco-extended',
+        detail: 'The city page lists 08:00 to 18:00 PT. In person only, and it says this day was not livestreamed.',
+      },
+      {
+        name: 'Code with Claude London',
+        startDate: '2026-05-19',
+        endDate: '2026-05-19',
+        city: 'London',
+        country: 'United Kingdom',
+        format: 'hybrid',
+        officialUrl: 'https://claude.com/code-with-claude/london',
+        detail: 'In person. The series page says this day was livestreamed.',
+      },
+      {
+        name: 'Code with Claude: Extended London',
+        startDate: '2026-05-20',
+        endDate: '2026-05-20',
+        city: 'London',
+        country: 'United Kingdom',
+        format: 'offline',
+        officialUrl: 'https://claude.com/code-with-claude/london-extended',
+        detail: 'The city page lists 08:00 to 18:00 BST. In person only, and it says this day was not livestreamed.',
+      },
+      {
+        name: 'Code with Claude Tokyo',
+        startDate: '2026-06-10',
+        endDate: '2026-06-10',
+        city: 'Tokyo',
+        country: 'Japan',
+        format: 'hybrid',
+        officialUrl: 'https://claude.com/code-with-claude/tokyo',
+        detail: 'The city page lists 08:00 to 20:00 JST. The series page says this day was livestreamed.',
+      },
+      {
+        name: 'Code with Claude: Extended Tokyo',
+        startDate: '2026-06-11',
+        endDate: '2026-06-11',
+        city: 'Tokyo',
+        country: 'Japan',
+        format: 'offline',
+        officialUrl: 'https://claude.com/code-with-claude/tokyo-extended',
+        detail: 'The city page lists 08:30 to 18:00 JST. In person only, and it says this day was not livestreamed.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Which Code with Claude dates did Anthropic print for 2026?',
+        a: 'San Francisco on 6 May 2026, London on 19 May 2026, and Tokyo on 10 June 2026. Each city also has an Extended day on the next date: 7 May, 20 May, and 11 June 2026.',
+      },
+      {
+        q: 'Is there one Code with Claude venue for 2026?',
+        a: 'No. The 2026 city pages name the city and do not name a hall. A 2025 news post at https://www.anthropic.com/news/Introducing-code-with-claude names The Midway for 22 May 2025. That address is not printed on the 2026 city pages.',
+      },
+      {
+        q: 'Does the linked Code with Claude material list a 2027 date?',
+        a: 'No. The Code with Claude pages linked on this guide do not list a 2027 date.',
+      },
+    ],
+  },
+  {
+    slug: 'stripe-sessions-2027',
+    eventName: 'Stripe Sessions 2027',
+    shortName: 'Stripe Sessions',
+    startDate: '2027-05-04',
+    endDate: '2027-05-06',
+    city: 'San Francisco',
+    country: 'United States',
+    format: 'offline',
+    officialUrl: 'https://stripesessions.com/',
+    primaryKeyword: 'Stripe Sessions 2027 dates',
+    secondaryKeywords: ['Stripe Sessions 2027 location', 'Stripe Sessions 2027 tickets', 'Stripe Sessions 2027 agenda'],
+    seoTitle: 'Stripe Sessions 2027 Dates, Location & Tickets | GlobalTechEvents',
+    metaDescription:
+      'Stripe Sessions 2027 is 4-6 May 2027 at Moscone North and South in San Francisco.',
+    whyItMatters:
+      'Stripe Sessions is the Stripe conference for payments, billing, and internet economy teams. Sessions 2027 is 4-6 May 2027 at Moscone North and South in San Francisco. Go if you run payments, billing, or agent commerce on Stripe. Skip it if you only need a model-provider developer day. Passes and the call for proposals are on the official site.',
+    whoShouldAttend: [
+      'Payments and billing leads',
+      'Founders selling on Stripe',
+      'Product teams shipping agent commerce',
+    ],
+    topics: ['Payments', 'Billing', 'Internet Economy', 'Platforms', 'AI'],
+    faq: [
+      {
+        q: 'When is Stripe Sessions 2027?',
+        a: 'Stripe Sessions 2027 is 4-6 May 2027. The official site lists Tuesday 4 May, Wednesday 5 May, and Thursday 6 May.',
+      },
+      {
+        q: 'Where is Stripe Sessions 2027?',
+        a: 'It is at Moscone North and South in San Francisco. The official page checked on 16 October 2026 does not describe a virtual pass.',
+      },
+      {
+        q: 'What do passes and talk proposals cost?',
+        a: 'The official site shows $599 and $999 under early-bird admission, and says early-bird rates expire on 27 January 2027. Talk proposals close on 3 November 2026. There is no fee to present.',
+      },
     ],
   },
 ];

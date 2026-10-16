@@ -42,6 +42,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     metaDescription:
       'Tech events in San Francisco with links to event guides for dates and location.',
     limit: 50,
+    links: [{ href: '/guides/ai-conferences-san-francisco-2026', label: 'AI conferences in San Francisco 2026' }],
     match: { type: 'city', cities: ['San Francisco'] },
   },
   {
@@ -55,7 +56,10 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     metaDescription:
       'AI and agent conferences from the GlobalTechEvents calendar, with links to event guides.',
     limit: 30,
-    links: [{ href: '/guides/best-ai-conferences-2026', label: 'Best AI conferences 2026' }],
+    links: [
+      { href: '/guides/best-ai-conferences-2026', label: 'Best AI conferences 2026' },
+      { href: '/guides/ai-conferences-san-francisco-2026', label: 'AI conferences in San Francisco 2026' },
+    ],
     match: { type: 'track', needles: ['ai', 'agent'] },
   },
 ];

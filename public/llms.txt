@@ -74,7 +74,6 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [COMPUTEX 2026](https://www.globaltechevents.xyz/events/computex-2026): June 2, 2026, Taipei, Taiwan
 - [Microsoft Build 2026](https://www.globaltechevents.xyz/events/microsoft-build-2026): June 2, 2026, San Francisco, United States
 - [South Summit Madrid 2026](https://www.globaltechevents.xyz/events/south-summit-madrid-2026): June 2, 2026, Madrid, Spain
-- [CVPR 2026](https://www.globaltechevents.xyz/events/cvpr-2026): June 3, 2026, Denver, United States
 - [London Tech Week 2026](https://www.globaltechevents.xyz/events/london-tech-week-2026): June 7, 2026, London, United Kingdom
 - [Apple WWDC 2026](https://www.globaltechevents.xyz/events/apple-wwdc-2026): June 8, 2026, Online
 - [AI Summit London 2026](https://www.globaltechevents.xyz/events/ai-summit-london-2026): June 9, 2026, London, United Kingdom
@@ -88,7 +87,6 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [Techsylvania 2026](https://www.globaltechevents.xyz/events/techsylvania-2026): June 23, 2026, Cluj-Napoca, Romania
 - [GITEX AI Europe 2026](https://www.globaltechevents.xyz/events/gitex-ai-europe-2026): June 30, 2026, Berlin, Germany
 - [IVS 2026 Kyoto](https://www.globaltechevents.xyz/events/ivs-2026-kyoto): June 30, 2026, Kyoto, Japan
-- [ICML 2026](https://www.globaltechevents.xyz/events/icml-2026): July 6, 2026, Seoul, South Korea
 - [StartupFest 2026](https://www.globaltechevents.xyz/events/startupfest-2026): July 8, 2026, Montreal, Canada
 - [HICOOL 2026 Global Entrepreneur Summit](https://www.globaltechevents.xyz/events/hicool-2026-global-entrepreneur-summit): July 31, 2026, Beijing, China
 - [TechBBQ 2026](https://www.globaltechevents.xyz/events/techbbq-2026): August 25, 2026, Copenhagen, Denmark
@@ -114,7 +112,6 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [Africa Tech Festival 2026](https://www.globaltechevents.xyz/events/africa-tech-festival-2026): November 16, 2026, Cape Town, South Africa
 - [Slush 2026](https://www.globaltechevents.xyz/events/slush-2026): November 17, 2026, Helsinki, Finland
 - [AWS re:Invent 2026](https://www.globaltechevents.xyz/events/aws-reinvent-2026): November 30, 2026, Las Vegas, United States
-- [NeurIPS 2026](https://www.globaltechevents.xyz/events/neurips-2026): December 6, 2026, Sydney, Australia
 - [West Tech Fest 2026](https://www.globaltechevents.xyz/events/west-tech-fest-2026): December 6, 2026, Perth, Australia
 - [Expand North Star 2026](https://www.globaltechevents.xyz/events/expand-north-star-2026): December 7, 2026, Dubai, United Arab Emirates
 - [GITEX GLOBAL 2026](https://www.globaltechevents.xyz/events/gitex-global-2026): December 7, 2026, Dubai, United Arab Emirates

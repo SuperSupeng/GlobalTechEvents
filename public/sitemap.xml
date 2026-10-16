@@ -637,24 +637,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.globaltechevents.xyz/events/neurips-2026</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.globaltechevents.xyz/events/icml-2026</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.globaltechevents.xyz/events/cvpr-2026</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.globaltechevents.xyz/guides/ai-conferences-san-francisco-2026</loc>
     <lastmod>2026-10-16</lastmod>
     <changefreq>weekly</changefreq>

@@ -26,7 +26,7 @@ export type IndexableShell = {
   seoTitle: string;
   metaDescription: string;
   limit: number;
-  links?: { href: string; label: string }[];
+  links?: { href: string; label: string; note?: string }[];
   match: CityMatch | TrackMatch;
 };
 
@@ -37,12 +37,48 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     path: '/cities/san-francisco',
     h1: 'Tech events in San Francisco',
     intro:
-      'San Francisco events on this calendar are listed below. Each link opens the event guide for dates and location.',
+      'As of 16 October 2026, pick a San Francisco or Bay Area week by the stack you ship. Microsoft Build, Dreamforce, OpenAI DevDay, and the Databricks Data + AI Summit were in the city and have already run. NVIDIA GTC was the GPU week in San Jose, not in San Francisco, and it has already run. TechCrunch Disrupt is the startup week listed on this calendar. The AI conferences guide separates what is still ahead from weeks that have finished, including Bay Area venues outside the city.',
     seoTitle: 'Tech events in San Francisco | GlobalTechEvents',
     metaDescription:
-      'Tech events in San Francisco with links to event guides for dates and location.',
+      'San Francisco and Bay Area AI-tech events on this calendar, with guides for Build, Dreamforce, DevDay, Databricks, Disrupt, and NVIDIA GTC in San Jose.',
     limit: 50,
-    links: [{ href: '/guides/ai-conferences-san-francisco-2026', label: 'AI conferences in San Francisco 2026' }],
+    links: [
+      {
+        href: '/events/microsoft-build-2026',
+        label: 'Microsoft Build 2026',
+        note: 'Already held 2-3 June 2026 at Fort Mason, San Francisco, plus an online track.',
+      },
+      {
+        href: '/events/dreamforce-2026',
+        label: 'Dreamforce 2026',
+        note: 'Already held 15-17 September 2026 at Moscone Center, San Francisco, with Salesforce+.',
+      },
+      {
+        href: '/events/openai-devday-2026',
+        label: 'OpenAI DevDay 2026',
+        note: 'Already held 29 September 2026 at Fort Mason, San Francisco.',
+      },
+      {
+        href: '/events/databricks-data-ai-summit-2026',
+        label: 'Databricks Data + AI Summit 2026',
+        note: 'Already held 15-18 June 2026 at Moscone Center, San Francisco, with a virtual track.',
+      },
+      {
+        href: '/events/techcrunch-disrupt-2026',
+        label: 'TechCrunch Disrupt 2026',
+        note: 'Listed 13-16 October 2026 in San Francisco.',
+      },
+      {
+        href: '/events/nvidia-gtc-2026',
+        label: 'NVIDIA GTC 2026',
+        note: 'Already held 16-19 March 2026 in San Jose, not in San Francisco.',
+      },
+      {
+        href: '/guides/ai-conferences-san-francisco-2026',
+        label: 'AI conferences in San Francisco 2026',
+        note: 'Upcoming versus held, including Bay Area venues outside the city.',
+      },
+    ],
     match: { type: 'city', cities: ['San Francisco'] },
   },
   {

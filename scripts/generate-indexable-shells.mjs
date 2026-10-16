@@ -25,12 +25,33 @@ function formatDate(value) {
   }).format(date);
 }
 
+function readWhatsAppUrl() {
+  const raw = fs.readFileSync(path.resolve('src/config/constants.ts'), 'utf8');
+  const match = raw.match(/WHATSAPP_GROUP_URL = '([^']+)'/);
+  if (!match) throw new Error('WHATSAPP_GROUP_URL missing from src/config/constants.ts');
+  return match[1];
+}
+
 function renderShell(shell, events) {
   const canonical = `${SITE_URL}${shell.path}`;
   const related = relatedEventsForShell(shell, events);
-  const guideLink = (shell.links || [])
-    .map((link) => `<p><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></p>`)
+  const whatsapp = readWhatsAppUrl();
+  const startItems = (shell.links || [])
+    .map((link) => {
+      const note = link.note ? ` <span class="meta">${escapeHtml(link.note)}</span>` : '';
+      return `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>${note}</li>`;
+    })
     .join('');
+  const startHere = startItems
+    ? `<section>
+        <h2>Where to start</h2>
+        <ul>${startItems}</ul>
+      </section>`
+    : '';
+  const ctas = `<div class="btn-row">
+        <a class="btn" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
+        <a class="btn btn-secondary" href="/api/calendar">ICS subscribe</a>
+      </div>`;
   const items = related
     .map((event) => {
       const place = [event.city, event.country].filter(Boolean).join(', ');
@@ -87,9 +108,13 @@ function renderShell(shell, events) {
       li { margin: 10px 0; }
       .meta { color: rgba(255,255,255,.55); }
       .nav { margin-top: 36px; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 8px; }
+      a.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; }
+      a.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
       @media (max-width: 640px) {
         h1 { font-size: 34px; }
         .wrap { padding-top: 28px; }
+        a.btn { width: 100%; }
       }
     </style>
   </head>
@@ -98,7 +123,8 @@ function renderShell(shell, events) {
       <p class="eyebrow">${shell.kind === 'city' ? 'City' : 'Track'}</p>
       <h1>${escapeHtml(shell.h1)}</h1>
       <p>${escapeHtml(shell.intro)}</p>
-      ${guideLink}
+      ${ctas}
+      ${startHere}
       <section>
         <h2>Related events</h2>
         ${list}

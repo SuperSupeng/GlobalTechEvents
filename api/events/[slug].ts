@@ -1,6 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { WHATSAPP_GROUP_URL } from '../../src/config/constants.js';
 import { getSEOEventPageBySlug } from '../../src/data/seoEventPages.js';
+import {
+  buildSeoEventJsonLd,
+  collectionDateLabel,
+  collectionLocationLabel,
+  formatStopDate,
+  isSeoCollection,
+} from '../../src/data/seoEventSchema.js';
 
 function escapeHtml(value: string): string {
   return value
@@ -36,51 +43,28 @@ function renderEventHtml(slug: string) {
     [page.primaryKeyword, ...page.secondaryKeywords, ...page.topics].join(', '),
   );
   const whyItMatters = escapeHtml(page.whyItMatters);
-  const dateRange = escapeHtml(formatDateRange(page.startDate, page.endDate));
-  const location = escapeHtml(`${page.city}, ${page.country}`);
+  const collection = isSeoCollection(page);
+  const dateRange = escapeHtml(collection ? collectionDateLabel(page) : formatDateRange(page.startDate, page.endDate));
+  const location = escapeHtml(collection ? collectionLocationLabel(page) : `${page.city}, ${page.country}`);
   const format = escapeHtml(page.format);
   const officialUrl = escapeHtml(page.officialUrl);
   const registrationUrl = page.registrationUrl ? escapeHtml(page.registrationUrl) : null;
 
-  const schema = escapeHtml(
-    JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: page.eventName,
-      startDate: `${page.startDate}T09:00:00Z`,
-      endDate: `${page.endDate}T18:00:00Z`,
-      eventAttendanceMode:
-        page.format === 'online'
-          ? 'https://schema.org/OnlineEventAttendanceMode'
-          : page.format === 'hybrid'
-            ? 'https://schema.org/MixedEventAttendanceMode'
-            : 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      location:
-        page.format === 'online'
-          ? {
-              '@type': 'VirtualLocation',
-              url: page.officialUrl,
-            }
-          : {
-              '@type': 'Place',
-              name: `${page.city}, ${page.country}`,
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: page.city,
-                addressCountry: page.country,
-              },
-            },
-      organizer: {
-        '@type': 'Organization',
-        name: page.shortName,
-        url: page.officialUrl,
-      },
-      url: canonicalUrl,
-      description: page.metaDescription,
-      keywords: [page.primaryKeyword, ...page.secondaryKeywords].join(', '),
-    }),
-  );
+  const schema = escapeHtml(JSON.stringify(buildSeoEventJsonLd(page)));
+  const stopsHtml = collection
+    ? `<section><h2>Printed stops</h2><ul>${(page.stops ?? [])
+        .map(
+          (stop) =>
+            `<li><a href="${escapeHtml(stop.officialUrl)}">${escapeHtml(stop.name)}</a>. ${escapeHtml(formatStopDate(stop))}. ${escapeHtml(stop.city)}, ${escapeHtml(stop.country)}. ${escapeHtml(stop.detail)}</li>`,
+        )
+        .join('')}</ul></section>`
+    : '';
+  const sourcesHtml =
+    collection && page.sources && page.sources.length > 0
+      ? `<section><h2>Official pages</h2><ul>${page.sources
+          .map((source) => `<li><a href="${escapeHtml(source.url)}">${escapeHtml(source.label)}</a></li>`)
+          .join('')}</ul></section>`
+      : '';
 
   const topicTags = page.topics
     .map(
@@ -293,6 +277,9 @@ function renderEventHtml(slug: string) {
           <div>${format}</div>
         </div>
       </section>
+
+      ${stopsHtml}
+      ${sourcesHtml}
 
       <section>
         <h2>Who should attend</h2>

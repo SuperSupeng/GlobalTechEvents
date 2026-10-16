@@ -1,5 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  buildSeoCollectionIcs,
+  buildSeoEventJsonLd,
+  collectionCalendarNote,
+  collectionDateLabel,
+  collectionGoogleCalendarUrl,
+  collectionLocationLabel,
+  formatStopDate,
+  isSeoCollection,
+} from '../src/data/seoEventSchema.ts';
 import { ensureGuidesInExistingSitemap, indexableAuthorUrls, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 import { writeHubStaticPages } from './generate-hub-static.mjs';
 import { ensureShellsInExistingSitemap, indexableShellUrls, writeIndexableShells } from './generate-indexable-shells.mjs';
@@ -84,43 +94,6 @@ function formatDateRange(start, end) {
   return `${fmt.format(new Date(start))} - ${fmt.format(new Date(end))}`;
 }
 
-function buildJsonLd(page) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: page.eventName,
-    startDate: `${page.startDate}T09:00:00Z`,
-    endDate: `${page.endDate}T18:00:00Z`,
-    eventAttendanceMode:
-      page.format === 'online'
-        ? 'https://schema.org/OnlineEventAttendanceMode'
-        : page.format === 'hybrid'
-          ? 'https://schema.org/MixedEventAttendanceMode'
-          : 'https://schema.org/OfflineEventAttendanceMode',
-    eventStatus: 'https://schema.org/EventScheduled',
-    location:
-      page.format === 'online'
-        ? { '@type': 'VirtualLocation', url: page.officialUrl }
-        : {
-            '@type': 'Place',
-            name: `${page.city}, ${page.country}`,
-            address: {
-              '@type': 'PostalAddress',
-              addressLocality: page.city,
-              addressCountry: page.country,
-            },
-          },
-    organizer: {
-      '@type': 'Organization',
-      name: page.shortName,
-      url: page.officialUrl,
-    },
-    url: `${SITE_URL}/events/${page.slug}`,
-    description: page.metaDescription,
-    keywords: [page.primaryKeyword, ...page.secondaryKeywords].join(', '),
-  };
-}
-
 function buildGoogleCalendarUrl(page) {
   const startDate = String(page.startDate || '').replace(/-/g, '');
   const endDate = String(page.endDate || page.startDate || '').replace(/-/g, '');
@@ -166,11 +139,40 @@ function readWhatsAppUrl() {
   return match[1];
 }
 
+function renderStops(page) {
+  if (!isSeoCollection(page)) return '';
+  const items = page.stops
+    .map(
+      (stop) => `
+        <li>
+          <a href="${escapeHtml(stop.officialUrl)}">${escapeHtml(stop.name)}</a>.
+          ${escapeHtml(formatStopDate(stop))}.
+          ${escapeHtml(stop.city)}, ${escapeHtml(stop.country)}.
+          ${escapeHtml(stop.detail)}
+        </li>`,
+    )
+    .join('');
+  const sources = (page.sources || [])
+    .map(
+      (source) => `
+        <li><a href="${escapeHtml(source.url)}">${escapeHtml(source.label)}</a></li>`,
+    )
+    .join('');
+  const sourceSection = sources
+    ? `<section><h2>Official pages</h2><ul>${sources}</ul></section>`
+    : '';
+  return `<section><h2>Printed stops</h2><ul>${items}</ul></section>${sourceSection}`;
+}
+
 function renderPage(page, whatsappUrl) {
+  const collection = isSeoCollection(page);
   const canonical = `${SITE_URL}/events/${page.slug}`;
-  const jsonLd = JSON.stringify(buildJsonLd(page));
-  const googleCalendarUrl = buildGoogleCalendarUrl(page);
-  const icsContent = buildIcsContent(page);
+  const jsonLd = JSON.stringify(buildSeoEventJsonLd(page));
+  const googleCalendarUrl = collection ? collectionGoogleCalendarUrl(page) : buildGoogleCalendarUrl(page);
+  const icsContent = collection ? buildSeoCollectionIcs(page) : buildIcsContent(page);
+  const dateLabel = collection ? collectionDateLabel(page) : formatDateRange(page.startDate, page.endDate);
+  const locationLabel = collection ? collectionLocationLabel(page) : `${page.city}, ${page.country}`;
+  const confirmNote = collection ? collectionCalendarNote(page) : 'Always confirm details on the official site.';
   const registrationButton = page.registrationUrl
     ? `<a class="btn btn-secondary" href="${escapeHtml(page.registrationUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Registration" data-track-target="${escapeHtml(page.registrationUrl)}">Registration</a>`
     : '';
@@ -259,17 +261,17 @@ function renderPage(page, whatsappUrl) {
           <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
           <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>
         </div>
-        <p class="muted">Always confirm details on the official site.</p>
+        <p class="muted">${escapeHtml(confirmNote)}</p>
       </section>
 
       <section class="grid">
         <div class="card">
           <div class="meta-label">Date</div>
-          <div>${escapeHtml(formatDateRange(page.startDate, page.endDate))}</div>
+          <div>${escapeHtml(dateLabel)}</div>
         </div>
         <div class="card">
           <div class="meta-label">Location</div>
-          <div>${escapeHtml(page.city)}, ${escapeHtml(page.country)}</div>
+          <div>${escapeHtml(locationLabel)}</div>
         </div>
         <div class="card">
           <div class="meta-label">Format</div>
@@ -277,6 +279,7 @@ function renderPage(page, whatsappUrl) {
         </div>
       </section>
 
+      ${renderStops(page)}
       <section>
         <h2>Who should attend</h2>
         <ul>${whoHtml}</ul>

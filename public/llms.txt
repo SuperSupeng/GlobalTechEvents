@@ -64,6 +64,7 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [Google I/O 2026](https://www.globaltechevents.xyz/events/google-io-2026): May 1, 2026, Mountain View, United States
 - [Consensus Miami 2026](https://www.globaltechevents.xyz/events/consensus-miami-2026): May 5, 2026, Miami Beach, United States
 - [Turing Fest 2026](https://www.globaltechevents.xyz/events/turing-fest-2026): May 5, 2026, Edinburgh, United Kingdom
+- [Anthropic events](https://www.globaltechevents.xyz/events/anthropic-events): May 6, 2026, San Francisco, London, and Tokyo, International
 - [EU-Startups Summit 2026](https://www.globaltechevents.xyz/events/eu-startups-summit-2026): May 6, 2026, Valletta, Malta
 - [Podim Conference 2026](https://www.globaltechevents.xyz/events/podim-conference-2026): May 10, 2026, Maribor, Slovenia
 - [Web Summit Vancouver 2026](https://www.globaltechevents.xyz/events/web-summit-vancouver-2026): May 11, 2026, Vancouver, Canada
@@ -122,6 +123,7 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [NRF 2027 Retail's Big Show](https://www.globaltechevents.xyz/events/nrf-2027): January 10, 2027, New York, United States
 - [MWC Barcelona 2027](https://www.globaltechevents.xyz/events/mwc-barcelona-2027): March 1, 2027, Barcelona, Spain
 - [TOKEN2049 Dubai 2027](https://www.globaltechevents.xyz/events/token2049-dubai-2027): April 21, 2027, Dubai, United Arab Emirates
+- [Stripe Sessions 2027](https://www.globaltechevents.xyz/events/stripe-sessions-2027): May 4, 2027, San Francisco, United States
 - [TOKEN2049 Singapore 2027](https://www.globaltechevents.xyz/events/token2049-singapore-2027): October 6, 2027, Singapore
 
 ## Event catalog

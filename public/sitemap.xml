@@ -637,6 +637,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.globaltechevents.xyz/events/anthropic-events</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.globaltechevents.xyz/events/stripe-sessions-2027</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.globaltechevents.xyz/guides/ai-conferences-san-francisco-2026</loc>
     <lastmod>2026-10-16</lastmod>
     <changefreq>weekly</changefreq>

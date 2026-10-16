@@ -3,6 +3,16 @@ import { ArrowLeft, Calendar, ChevronDown, Download, Globe, MapPin, MessageCircl
 import Logo from '../components/Logo';
 import { WHATSAPP_GROUP_URL } from '../config/constants';
 import type { SEOEventPageData } from '../data/seoEventPages';
+import {
+  buildSeoCollectionIcs,
+  buildSeoEventJsonLd,
+  collectionCalendarNote,
+  collectionDateLabel,
+  collectionGoogleCalendarUrl,
+  collectionLocationLabel,
+  formatStopDate,
+  isSeoCollection,
+} from '../data/seoEventSchema';
 import { injectSchema, updateMetaTags } from '../utils/seo';
 import { trackAddToCalendar, trackLandingPageView, trackOutboundClick } from '../utils/analytics';
 import { downloadICS, getGoogleCalendarUrl } from '../utils/calendar';
@@ -67,45 +77,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
       canonicalUrl: `https://www.globaltechevents.xyz/events/${page.slug}`,
     });
 
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: page.eventName,
-      startDate: `${page.startDate}T09:00:00Z`,
-      endDate: `${page.endDate}T18:00:00Z`,
-      eventAttendanceMode:
-        page.format === 'online'
-          ? 'https://schema.org/OnlineEventAttendanceMode'
-          : page.format === 'hybrid'
-            ? 'https://schema.org/MixedEventAttendanceMode'
-            : 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      location:
-        page.format === 'online'
-          ? {
-              '@type': 'VirtualLocation',
-              url: page.officialUrl,
-            }
-          : {
-              '@type': 'Place',
-              name: `${page.city}, ${page.country}`,
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: page.city,
-                addressCountry: page.country,
-              },
-            },
-      organizer: {
-        '@type': 'Organization',
-        name: page.shortName,
-        url: page.officialUrl,
-      },
-      url: `https://www.globaltechevents.xyz/events/${page.slug}`,
-      description: page.metaDescription,
-      keywords: [page.primaryKeyword, ...page.secondaryKeywords].join(', '),
-    };
-
-    injectSchema(JSON.stringify(schema));
+    injectSchema(JSON.stringify(buildSeoEventJsonLd(page)));
   }, [page]);
 
   useEffect(() => {
@@ -136,8 +108,20 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
     });
 
     if (provider === 'google') {
-      window.open(getGoogleCalendarUrl(calendarEvent), '_blank', 'noopener,noreferrer');
+      const url = isSeoCollection(page) ? collectionGoogleCalendarUrl(page) : getGoogleCalendarUrl(calendarEvent);
+      window.open(url, '_blank', 'noopener,noreferrer');
       onToast?.('Opening Google Calendar...');
+    } else if (isSeoCollection(page)) {
+      const icsContent = buildSeoCollectionIcs(page);
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${page.slug}.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+      onToast?.('Calendar file downloaded!');
     } else {
       downloadICS(calendarEvent);
       onToast?.('Calendar file downloaded!');
@@ -249,23 +233,59 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             </a>
           </div>
 
-          <p className="mt-4 text-sm text-white/55">Always confirm details on the official site.</p>
+          <p className="mt-4 text-sm text-white/55">
+            {isSeoCollection(page) ? collectionCalendarNote(page) : 'Always confirm details on the official site.'}
+          </p>
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
           <div className="glass-panel p-5">
             <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Date</p>
-            <p className="flex items-center gap-2 text-white/90"><Calendar size={16} /> {formatDateRange(page.startDate, page.endDate)}</p>
+            <p className="flex items-center gap-2 text-white/90">
+              <Calendar size={16} /> {isSeoCollection(page) ? collectionDateLabel(page) : formatDateRange(page.startDate, page.endDate)}
+            </p>
           </div>
           <div className="glass-panel p-5">
             <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Location</p>
-            <p className="flex items-center gap-2 text-white/90"><MapPin size={16} /> {page.city}, {page.country}</p>
+            <p className="flex items-center gap-2 text-white/90">
+              <MapPin size={16} /> {isSeoCollection(page) ? collectionLocationLabel(page) : `${page.city}, ${page.country}`}
+            </p>
           </div>
           <div className="glass-panel p-5">
             <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Format</p>
             <p className="flex items-center gap-2 text-white/90"><Globe size={16} /> {page.format}</p>
           </div>
         </section>
+
+        {isSeoCollection(page) && (
+          <section className="mb-10">
+            <h2 className="text-2xl font-serif italic mb-4">Printed stops</h2>
+            <ul className="list-disc pl-6 text-white/80 space-y-3">
+              {page.stops?.map((stop) => (
+                <li key={stop.officialUrl}>
+                  <a href={stop.officialUrl} className="underline" target="_blank" rel="noreferrer">
+                    {stop.name}
+                  </a>
+                  . {formatStopDate(stop)}. {stop.city}, {stop.country}. {stop.detail}
+                </li>
+              ))}
+            </ul>
+            {page.sources && page.sources.length > 0 && (
+              <>
+                <h2 className="text-2xl font-serif italic mb-4 mt-8">Official pages</h2>
+                <ul className="list-disc pl-6 text-white/80 space-y-2">
+                  {page.sources.map((source) => (
+                    <li key={source.url}>
+                      <a href={source.url} className="underline" target="_blank" rel="noreferrer">
+                        {source.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </section>
+        )}
 
         <section className="mb-10">
           <h2 className="text-2xl font-serif italic mb-4">Who should attend</h2>

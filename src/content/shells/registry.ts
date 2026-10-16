@@ -61,7 +61,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     path: '/cities/san-francisco',
     h1: 'Tech events in San Francisco',
     intro:
-      'As of 16 October 2026, pick a San Francisco or Bay Area week by the stack you ship. Microsoft Build, Dreamforce, OpenAI DevDay, and the Databricks Data + AI Summit were in the city and have already run. NVIDIA GTC was the GPU week in San Jose, not in San Francisco, and it has already run. TechCrunch Disrupt is the startup week listed on this calendar. The AI conferences guide separates what is still ahead from weeks that have finished, including Bay Area venues outside the city.',
+      'As of 16 October 2026, pick a San Francisco or Bay Area week by the stack you ship. Microsoft Build, Dreamforce, OpenAI DevDay, and the Databricks Data + AI Summit were in the city and have already run. Code with Claude listed a San Francisco day on 6 May 2026 and also listed London and Tokyo. NVIDIA GTC was the GPU week in San Jose, not in San Francisco, and it has already run. TechCrunch Disrupt is the startup week listed on this calendar. Stripe Sessions 2027 is 4-6 May 2027 at Moscone North and South. The AI conferences guide separates what is still ahead from weeks that have finished, including Bay Area venues outside the city.',
     seoTitle: 'Tech events in San Francisco | GlobalTechEvents',
     metaDescription:
       'San Francisco and Bay Area AI-tech events on this calendar, with guides for Build, Dreamforce, DevDay, Databricks, Disrupt, and NVIDIA GTC in San Jose.',
@@ -91,6 +91,16 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
         href: '/events/techcrunch-disrupt-2026',
         label: 'TechCrunch Disrupt 2026',
         note: 'Listed 13-16 October 2026 in San Francisco.',
+      },
+      {
+        href: '/events/anthropic-events',
+        label: 'Anthropic events',
+        note: 'Code with Claude had a San Francisco day on 6 May 2026, plus London and Tokyo. The 2026 city page does not name a venue.',
+      },
+      {
+        href: '/events/stripe-sessions-2027',
+        label: 'Stripe Sessions 2027',
+        note: '4-6 May 2027 at Moscone North and South, San Francisco.',
       },
       {
         href: '/events/nvidia-gtc-2026',
@@ -128,7 +138,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     path: '/topics/ai',
     h1: 'AI conferences',
     intro:
-      'As of 16 October 2026, pick an industry AI week by the stack you ship. NVIDIA GTC in San Jose (16-19 March) is the GPU and inference week, and it has already run. Google Cloud Next in Las Vegas (22-24 April) has already run. AWS re:Invent in Las Vegas (30 November-4 December) is still ahead. Microsoft Build (2-3 June, Fort Mason) and OpenAI DevDay (29 September, Fort Mason) were the San Francisco builder weeks, and both have already run. The Databricks Data + AI Summit (15-18 June, Moscone Center) was the production data week and has already run. SuperAI Singapore (10-11 June, Marina Bay Sands) and Dreamforce (15-17 September, Moscone Center) have already run. KubeCon North America in Salt Lake City (9-12 November) is still ahead for platform teams. TechCrunch Disrupt (13-16 October, San Francisco) is the startup week on this calendar. The best AI conferences guide and the San Francisco AI conferences guide compare these weeks in more detail.',
+      'As of 16 October 2026, pick an industry AI week by the stack you ship. NVIDIA GTC in San Jose (16-19 March) is the GPU and inference week, and it has already run. Google Cloud Next in Las Vegas (22-24 April) has already run. AWS re:Invent in Las Vegas (30 November-4 December) is still ahead. Microsoft Build (2-3 June, Fort Mason) and OpenAI DevDay (29 September, Fort Mason) were the San Francisco builder weeks, and both have already run. Code with Claude listed San Francisco on 6 May, London on 19 May, and Tokyo on 10 June 2026, and those days have already run. The Databricks Data + AI Summit (15-18 June, Moscone Center) was the production data week and has already run. SuperAI Singapore (10-11 June, Marina Bay Sands) and Dreamforce (15-17 September, Moscone Center) have already run. KubeCon North America in Salt Lake City (9-12 November) is still ahead for platform teams. TechCrunch Disrupt (13-16 October, San Francisco) is the startup week on this calendar. The best AI conferences guide and the San Francisco AI conferences guide compare these weeks in more detail.',
     seoTitle: 'AI conferences | GlobalTechEvents',
     metaDescription:
       'Industry AI conferences on this calendar, with guides for GTC, Cloud Next, Build, DevDay, Databricks, re:Invent, and KubeCon.',
@@ -170,6 +180,11 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
         note: 'Already held 29 September 2026 at Fort Mason, San Francisco.',
       },
       {
+        href: '/events/anthropic-events',
+        label: 'Anthropic events',
+        note: 'Code with Claude 2026. San Francisco 6 May, London 19 May, Tokyo 10 June. Already held. No single venue printed.',
+      },
+      {
         href: '/events/techcrunch-disrupt-2026',
         label: 'TechCrunch Disrupt 2026',
         note: 'Listed 13-16 October 2026 in San Francisco.',
@@ -200,6 +215,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
         'databricks-data-ai-summit-2026',
         'dreamforce-2026',
         'openai-devday-2026',
+        'anthropic-events',
         'techcrunch-disrupt-2026',
         'kubecon-na-2026',
         'aws-reinvent-2026',
@@ -212,7 +228,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     path: '/topics/ai-agents',
     h1: 'AI agent conferences',
     intro:
-      'As of 16 October 2026, start with the builder and product weeks on this calendar that cover agents, APIs, and shipping software. OpenAI DevDay (29 September, Fort Mason) and Microsoft Build (2-3 June, Fort Mason) are the agent rooms, and both have already run. Google Cloud Next (22-24 April, Las Vegas), Google I/O (1-2 May, Mountain View), and the Databricks Data + AI Summit (15-18 June, Moscone Center) are the product and production weeks, and those 2026 editions have already run. AWS re:Invent (30 November-4 December, Las Vegas) and KubeCon North America (9-12 November, Salt Lake City) are still ahead. NVIDIA GTC (16-19 March, San Jose) was the infrastructure week and has already run. Dreamforce (15-17 September, Moscone Center) was the enterprise product week and has already run. SuperAI Singapore (10-11 June, Marina Bay Sands) was the founder and buyer week and has already run.',
+      'As of 16 October 2026, start with the builder and product weeks on this calendar that cover agents, APIs, and shipping software. OpenAI DevDay (29 September, Fort Mason) and Microsoft Build (2-3 June, Fort Mason) are the agent rooms, and both have already run. Code with Claude listed San Francisco on 6 May, London on 19 May, and Tokyo on 10 June 2026, and those days have already run. Google Cloud Next (22-24 April, Las Vegas), Google I/O (1-2 May, Mountain View), and the Databricks Data + AI Summit (15-18 June, Moscone Center) are the product and production weeks, and those 2026 editions have already run. AWS re:Invent (30 November-4 December, Las Vegas) and KubeCon North America (9-12 November, Salt Lake City) are still ahead. NVIDIA GTC (16-19 March, San Jose) was the infrastructure week and has already run. Dreamforce (15-17 September, Moscone Center) was the enterprise product week and has already run. SuperAI Singapore (10-11 June, Marina Bay Sands) was the founder and buyer week and has already run.',
     seoTitle: 'AI agent conferences | GlobalTechEvents',
     metaDescription:
       'Agent, builder, and product conferences on this calendar, including DevDay, Build, Cloud Next, re:Invent, and KubeCon.',
@@ -233,6 +249,11 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
             href: '/events/openai-devday-2026',
             label: 'OpenAI DevDay 2026',
             note: 'Agent and API builder day. Already held 29 September 2026 at Fort Mason. In-person entry required an invitation.',
+          },
+          {
+            href: '/events/anthropic-events',
+            label: 'Anthropic events',
+            note: 'Code with Claude 2026 across San Francisco, London, and Tokyo. Already held. No single venue printed.',
           },
           {
             href: '/events/microsoft-build-2026',
@@ -286,6 +307,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
       type: 'topic',
       slugs: [
         'openai-devday-2026',
+        'anthropic-events',
         'microsoft-build-2026',
         'google-cloud-next-2026',
         'google-io-2026',

@@ -15,6 +15,7 @@ The public event catalog is live. GET https://www.globaltechevents.xyz/api/event
 
 ## Guides
 
+- [AI Conferences in San Francisco 2026](https://www.globaltechevents.xyz/guides/ai-conferences-san-francisco-2026): As of 2026-10-16, Reverie on November 5 at the Contemporary Jewish Museum is the AI conference still ahead inside San Francisco. Bookable builder weeks after that are in San Jose and Burlingame, outside the city. Moscone and Fort Mason editions from 2026 have already run, and each Go, Skip, or Watch below follows the audience the organizer states.
 - [Best AI conferences 2026](https://www.globaltechevents.xyz/guides/best-ai-conferences-2026): If a friend asked which AI conference is still worth a flight in 2026, I would not hand them the whole year. As of 2026-10-15 I would look at three: Lisbon, Nov 9 to 12, if you need founders and press; Las Vegas, Nov 30 to Dec 4, if AWS is already your estate; Dubai, Dec 7 to 11, if the buyer is in the Gulf. I would skip the other two the moment that is not your room.
 
 ## Event guides

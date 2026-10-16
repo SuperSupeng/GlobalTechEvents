@@ -1,0 +1,364 @@
+{
+  "slug": "ai-conferences-san-francisco-2026",
+  "language": "en",
+  "status": "published",
+  "template": "roundup",
+  "title": "AI Conferences in San Francisco 2026",
+  "seoTitle": "AI Conferences in San Francisco 2026: Upcoming vs Held | GlobalTechEvents",
+  "description": "As of 2026-10-16, Reverie on November 5 at the Contemporary Jewish Museum is the AI conference still ahead inside San Francisco. Bookable builder weeks after that are in San Jose and Burlingame, outside the city. Moscone and Fort Mason editions from 2026 have already run, and each Go, Skip, or Watch below follows the audience the organizer states.",
+  "intentAnswered": true,
+  "primaryKeyword": "AI conferences San Francisco 2026",
+  "asOf": "2026-10-16",
+  "author": {
+    "name": "GlobalTechEvents Editorial",
+    "bio": "Desk byline for GlobalTechEvents. Dates on this page come from organizer sites.",
+    "placeholder": false
+  },
+  "coverImage": {
+    "src": "/guides/ai-conferences-san-francisco-2026/cover.jpg",
+    "alt": "Cover for AI Conferences in San Francisco 2026, with upcoming events separated from weeks already held"
+  },
+  "bodyImages": [
+    {
+      "src": "/guides/ai-conferences-san-francisco-2026/upcoming-held.jpg",
+      "alt": "As of October 16, 2026: Reverie is still ahead in San Francisco, three builder conferences are still ahead in the Bay Area, and the Moscone and Fort Mason weeks have already been held"
+    }
+  ],
+  "sections": [
+    {
+      "id": "how-we-chose",
+      "heading": "How we chose",
+      "paragraphs": [
+        "A row sits in the San Francisco table when the organizer prints a date and a venue inside the city. Moscone, Fort Mason, Pier 48, and the Contemporary Jewish Museum qualify. The airport hotel in Burlingame, and the convention center in San Jose, are in the Bay Area section.",
+        "The program is AI-primary, or it is a major tech event whose official agenda is built around AI. Order inside each table is by date. Criteria are the venue, the program, and an official URL.",
+        "Every date below was read from the organizer site on 2026-10-16. An event with no date on that site is left off the tables."
+      ]
+    },
+    {
+      "id": "upcoming",
+      "heading": "Upcoming in San Francisco",
+      "paragraphs": [
+        "As of 2026-10-16, one AI conference is still ahead at a San Francisco venue. Reverie is a single day. The multi-day builder programs that are still bookable are outside the city, in the next section."
+      ],
+      "table": {
+        "caption": "Still ahead inside San Francisco, as of 2026-10-16. Organizer dates only.",
+        "rows": [
+          {
+            "event": "Reverie",
+            "dates": "Nov 5, 2026",
+            "city": "Contemporary Jewish Museum, San Francisco",
+            "bestFor": "AI researchers, research engineers, and ML engineers",
+            "aiFocus": "Training data, world models, and multimodal systems",
+            "costBand": "$200 on the organizer page; a $125 tier ended Oct 9",
+            "verdict": "Go if you work on training data or multimodal models. The organizer agenda is technical talks and breakouts for researchers and engineers, and the host is LanceDB. Skip if you need a buyer hall or a Salesforce roadmap. Watch if travel is tight: selected stage talks are recorded afterward, and breakouts are not."
+          }
+        ]
+      }
+    },
+    {
+      "id": "bay-area",
+      "heading": "Also Bay Area, still ahead",
+      "paragraphs": [
+        "These three are still bookable as of 2026-10-16. None of them is in San Francisco. Open Source AI Week, October 16 to 25, is a Bay Area calendar of separately hosted events. The community site says it is not one conference. The Linux Foundation names PyTorch Conference and AGNTCon + MCPCon as the flagship events of that week. Those two are rows here. The week itself is not a row.",
+        "NVIDIA GTC is a San Jose event, and the 2026 edition has already run. The organizer page lists 2026 session replays and the next San Jose date as March 15 to 18, 2027. The GlobalTechEvents event guide records March 16 to 19, 2026 in San Jose. That week stays off both tables on this page."
+      ],
+      "table": {
+        "caption": "Still ahead in the Bay Area, outside San Francisco, as of 2026-10-16. Organizer dates only.",
+        "rows": [
+          {
+            "event": "PyTorch Conference North America",
+            "dates": "Oct 20 to 21, 2026",
+            "city": "San Jose Convention Center, 150 W San Carlos St",
+            "bestFor": "Engineers and researchers on PyTorch",
+            "aiFocus": "Open-source deep learning, including PyTorch, vLLM, DeepSpeed, and Ray",
+            "costBand": "See organizer",
+            "verdict": "Go if your work is PyTorch or the open-source projects the Linux Foundation lists for this event. Skip if the trip has to be inside San Francisco. The FAQ says the conference is primarily in person."
+          },
+          {
+            "event": "AGNTCon + MCPCon North America",
+            "dates": "Oct 22 to 23, 2026; kickoff evening Oct 21",
+            "city": "San Jose McEnery Convention Center, 150 W San Carlos St",
+            "bestFor": "Engineers building agents and MCP systems",
+            "aiFocus": "Open agentic AI and the Model Context Protocol",
+            "costBand": "See organizer",
+            "verdict": "Go if you ship agents or MCP. The Linux Foundation describes two days of keynotes, sessions, posters, and workshops for builders, contributors, and enterprises in that ecosystem. Skip if you needed Moscone or a downtown San Francisco hotel."
+          },
+          {
+            "event": "ODSC AI West",
+            "dates": "Oct 27 to 29, 2026",
+            "city": "Hyatt Regency San Francisco Airport, 1333 Old Bayshore Hwy, Burlingame",
+            "bestFor": "Practitioners who want multi-day AI training",
+            "aiFocus": "Training tracks, an expo on Oct 27 to 28, and an AI X Leadership Summit on Oct 27 to 28",
+            "costBand": "See organizer",
+            "verdict": "Go if you want those training days and can stay in Burlingame. Skip if you booked this as a Moscone week. The homepage also says San Francisco; the venue page address is Burlingame. Watch virtually only for the virtual sessions: the FAQ says in-person sessions are not livestreamed."
+          }
+        ]
+      }
+    },
+    {
+      "id": "held",
+      "heading": "Held in San Francisco",
+      "paragraphs": [
+        "These 2026 editions used a San Francisco venue and have finished as of 2026-10-16. Read a row to decide whether the next edition earns a flight. Tech Week SF is not in the table. The organizer calls it a decentralized week of separately hosted events, and the FAQ dates are October 5 to 11, 2026. That week is over, and this guide does not give it a Go or Skip."
+      ],
+      "table": {
+        "caption": "2026 editions at a San Francisco venue that have already run, as of 2026-10-16. Organizer dates only.",
+        "rows": [
+          {
+            "event": "HumanX",
+            "dates": "Apr 6 to 9, 2026",
+            "city": "Moscone Center South, 747 Howard St, San Francisco",
+            "bestFor": "Executives and business leaders deciding how to use AI",
+            "aiFocus": "Enterprise AI adoption, policy, and operating practice",
+            "costBand": "See organizer",
+            "verdict": "Next cycle for a buyer who wants a leadership room. The 2026 FAQ places the event at Moscone Center South for that audience. Skip if you needed engineering workshops on training systems. The same FAQ does not state a 2027 city, so this page does not assume another Moscone week."
+          },
+          {
+            "event": "Microsoft Build",
+            "dates": "Jun 2 to 3, 2026",
+            "city": "Fort Mason Center, San Francisco, and online",
+            "bestFor": "Developers shipping on Microsoft platforms",
+            "aiFocus": "Agents, Azure, and developer tools",
+            "costBand": "See organizer",
+            "verdict": "Next cycle if you ship on Microsoft's agent and Azure stack. The Build live blog places June 2 to 3 in San Francisco and online, and names Fort Mason for the in-person event. Skip if you came for GPUs or a startup expo. Watch the session catalog on the Build site when the keynotes were the point."
+          },
+          {
+            "event": "Databricks Data + AI Summit",
+            "dates": "Jun 15 to 18, 2026",
+            "city": "Moscone Center, San Francisco, plus a virtual track",
+            "bestFor": "Data engineers, scientists, and teams on Databricks",
+            "aiFocus": "Lakehouse, governance, analytics, and agents",
+            "costBand": "See organizer",
+            "verdict": "Next cycle if the job is the Databricks platform. The June 2, 2026 press release says June 15 to 18 at Moscone, in person and virtual. Skip if that platform is not yours. The current summit site lists the next edition as June 21 to 24, 2027 at Moscone North, West, and South."
+          },
+          {
+            "event": "AI Engineer World's Fair",
+            "dates": "Jun 29 to Jul 2, 2026",
+            "city": "Moscone West, 747 Howard Street, San Francisco",
+            "bestFor": "AI engineers",
+            "aiFocus": "Applied AI workshops and technical tracks",
+            "costBand": "See organizer",
+            "verdict": "Next cycle for engineers. The organizer FAQ says June 29 through July 2 at Moscone West, with workshops and tracks, and says talks are being released on its YouTube channel. Watch the recordings if you cannot fly. Moscone's own listing prints June 30 to July 2; the table uses the organizer span. A leadership ticket existed, so a buyer is a Watch, not a Skip, until you read that agenda."
+          },
+          {
+            "event": "Dreamforce",
+            "dates": "Sep 15 to 17, 2026",
+            "city": "Moscone Center, San Francisco, and Salesforce+",
+            "bestFor": "Teams buying or running Salesforce",
+            "aiFocus": "Agentforce, CRM, and enterprise AI on that platform",
+            "costBand": "See organizer",
+            "verdict": "Next cycle only when the purchase is Salesforce. The registration page says September 15 to 17, 2026 at Moscone, with a Salesforce+ broadcast. Skip for GPU teams and for API teams outside that estate. Watch: the organizer says sessions are on demand on Salesforce+. The same site lists September 21 to 23, 2027 in San Francisco."
+          },
+          {
+            "event": "OpenAI DevDay",
+            "dates": "Sep 29, 2026",
+            "city": "Fort Mason, San Francisco",
+            "bestFor": "Developers shipping on OpenAI",
+            "aiFocus": "Models, APIs, Codex, and agents",
+            "costBand": "See organizer",
+            "verdict": "Next cycle only if you ship on OpenAI. The DevDay FAQ says September 29, 2026 at Fort Mason. Skip if your platform is a different API. Watch the recap: the keynote was livestreamed, and OpenAI said other sessions would be posted on openai.com."
+          },
+          {
+            "event": "The AI Conference",
+            "dates": "Sep 29 to Oct 1, 2026",
+            "city": "Pier 48, Mission Rock, San Francisco",
+            "bestFor": "Builders, researchers, and startup teams who can attend in person",
+            "aiFocus": "Applied AI, agents, infrastructure, and an on-site startup program",
+            "costBand": "See organizer",
+            "verdict": "Next cycle if you wanted that in-person mix. The organizer FAQ says September 29 through October 1 at Pier 48, in person only. Skip if you needed a livestream. The homepage lists a save-the-date of October 12 to 14, 2027 in San Francisco, without a street address on that line. This page does not claim a 2026 recording."
+          },
+          {
+            "event": "TechCrunch Disrupt",
+            "dates": "Oct 13 to 15, 2026",
+            "city": "Moscone West, 800 Howard St, San Francisco",
+            "bestFor": "Founders, investors, and startup operators",
+            "aiFocus": "Startup conference with AI sessions, not an AI-only program",
+            "costBand": "See organizer",
+            "verdict": "Already over. The attendee portal says October 13 to 15 at Moscone West. Next cycle for founder and investor density. Skip if you needed a research venue or a training workshop. The official frame is a startup conference."
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-skip",
+      "heading": "Go, Skip, or Watch",
+      "paragraphs": [
+        "Use the role that matches the trip. A cell above is filled only when the organizer site states the audience or the format. A thin agenda stays at Watch."
+      ],
+      "subsections": [
+        {
+          "heading": "AI and platform engineers",
+          "paragraphs": [
+            "Still ahead: Reverie on November 5 if the work is training data or multimodal models; PyTorch Conference on October 20 to 21 if the work is that open-source stack; AGNTCon + MCPCon on October 22 to 23 if the work is agents or MCP; ODSC AI West on October 27 to 29 if Burlingame is an acceptable venue for training days. Already held, and worth a next-cycle look only on a matching stack: AI Engineer World's Fair for applied engineering, Microsoft Build for the Microsoft platform, OpenAI DevDay for the OpenAI API, Databricks if the platform is Databricks."
+          ]
+        },
+        {
+          "heading": "Founders and go-to-market",
+          "paragraphs": [
+            "Reverie is a skip when the goal is buyer density. The organizer designs that day for researchers and engineers. TechCrunch Disrupt, October 13 to 15 at Moscone West, was the startup and investor week, and it has ended. Dreamforce was the Salesforce buyer week, and it has ended. Tech Week SF, October 5 to 11, was a week of separately hosted events, and it has ended. This page does not score that week."
+          ]
+        },
+        {
+          "heading": "Enterprise buyers",
+          "paragraphs": [
+            "Dreamforce is the Salesforce week. Sessions from the 2026 edition are on Salesforce+, and the organizer lists September 21 to 23, 2027 in San Francisco. HumanX, April 6 to 9 at Moscone South, is the leadership week that has already run. Databricks is the lakehouse week. ODSC lists an AI X Leadership Summit on October 27 to 28 inside the Burlingame event. Book the estate you are actually buying."
+          ]
+        },
+        {
+          "heading": "Researchers",
+          "paragraphs": [
+            "Reverie is the technical day still ahead in the city. It is a LanceDB summit on training data, not a peer-reviewed conference. NeurIPS, ICML, and CVPR are the paper venues. This page does not assign them a 2026 city. AI Engineer World's Fair and The AI Conference were in-person San Francisco programs with research-adjacent talks, and both have ended. The AI Conference FAQ says that event is in person only."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "next-step",
+      "heading": "What to open next",
+      "paragraphs": [
+        "Open the San Francisco city page and the AI track for the event guides that already exist on this site. Subscribe to the ICS feed, or join WhatsApp, when you want date changes without waiting for this article to be revised. For a global compare of flagship weeks, use the Best AI conferences 2026 guide. That page answers a different question from this city list.",
+        "The links after the FAQ are the calendar, WhatsApp, those two hubs, the global guide, the event guides, and the organizer sites used for the dates above. Confirm the organizer page before you book a flight."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Which San Francisco AI conferences are still upcoming in 2026?",
+      "answer": "As of 2026-10-16, Reverie on November 5 at the Contemporary Jewish Museum is the AI conference still ahead inside San Francisco. PyTorch Conference on October 20 to 21, AGNTCon + MCPCon on October 22 to 23, and ODSC AI West on October 27 to 29 are still ahead, and all three are outside the city, in San Jose or Burlingame. The Moscone and Fort Mason editions on this page have already run."
+    },
+    {
+      "question": "Is San Jose or the SFO airport hotel the same as San Francisco for this guide?",
+      "answer": "No. San Francisco on this page means a venue in the city, such as Moscone, Fort Mason, Pier 48, or the Contemporary Jewish Museum. ODSC AI West is at the Hyatt Regency San Francisco Airport, 1333 Old Bayshore Hwy, Burlingame. PyTorch Conference and AGNTCon + MCPCon are at the San Jose Convention Center. NVIDIA lists the next GTC in San Jose. Those are Bay Area trips."
+    },
+    {
+      "question": "How do I pick one San Francisco AI trip this quarter?",
+      "answer": "As of this page, the conference still ahead inside the city is Reverie, one day on November 5, for researchers and engineers working on training data. A multi-day builder program that is still bookable is in San Jose or Burlingame. Dreamforce, DevDay, Build, the Data + AI Summit, HumanX, AI Engineer World's Fair, The AI Conference, and Disrupt have already run in 2026. Use the held table when you are planning the next cycle of one of those."
+    },
+    {
+      "question": "Where do I get the dates on a calendar?",
+      "answer": "Subscribe to the GlobalTechEvents ICS feed at /api/calendar, or join the WhatsApp group linked on this page. This article is dated 2026-10-16. Check the organizer site before you book, because a homepage can move on to next year's dates while this table still describes 2026."
+    }
+  ],
+  "internalLinks": [
+    {
+      "href": "/api/calendar",
+      "label": "Subscribe to the ICS calendar"
+    },
+    {
+      "href": "https://chat.whatsapp.com/InsPPq4NBSh82cOe6ZzZya?mode=gi_t",
+      "label": "Join WhatsApp"
+    },
+    {
+      "href": "/cities/san-francisco",
+      "label": "Tech events in San Francisco"
+    },
+    {
+      "href": "/tracks/ai",
+      "label": "AI and agent conferences"
+    },
+    {
+      "href": "/guides/best-ai-conferences-2026",
+      "label": "Best AI conferences 2026"
+    },
+    {
+      "href": "/events/microsoft-build-2026",
+      "label": "Microsoft Build 2026 event guide"
+    },
+    {
+      "href": "/events/databricks-data-ai-summit-2026",
+      "label": "Databricks Data + AI Summit 2026 event guide"
+    },
+    {
+      "href": "/events/dreamforce-2026",
+      "label": "Dreamforce 2026 event guide"
+    },
+    {
+      "href": "/events/openai-devday-2026",
+      "label": "OpenAI DevDay 2026 event guide"
+    },
+    {
+      "href": "/events/techcrunch-disrupt-2026",
+      "label": "TechCrunch Disrupt 2026 event guide"
+    },
+    {
+      "href": "/events/tech-week-sf-2026",
+      "label": "Tech Week SF 2026 event guide"
+    },
+    {
+      "href": "/events/nvidia-gtc-2026",
+      "label": "NVIDIA GTC 2026 event guide"
+    },
+    {
+      "href": "https://www.reveriesummit.com/",
+      "label": "Reverie official site"
+    },
+    {
+      "href": "https://odsc.ai/west/west-venue/",
+      "label": "ODSC AI West venue page"
+    },
+    {
+      "href": "https://events.linuxfoundation.org/pytorch-conference-north-america/",
+      "label": "PyTorch Conference North America"
+    },
+    {
+      "href": "https://events.linuxfoundation.org/agntcon-mcpcon-north-america/",
+      "label": "AGNTCon + MCPCon North America"
+    },
+    {
+      "href": "https://opensourceaiweek.com/",
+      "label": "Open Source AI Week calendar"
+    },
+    {
+      "href": "https://www.ai.engineer/worldsfair/2026",
+      "label": "AI Engineer World's Fair 2026"
+    },
+    {
+      "href": "https://aiconference.com/",
+      "label": "The AI Conference official site"
+    },
+    {
+      "href": "https://support.humanx.co/article/26-where-and-when-does-humanx-take-place",
+      "label": "HumanX 2026 venue FAQ"
+    },
+    {
+      "href": "https://news.microsoft.com/build-2026-live-blog",
+      "label": "Microsoft Build 2026 live blog"
+    },
+    {
+      "href": "https://www.databricks.com/company/newsroom/press-releases/databricks-announces-2026-data-ai-summit-keynote-lineup-and",
+      "label": "Databricks Data + AI Summit 2026 announcement"
+    },
+    {
+      "href": "https://www.salesforce.com/dreamforce/",
+      "label": "Dreamforce official site"
+    },
+    {
+      "href": "https://devday.openai.com/",
+      "label": "OpenAI DevDay official site"
+    },
+    {
+      "href": "https://techcrunch.com/events/techcrunch-disrupt/attendee-portal/",
+      "label": "TechCrunch Disrupt 2026 attendee portal"
+    },
+    {
+      "href": "https://www.tech-week.com/",
+      "label": "Tech Week official site"
+    },
+    {
+      "href": "https://www.nvidia.com/gtc/",
+      "label": "NVIDIA GTC official site"
+    },
+    {
+      "href": "https://neurips.cc/",
+      "label": "NeurIPS dates"
+    },
+    {
+      "href": "https://icml.cc/",
+      "label": "ICML dates"
+    },
+    {
+      "href": "https://cvpr.thecvf.com/",
+      "label": "CVPR dates"
+    }
+  ]
+}

@@ -61,9 +61,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     secondaryKeywords: ['MWC Barcelona 2027 location', 'MWC Barcelona 2027 tickets', 'MWC Barcelona 2027 agenda'],
     seoTitle: 'MWC Barcelona 2027 Dates, Location & Tickets | GlobalTechEvents',
     metaDescription:
-      'MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via. Dates, city, and who should attend for telecom, devices, and mobile AI.',
+      'MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via in Barcelona.',
     whyItMatters:
-      'MWC Barcelona is the GSMA flagship where operators, device makers, and platform companies set the next year of mobile connectivity.',
+      'MWC Barcelona is the GSMA flagship for operators, device makers, and connectivity vendors. Go if your 2027 plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo. Confirm passes on the official site before you book travel.',
     whoShouldAttend: ['Telecom and infrastructure teams', 'Product leaders in mobile apps and devices', 'Investors and analysts in connectivity'],
     topics: ['5G/6G', 'Telecom Infrastructure', 'Mobile AI', 'Devices', 'Connectivity'],
     faq: [
@@ -110,10 +110,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     primaryKeyword: 'NVIDIA GTC 2026 dates',
     secondaryKeywords: ['NVIDIA GTC 2026 location', 'NVIDIA GTC 2026 tickets', 'NVIDIA GTC 2026 agenda'],
     seoTitle: 'NVIDIA GTC 2026 Dates, Location & AI Agenda | GlobalTechEvents',
-    metaDescription:
-      'NVIDIA GTC 2026 quick guide: dates, location, and major AI themes. Compare sessions and decide whether your team should prioritize attendance.',
+    metaDescription: 'NVIDIA GTC 2026 was 16-19 March 2026 in San Jose.',
     whyItMatters:
-      'GTC is one of the strongest signals for enterprise AI infrastructure, model deployment direction, and practical GenAI use cases.',
+      'NVIDIA GTC is where NVIDIA sets its enterprise AI infrastructure plans. The 2026 San Jose meeting ran 16-19 March 2026, and the keynote was on 16 March. Go now only for on-demand sessions. Skip a flight for those dates. The official site lists the next San Jose meeting as 15-18 March 2027. Confirm that page before you plan travel.',
     whoShouldAttend: ['AI engineers and platform teams', 'CTOs planning model infrastructure', 'Startups building on accelerated computing stacks'],
     topics: ['Generative AI', 'Inference', 'Data Platforms', 'Robotics', 'Accelerated Computing'],
     faq: [
@@ -185,10 +184,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     primaryKeyword: 'GITEX GLOBAL 2026 dates',
     secondaryKeywords: ['GITEX GLOBAL 2026 Dubai', 'GITEX GLOBAL 2026 tickets', 'GITEX GLOBAL 2026 agenda'],
     seoTitle: 'GITEX GLOBAL 2026 Dates, Dubai Location & Tickets | GlobalTechEvents',
-    metaDescription:
-      'GITEX GLOBAL 2026 is 7-11 December 2026 in Dubai. Summit day is 7 December, and the expo runs 8-11 December at Expo City.',
+    metaDescription: 'GITEX GLOBAL 2026 is 7-11 December 2026 in Dubai.',
     whyItMatters:
-      'GITEX GLOBAL is the Dubai flagship for enterprise technology, AI, startups, and government digital programs.',
+      'GITEX GLOBAL is the Dubai enterprise technology exhibition. It is not GITEX AI Europe. Go if you sell to Gulf enterprises or government buyers that week. Skip it if your buyers are only in Europe or North America. The summit is 7 December at Dubai World Trade Centre. The expo is 8-11 December at Dubai Exhibition Centre, Expo City Dubai.',
     whoShouldAttend: ['Enterprise digital teams', 'Government innovation leaders', 'Founders and vendors entering the Gulf market'],
     topics: ['Enterprise AI', 'Cybersecurity', 'Cloud', 'GovTech', 'Startups'],
     faq: [
@@ -261,10 +259,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     primaryKeyword: 'TOKEN2049 Singapore 2026 dates',
     secondaryKeywords: ['TOKEN2049 Singapore 2026 location', 'TOKEN2049 Singapore 2026 tickets', 'TOKEN2049 Singapore 2026 agenda'],
     seoTitle: 'TOKEN2049 Singapore 2026 Dates, Location & Tickets | GlobalTechEvents',
-    metaDescription:
-      'TOKEN2049 Singapore 2026 was 7-8 October 2026 at Marina Bay Sands. Dates, city, and who should attend for crypto and Web3.',
+    metaDescription: 'TOKEN2049 Singapore 2026 was 7-8 October 2026 at Marina Bay Sands.',
     whyItMatters:
-      'TOKEN2049 Singapore brings crypto founders, funds, and exchanges together for the Asia edition of the series.',
+      'TOKEN2049 Singapore is the Asia crypto conference, separate from the Dubai edition. As of 16 October 2026, the official page hero lists 6-7 October 2027 at Marina Bay Sands, while its structured data still says 7-8 October 2026. Treat the October 2026 dates as the edition that ended. Confirm 2027 on the official page before you book travel.',
     whoShouldAttend: ['Crypto and Web3 founders', 'Exchange, custody, and fintech operators', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Institutional Digital Assets'],
     faq: [
@@ -313,16 +310,15 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     primaryKeyword: 'TOKEN2049 Dubai 2027 dates',
     secondaryKeywords: ['TOKEN2049 Dubai 2027 location', 'TOKEN2049 Dubai 2027 tickets', 'TOKEN2049 Dubai 2027 agenda'],
     seoTitle: 'TOKEN2049 Dubai 2027 Dates, Location & Tickets | GlobalTechEvents',
-    metaDescription:
-      'TOKEN2049 Dubai 2027 is 21-22 April 2027 at Madinat Jumeirah. The 2026 Dubai edition was postponed to these dates.',
+    metaDescription: 'TOKEN2049 Dubai 2027 is 21-22 April 2027 at Madinat Jumeirah.',
     whyItMatters:
-      'TOKEN2049 Dubai is the Middle East edition of the TOKEN2049 series. It is a different show from TOKEN2049 Singapore.',
+      'TOKEN2049 Dubai is the Middle East crypto conference, not the Singapore edition. Go if you need digital-asset meetings in Dubai in April 2027. Skip it if your counterparties attend Singapore instead. The official Dubai page lists 21-22 April 2027 at Madinat Jumeirah. Confirm tickets there before you book flights. Checked 16 October 2026.',
     whoShouldAttend: ['Crypto and Web3 founders', 'Regional fintech and exchange teams', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Institutional Digital Assets'],
     faq: [
-      { q: 'When is TOKEN2049 Dubai 2027?', a: 'TOKEN2049 Dubai is 21-22 April 2027. The organizer postponed the 2026 Dubai dates to this window.' },
+      { q: 'When is TOKEN2049 Dubai 2027?', a: 'The official Dubai page lists 21-22 April 2027. Confirm the dates there before you travel.' },
       { q: 'Where is TOKEN2049 Dubai 2027?', a: 'It is at Madinat Jumeirah in Dubai, United Arab Emirates.' },
-      { q: 'Are 2026 Dubai tickets still valid?', a: 'The organizer said existing tickets carry to the 2027 dates. Confirm on the official Dubai page.' },
+      { q: 'Is this the same event as TOKEN2049 Singapore?', a: 'No. Singapore is a separate edition. Use the official page for the city you mean.' },
     ],
   },
   {
@@ -338,10 +334,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     primaryKeyword: 'Consensus Miami 2026 dates',
     secondaryKeywords: ['Consensus Miami 2026 location', 'Consensus Miami 2026 tickets', 'Consensus Miami 2026 agenda'],
     seoTitle: 'Consensus Miami 2026 Dates, Location & Agenda | GlobalTechEvents',
-    metaDescription:
-      'Consensus Miami 2026 was 5-7 May 2026 at the Miami Beach Convention Center. Dates, city, and who should attend.',
+    metaDescription: 'Consensus Miami 2026 was 5-7 May 2026 at the Miami Beach Convention Center.',
     whyItMatters:
-      'Consensus is CoinDesk\'s flagship crypto conference. Miami is the Americas edition.',
+      'Consensus Miami is CoinDesk\'s Americas crypto conference. It ran 5-7 May 2026 at the Miami Beach Convention Center. Go now only for on-demand sessions from that week. Skip a flight for the 2026 dates. The official event site says the next Miami Beach meeting is 4-6 May 2027. Confirm those dates before you book.',
     whoShouldAttend: ['Crypto founders and protocol teams', 'Finance and fintech operators', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Policy'],
     faq: [
@@ -573,6 +568,78 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       { q: 'When is NRF 2027?', a: 'NRF 2027: Retail\'s Big Show is 10-12 January 2027.' },
       { q: 'Where is NRF 2027?', a: 'It is at the Jacob K. Javits Convention Center in New York City.' },
       { q: 'Where do I register?', a: 'Use the official NRF Big Show site for passes and agenda updates.' },
+    ],
+  },
+  {
+    slug: 'neurips-2026',
+    eventName: 'NeurIPS 2026',
+    shortName: 'NeurIPS',
+    startDate: '2026-12-06',
+    endDate: '2026-12-12',
+    city: 'Sydney',
+    country: 'Australia',
+    format: 'offline',
+    officialUrl: 'https://neurips.cc/Conferences/2026',
+    primaryKeyword: 'NeurIPS 2026 dates',
+    secondaryKeywords: ['NeurIPS 2026 location', 'NeurIPS 2026 Sydney', 'NeurIPS 2026 workshops'],
+    seoTitle: 'NeurIPS 2026 Dates, Cities & Go or Skip | GlobalTechEvents',
+    metaDescription: 'NeurIPS 2026 main meeting is 6-12 December 2026 in Sydney.',
+    whyItMatters:
+      'NeurIPS is the main machine learning research meeting, not an industry product expo. Go if you are presenting or recruiting researchers. Skip it if you need a vendor floor for enterprise software. As of 16 October 2026 the official site lists the main meeting in Sydney on 6-12 December 2026, plus satellites in Atlanta and Paris on 9-13 December. Confirm your city before you travel.',
+    whoShouldAttend: ['Researchers presenting or reviewing machine learning work', 'Labs recruiting research talent', 'Students deciding whether the meeting is worth the trip'],
+    topics: ['Machine Learning', 'Research'],
+    faq: [
+      { q: 'When and where is NeurIPS 2026?', a: 'As of 16 October 2026, the official site lists the main meeting in Sydney on 6-12 December 2026. Expo day is 6 December, tutorials are 7 December, the main conference is 8-10 December, and workshops are 11-12 December.' },
+      { q: 'Are there other NeurIPS 2026 cities?', a: 'Yes. Official satellite meetings are in Atlanta and Paris on 9-13 December 2026. This page uses Sydney as the main meeting. Confirm which city you mean on neurips.cc.' },
+      { q: 'Should I go?', a: 'Go if you are presenting, reading the research program, or recruiting researchers. Skip it if you want an industry buyer expo.' },
+    ],
+  },
+  {
+    slug: 'icml-2026',
+    eventName: 'ICML 2026',
+    shortName: 'ICML',
+    startDate: '2026-07-06',
+    endDate: '2026-07-11',
+    city: 'Seoul',
+    country: 'South Korea',
+    format: 'hybrid',
+    officialUrl: 'https://icml.cc/Conferences/2026',
+    primaryKeyword: 'ICML 2026 dates',
+    secondaryKeywords: ['ICML 2026 location', 'ICML 2026 Seoul', 'ICML 2026 workshops'],
+    seoTitle: 'ICML 2026 Dates, Location & Go or Skip | GlobalTechEvents',
+    metaDescription: 'ICML 2026 was 6-11 July 2026 at COEX in Seoul.',
+    whyItMatters:
+      'ICML is a peer-reviewed machine learning conference, not a product launch. The 2026 meeting was 6-11 July 2026 at COEX in Seoul. Tutorials were 6 July, the main meeting was 7-9 July, and workshops were 10-11 July. Go now only for the paper record. Skip travel for 2026. This page does not guess a later date. Checked 16 October 2026.',
+    whoShouldAttend: ['Machine learning researchers using the 2026 paper record', 'Students checking whether the meeting already happened', 'Labs that missed the in-person week'],
+    topics: ['Machine Learning', 'Research'],
+    faq: [
+      { q: 'When was ICML 2026?', a: 'ICML 2026 was 6-11 July 2026 at the COEX Convention and Exhibition Center in Seoul. Tutorials and expo talks were 6 July, the main conference was 7-9 July, and workshops were 10-11 July.' },
+      { q: 'Should I still travel for ICML 2026?', a: 'No. The meeting is over. Use the official site for papers and recordings. This page does not state a 2027 date.' },
+      { q: 'Where is the official page?', a: 'https://icml.cc/Conferences/2026. Checked 16 October 2026.' },
+    ],
+  },
+  {
+    slug: 'cvpr-2026',
+    eventName: 'CVPR 2026',
+    shortName: 'CVPR',
+    startDate: '2026-06-03',
+    endDate: '2026-06-07',
+    city: 'Denver',
+    country: 'United States',
+    format: 'offline',
+    officialUrl: 'https://cvpr.thecvf.com/Conferences/2026',
+    primaryKeyword: 'CVPR 2026 dates',
+    secondaryKeywords: ['CVPR 2026 location', 'CVPR 2026 Denver', 'CVPR 2026 workshops'],
+    seoTitle: 'CVPR 2026 Dates, Location & Go or Skip | GlobalTechEvents',
+    metaDescription: 'CVPR 2026 was 3-7 June 2026 at the Colorado Convention Center in Denver.',
+    whyItMatters:
+      'CVPR is the main computer vision research conference, not an enterprise software expo. The 2026 meeting was 3-7 June 2026 in Denver. Workshops and tutorials were 3-4 June, and the main conference was 5-7 June. Go now only for the papers and recorded program. Skip a flight. Confirm any later edition on the official site. Checked 16 October 2026.',
+    whoShouldAttend: ['Computer vision researchers using the 2026 papers', 'Students checking whether the meeting already happened', 'Labs that missed the Denver week'],
+    topics: ['Computer Vision', 'Research'],
+    faq: [
+      { q: 'When was CVPR 2026?', a: 'CVPR 2026 was 3-7 June 2026 at the Colorado Convention Center in Denver. Workshops and tutorials were 3-4 June. The main conference was 5-7 June.' },
+      { q: 'Should I still travel for CVPR 2026?', a: 'No. The meeting is over. Use the official site for the papers and recorded program. This page does not state a later edition.' },
+      { q: 'Where is the official page?', a: 'https://cvpr.thecvf.com/Conferences/2026. Checked 16 October 2026.' },
     ],
   },
 ];

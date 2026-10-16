@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { INDEXABLE_SHELLS } from '../src/content/shells/registry.ts';
 import { loadAuthors, loadGuides } from './generate-guide-static.mjs';
 import { evaluateGuidePublishGate } from '../src/content/guides/publishGate.ts';
 import {
@@ -298,6 +299,9 @@ function renderLlmsTxt(events, guides) {
     `- [Events directory](${SITE_URL}/events): Index of crawlable event guides.`,
     `- [Guides](${SITE_URL}/guides): Evergreen compare and best-of guides.`,
     `- [For agents](${SITE_URL}/for-agents): Humans can copy a prompt on this page for ChatGPT, Claude, or Cursor that fetches the live catalog.`,
+    ...INDEXABLE_SHELLS.filter((shell) => shell.kind === 'topic').map(
+      (shell) => `- [${markdownLabel(shell.h1)}](${SITE_URL}${shell.path}): ${shell.metaDescription}`,
+    ),
     '',
     '## Guides',
     '',

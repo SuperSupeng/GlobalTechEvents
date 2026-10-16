@@ -12,6 +12,8 @@ The public event catalog is live. GET https://www.globaltechevents.xyz/api/event
 - [Events directory](https://www.globaltechevents.xyz/events): Index of crawlable event guides.
 - [Guides](https://www.globaltechevents.xyz/guides): Evergreen compare and best-of guides.
 - [For agents](https://www.globaltechevents.xyz/for-agents): Humans can copy a prompt on this page for ChatGPT, Claude, or Cursor that fetches the live catalog.
+- [AI conferences](https://www.globaltechevents.xyz/topics/ai): Industry AI conferences on this calendar, with guides for GTC, Cloud Next, Build, DevDay, Databricks, re:Invent, and KubeCon.
+- [AI agent conferences](https://www.globaltechevents.xyz/topics/ai-agents): Agent, builder, and product conferences on this calendar, including DevDay, Build, Cloud Next, re:Invent, and KubeCon.
 
 ## Guides
 

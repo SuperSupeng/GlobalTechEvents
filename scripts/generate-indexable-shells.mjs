@@ -32,22 +32,62 @@ function readWhatsAppUrl() {
   return match[1];
 }
 
-function renderShell(shell, events) {
-  const canonical = `${SITE_URL}${shell.path}`;
-  const related = relatedEventsForShell(shell, events);
-  const whatsapp = readWhatsAppUrl();
-  const startItems = (shell.links || [])
+const ACADEMIC_LINK = /neurips|icml|cvpr/i;
+
+function listedEventSlugs(events) {
+  return new Set(events.map((event) => String(event.slug || '').toLowerCase()).filter(Boolean));
+}
+
+function keepShellLink(link, knownSlugs) {
+  const href = String(link.href || '');
+  const label = String(link.label || '');
+  if (ACADEMIC_LINK.test(`${href} ${label}`)) return false;
+  const match = href.match(/^\/events\/([a-z0-9-]+)\/?$/i);
+  if (!match) return true;
+  return knownSlugs.has(match[1].toLowerCase());
+}
+
+function renderLinkItems(links, knownSlugs) {
+  return (links || [])
+    .filter((link) => keepShellLink(link, knownSlugs))
     .map((link) => {
       const note = link.note ? ` <span class="meta">${escapeHtml(link.note)}</span>` : '';
       return `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>${note}</li>`;
     })
     .join('');
+}
+
+function shellEyebrow(kind) {
+  if (kind === 'city') return 'City';
+  if (kind === 'track') return 'Track';
+  return 'Topic';
+}
+
+function renderShell(shell, events) {
+  const canonical = `${SITE_URL}${shell.path}`;
+  const related = relatedEventsForShell(shell, events);
+  const whatsapp = readWhatsAppUrl();
+  const knownSlugs = listedEventSlugs(events);
+  const startItems = renderLinkItems(shell.links, knownSlugs);
   const startHere = startItems
     ? `<section>
         <h2>Where to start</h2>
         <ul>${startItems}</ul>
       </section>`
     : '';
+  const extraSections = (shell.sections || [])
+    .map((section) => {
+      const items = renderLinkItems(section.links, knownSlugs);
+      const intro = section.intro ? `<p>${escapeHtml(section.intro)}</p>` : '';
+      const list = items ? `<ul>${items}</ul>` : '';
+      return `<section>
+        <h2>${escapeHtml(section.heading)}</h2>
+        ${intro}
+        ${list}
+      </section>`;
+    })
+    .join('');
+  const extraBlock = extraSections ? `\n      ${extraSections}` : '';
   const ctas = `<div class="btn-row">
         <a class="btn" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
         <a class="btn btn-secondary" href="/api/calendar">ICS subscribe</a>
@@ -120,11 +160,11 @@ function renderShell(shell, events) {
   </head>
   <body>
     <main class="wrap">
-      <p class="eyebrow">${shell.kind === 'city' ? 'City' : 'Track'}</p>
+      <p class="eyebrow">${shellEyebrow(shell.kind)}</p>
       <h1>${escapeHtml(shell.h1)}</h1>
       <p>${escapeHtml(shell.intro)}</p>
       ${ctas}
-      ${startHere}
+      ${startHere}${extraBlock}
       <section>
         <h2>Related events</h2>
         ${list}

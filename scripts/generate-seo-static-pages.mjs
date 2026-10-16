@@ -384,7 +384,7 @@ ${urls
     const isGuidePage = url.includes('/guides/');
     const isGuidesHub = url.endsWith('/guides');
     const isAuthorPage = url.includes('/authors/');
-    const isIndexableShell = url.includes('/cities/') || url.includes('/tracks/');
+    const isIndexableShell = url.includes('/cities/') || url.includes('/tracks/') || url.includes('/topics/');
     const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell ? 'weekly' : 'monthly';
     const priority = isHome
       ? '1.0'
@@ -514,7 +514,9 @@ async function main() {
   const manualPages = loadManualPages();
   const whatsappUrl = readWhatsAppUrl();
   const events = await fetchEvents();
-  const allPages = mergePages(manualPages, events);
+  const allPages = mergePages(manualPages, events).filter(
+    (page) => !/neurips|icml|cvpr/i.test(`${page.slug} ${page.eventName}`),
+  );
 
   fs.rmSync(EVENTS_DIR, { recursive: true, force: true });
   fs.mkdirSync(EVENTS_DIR, { recursive: true });
@@ -532,7 +534,7 @@ async function main() {
   writeHubStaticPages();
   console.log(`Generated ${allPages.length} crawlable SEO pages and sitemap entries into public/events/*`);
   console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
-  console.log(`Generated ${shells.length} indexable city and track shells`);
+  console.log(`Generated ${shells.length} indexable city, track, and topic shells`);
 }
 
 if (process.argv.includes('--hubs-only')) {
@@ -556,7 +558,7 @@ if (process.argv.includes('--hubs-only')) {
   const pages = JSON.parse(fs.readFileSync(GENERATED_SOURCE, 'utf8'));
   const shells = writeIndexableShells(pages);
   ensureShellsInExistingSitemap();
-  console.log(`Generated ${shells.length} indexable city and track shells`);
+  console.log(`Generated ${shells.length} indexable city, track, and topic shells`);
 } else {
   main().catch((error) => {
     console.error(error);

@@ -69,6 +69,61 @@ for (const slug of [
 assert.match(cityHtml, /href="\/guides\/ai-conferences-san-francisco-2026"/);
 assert.match(cityHtml, /San Jose, not in San Francisco/);
 
+const AI_TOPIC_SLUGS = [
+  'nvidia-gtc-2026',
+  'openai-devday-2026',
+  'databricks-data-ai-summit-2026',
+  'microsoft-build-2026',
+  'google-cloud-next-2026',
+  'kubecon-na-2026',
+  'dreamforce-2026',
+  'superai-singapore-2026',
+  'aws-reinvent-2026',
+  'techcrunch-disrupt-2026',
+];
+const AGENT_TOPIC_SLUGS = [
+  'openai-devday-2026',
+  'microsoft-build-2026',
+  'google-cloud-next-2026',
+  'google-io-2026',
+  'databricks-data-ai-summit-2026',
+  'aws-reinvent-2026',
+  'nvidia-gtc-2026',
+  'kubecon-na-2026',
+  'dreamforce-2026',
+  'superai-singapore-2026',
+];
+
+function linkedEventSlugs(html) {
+  return [...new Set([...html.matchAll(/href="\/events\/([a-z0-9-]+)"/g)].map((match) => match[1]))];
+}
+
+const aiHtml = fs.readFileSync('public/topics/ai/index.html', 'utf8');
+const agentsHtml = fs.readFileSync('public/topics/ai-agents/index.html', 'utf8');
+assert.match(aiHtml, /<h1>AI conferences<\/h1>/);
+assert.match(agentsHtml, /<h1>AI agent conferences<\/h1>/);
+assert.match(agentsHtml, /<h2>Agents<\/h2>/);
+assert.ok(aiHtml.includes('As of 16 October 2026'));
+assert.ok(agentsHtml.includes('As of 16 October 2026'));
+for (const html of [aiHtml, agentsHtml]) {
+  assert.doesNotMatch(html, /neurips|icml|cvpr/i);
+  assert.match(html, /href="\/guides\/ai-conferences-san-francisco-2026"/);
+  assert.match(html, /href="\/guides\/best-ai-conferences-2026"/);
+  assert.match(html, /href="\/tracks\/ai"/);
+  assert.match(html, /href="\/cities\/san-francisco"/);
+  assert.ok(linkedEventSlugs(html).length >= 5);
+}
+for (const slug of AI_TOPIC_SLUGS) {
+  assert.ok(pages.some((page) => page.slug === slug), slug);
+  assert.match(aiHtml, new RegExp(`href="/events/${slug}"`));
+}
+for (const slug of AGENT_TOPIC_SLUGS) {
+  assert.ok(pages.some((page) => page.slug === slug), slug);
+  assert.match(agentsHtml, new RegExp(`href="/events/${slug}"`));
+}
+assert.match(aiHtml, /href="\/topics\/ai-agents"/);
+assert.match(agentsHtml, /href="\/topics\/ai"/);
+
 function wordCount(value) {
   return String(value).trim().split(/\s+/).filter(Boolean).length;
 }
@@ -95,6 +150,13 @@ for (const slug of [
 const sitemap = fs.readFileSync('public/sitemap.xml', 'utf8');
 assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/cities\/san-francisco<\/loc>/);
 assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/tracks\/ai<\/loc>/);
+assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/topics\/ai<\/loc>/);
+assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/topics\/ai-agents<\/loc>/);
+
+const llms = fs.readFileSync('public/llms.txt', 'utf8');
+assert.match(llms, /https:\/\/www\.globaltechevents\.xyz\/topics\/ai\)/);
+assert.match(llms, /https:\/\/www\.globaltechevents\.xyz\/topics\/ai-agents\)/);
+assert.doesNotMatch(llms, /neurips|icml|cvpr/i);
 
 const ces = fs.readFileSync('public/events/ces-2026/index.html', 'utf8');
 assert.match(ces, /<h1>CES 2026/);
@@ -124,4 +186,8 @@ for (const shell of INDEXABLE_SHELLS) {
   );
 }
 
-console.log(`shells ok: city ${cityEvents.length}, track ${trackEvents.length}`);
+const aiShell = INDEXABLE_SHELLS.find((shell) => shell.path === '/topics/ai');
+const agentsShell = INDEXABLE_SHELLS.find((shell) => shell.path === '/topics/ai-agents');
+assert.equal(relatedEventsForShell(aiShell, pages).length, AI_TOPIC_SLUGS.length);
+assert.equal(relatedEventsForShell(agentsShell, pages).length, AGENT_TOPIC_SLUGS.length);
+console.log(`shells ok: city ${cityEvents.length}, track ${trackEvents.length}, ai ${AI_TOPIC_SLUGS.length}, agents ${AGENT_TOPIC_SLUGS.length}`);

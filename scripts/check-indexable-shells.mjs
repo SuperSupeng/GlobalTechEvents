@@ -44,6 +44,54 @@ for (const shell of INDEXABLE_SHELLS) {
   }
 }
 
+const WHATSAPP_URL = 'https://chat.whatsapp.com/InsPPq4NBSh82cOe6ZzZya?mode=gi_t';
+const whatsappPattern = new RegExp(WHATSAPP_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+for (const shell of INDEXABLE_SHELLS) {
+  const html = fs.readFileSync(`public${shell.path}/index.html`, 'utf8');
+  assert.match(html, /Join WhatsApp/);
+  assert.match(html, whatsappPattern);
+  assert.match(html, /href="\/api\/calendar"/);
+  assert.match(html, /ICS subscribe/);
+  assert.doesNotMatch(html, /noindex/);
+}
+
+const cityHtml = fs.readFileSync('public/cities/san-francisco/index.html', 'utf8');
+for (const slug of [
+  'microsoft-build-2026',
+  'dreamforce-2026',
+  'openai-devday-2026',
+  'databricks-data-ai-summit-2026',
+  'techcrunch-disrupt-2026',
+  'nvidia-gtc-2026',
+]) {
+  assert.match(cityHtml, new RegExp(`href="/events/${slug}"`));
+}
+assert.match(cityHtml, /href="\/guides\/ai-conferences-san-francisco-2026"/);
+assert.match(cityHtml, /San Jose, not in San Francisco/);
+
+function wordCount(value) {
+  return String(value).trim().split(/\s+/).filter(Boolean).length;
+}
+for (const slug of [
+  'superai-singapore-2026',
+  'google-cloud-next-2026',
+  'microsoft-build-2026',
+  'computex-2026',
+  'dreamforce-2026',
+  'kubecon-na-2026',
+]) {
+  const page = pages.find((item) => item.slug === slug);
+  assert.ok(page, slug);
+  const definition = wordCount(page.whyItMatters);
+  const section = definition + wordCount(page.metaDescription);
+  assert.ok(definition >= 40 && definition <= 80, `${slug} definition ${definition}`);
+  assert.ok(section >= 40 && section <= 80, `${slug} section ${section}`);
+  const html = fs.readFileSync(`public/events/${slug}/index.html`, 'utf8');
+  assert.match(html, /Join WhatsApp/);
+  assert.match(html, /Download \.ics/);
+  assert.match(html, whatsappPattern);
+}
+
 const sitemap = fs.readFileSync('public/sitemap.xml', 'utf8');
 assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/cities\/san-francisco<\/loc>/);
 assert.match(sitemap, /<loc>https:\/\/www\.globaltechevents\.xyz\/tracks\/ai<\/loc>/);

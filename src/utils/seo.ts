@@ -1,3 +1,4 @@
+import { HOME_CANONICAL_HREF } from '../seo/shellCanonicals';
 import { TechEvent } from '../types';
 
 interface SEOMetadata {
@@ -22,7 +23,7 @@ export function getHomeSEO(): SEOMetadata {
     ogTitle: 'GlobalTechEvents — Major tech events in one calendar',
     ogDescription: 'Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals.',
     twitterCard: 'summary_large_image',
-    canonicalUrl: 'https://www.globaltechevents.xyz',
+    canonicalUrl: HOME_CANONICAL_HREF,
   };
 }
 
@@ -131,9 +132,6 @@ function updateOrCreateMetaTag(attribute: string, name: string, content: string)
   element.content = content;
 }
 
-/**
- * 辅助函数：更新或创建 link 标签
- */
 function updateOrCreateLinkTag(rel: string, href: string) {
   let element = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement;
   
@@ -144,6 +142,10 @@ function updateOrCreateLinkTag(rel: string, href: string) {
   }
   
   element.href = href;
+}
+
+export function setCanonicalUrl(href: string) {
+  updateOrCreateLinkTag('canonical', href);
 }
 
 /**

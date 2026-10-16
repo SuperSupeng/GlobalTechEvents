@@ -32,7 +32,8 @@ import { useToast } from './hooks/useToast';
 import CalendarDownloadProof from './components/CalendarDownloadProof';
 import { WHATSAPP_GROUP_URL } from './config/constants';
 import { trackOutboundClick } from './utils/analytics';
-import { getHomeSEO, updateMetaTags } from './utils/seo';
+import { canonicalHrefForPath, HOME_CANONICAL_HREF } from './seo/shellCanonicals';
+import { getHomeSEO, setCanonicalUrl, updateMetaTags } from './utils/seo';
 
 const App: React.FC = () => {
   const initialRoute = resolveAppRoute(window.location.pathname);
@@ -172,7 +173,10 @@ const App: React.FC = () => {
   React.useEffect(() => {
     if (currentPage === 'home') {
       updateMetaTags(getHomeSEO());
+      return;
     }
+    const href = canonicalHrefForPath(window.location.pathname);
+    if (href && href !== HOME_CANONICAL_HREF) setCanonicalUrl(href);
   }, [currentPage]);
 
   const splitText = (text: string) => {

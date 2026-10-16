@@ -19,9 +19,9 @@ export type ResolvedAppRoute =
   | { page: 'seoEvent'; seoEventPage: SEOEventPageData };
 
 export function resolveAppRoute(pathname: string): ResolvedAppRoute {
-  if (pathname === '/privacy') return { page: 'privacy' };
-  if (pathname === '/terms') return { page: 'terms' };
-  if (pathname === '/resources') return { page: 'resources' };
+  if (pathname === '/privacy' || pathname === '/privacy/') return { page: 'privacy' };
+  if (pathname === '/terms' || pathname === '/terms/') return { page: 'terms' };
+  if (pathname === '/resources' || pathname === '/resources/') return { page: 'resources' };
   if (pathname === '/events' || pathname === '/events/') return { page: 'eventsHub' };
   if (pathname === '/guides' || pathname === '/guides/') return { page: 'guidesIndex' };
   if (pathname === '/for-agents' || pathname === '/for-agents/') return { page: 'forAgents' };

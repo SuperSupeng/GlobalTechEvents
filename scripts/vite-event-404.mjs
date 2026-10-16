@@ -3,6 +3,7 @@ import path from 'node:path';
 
 const EVENT_SLUG = /^\/events\/([^/]+)\/?$/;
 const SHELL_PATH = /^\/(cities|tracks)\/([^/]+)\/?$/;
+const SPA_SHELL_ROUTE = /^\/(privacy|terms|resources)\/?$/;
 
 const NOT_FOUND_HTML = `<!doctype html>
 <html lang="en">
@@ -33,8 +34,20 @@ function sendHtml(res, status, html) {
   res.end(html);
 }
 
+function rewriteSpaShell(req) {
+  const [pathname, query] = (req.url || '').split('?');
+  const match = pathname.match(SPA_SHELL_ROUTE);
+  if (!match) return false;
+  req.url = `/${match[1]}/index.html${query ? `?${query}` : ''}`;
+  return true;
+}
+
 function eventShellMiddleware(root) {
   return (req, res, next) => {
+    if (rewriteSpaShell(req)) {
+      next();
+      return;
+    }
     const pathname = (req.url || '').split('?')[0];
     const shellMatch = pathname.match(SHELL_PATH);
     if (shellMatch) {

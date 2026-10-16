@@ -103,6 +103,30 @@
       "destination": "/for-agents/index.html"
     },
     {
+      "source": "/privacy",
+      "destination": "/privacy/index.html"
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/resources",
+      "destination": "/resources/index.html"
+    },
+    {
+      "source": "/resources/",
+      "destination": "/resources/index.html"
+    },
+    {
       "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$).*)",
       "destination": "/index.html"
     }

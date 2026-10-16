@@ -225,7 +225,7 @@ function renderEventsHub(events, guides) {
 </html>`;
 }
 
-function renderHomeShell(guides) {
+export function renderHomeShell(guides) {
   const guideLinks = guides
     .map(
       (guide) =>
@@ -233,6 +233,8 @@ function renderHomeShell(guides) {
     )
     .join('');
   return `${HOME_START}
+      <style>#gte-home-shell{display:none}</style>
+      <noscript><style>#gte-home-shell{display:block !important}</style></noscript>
       <main id="gte-home-shell" style="max-width:860px;margin:0 auto;padding:48px 20px 80px;font-family:Inter,system-ui,sans-serif;line-height:1.7;">
         <p style="letter-spacing:.14em;text-transform:uppercase;font-size:12px;margin:0 0 12px;">GlobalTechEvents</p>
         <h1 style="font-size:40px;line-height:1.15;margin:0 0 16px;">The world's major tech events, in one calendar</h1>

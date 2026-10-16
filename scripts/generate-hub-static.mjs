@@ -225,7 +225,7 @@ function renderEventsHub(events, guides) {
 </html>`;
 }
 
-function renderHomeShell(guides) {
+export function renderHomeShell(guides) {
   const guideLinks = guides
     .map(
       (guide) =>

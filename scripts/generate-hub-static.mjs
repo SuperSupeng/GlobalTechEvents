@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { INDEXABLE_SHELLS } from '../src/content/shells/registry.ts';
+import { writeSpaRouteShells } from './spa-route-shells.mjs';
 import { loadAuthors, loadGuides } from './generate-guide-static.mjs';
 import { evaluateGuidePublishGate } from '../src/content/guides/publishGate.ts';
 import {
@@ -551,6 +552,7 @@ export function writeHubStaticPages() {
   fs.writeFileSync(path.join(forAgentsDir, 'index.html'), forAgentsHtml);
 
   upsertHomeShell(renderHomeShell(guides));
+  writeSpaRouteShells();
 
   const llms = renderLlmsTxt(events, guides);
   assertEnglish('public/llms.txt', llms);

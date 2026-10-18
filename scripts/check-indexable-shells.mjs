@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { INDEXABLE_SHELLS, relatedEventsForShell } from '../src/content/shells/registry.ts';
 
-const SPA_CATCHALL = /^\/((?!events\/[^/]+\/?$)(?!events\/[^/]+\/index\.html$).*)$/;
+const SPA_CATCHALL = /^\/((?!events\/[^/]+\/?$)(?!events\/[^/]+\/index\.html$)(?![^/]+\.txt$).*)$/;
 
 function catchAllMatches(pathname) {
   return SPA_CATCHALL.test(pathname);
@@ -171,13 +171,33 @@ assert.equal(catchAllMatches('/events/ces-2026/'), false);
 assert.equal(catchAllMatches('/events/not-a-real-event'), false);
 assert.equal(catchAllMatches('/events/not-a-real-event/'), false);
 assert.equal(catchAllMatches('/events/not-a-real-event/index.html'), false);
+assert.equal(catchAllMatches('/robots.txt'), false);
+assert.equal(catchAllMatches('/llms.txt'), false);
+assert.equal(catchAllMatches('/7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6.txt'), false);
+assert.equal(catchAllMatches('/indexnow-key.txt'), false);
+assert.equal(catchAllMatches('/sitemap.xml'), true);
+assert.equal(catchAllMatches('/guides/foo.txt'), true);
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const catchAll = vercel.rewrites.find((rule) => rule.destination === '/index.html' && rule.source.includes('?!events/'));
 assert.ok(catchAll, 'SPA catch-all must exclude /events/{slug}');
 assert.equal(
   catchAll.source,
-  '/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$).*)',
+  '/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$)(?![^/]+\\.txt$).*)',
+);
+const rootTxt = vercel.rewrites.find((rule) => rule.source === '/:file([^/]+\\.txt)');
+assert.ok(rootTxt, 'root *.txt must be rewritten to the static file before the SPA catch-all');
+assert.equal(rootTxt.destination, '/:file');
+assert.ok(vercel.rewrites.indexOf(rootTxt) < vercel.rewrites.indexOf(catchAll));
+const indexNowKey = '7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6';
+const indexNowBody = fs.readFileSync(`public/${indexNowKey}.txt`, 'utf8');
+assert.equal(indexNowBody, `${indexNowKey}\n`);
+assert.ok(
+  vercel.headers.some(
+    (rule) =>
+      rule.source === `/${indexNowKey}.txt` &&
+      rule.headers.some((header) => header.key === 'Content-Type' && header.value.startsWith('text/plain')),
+  ),
 );
 for (const shell of INDEXABLE_SHELLS) {
   assert.ok(

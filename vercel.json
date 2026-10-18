@@ -19,6 +19,10 @@
       "destination": "/llms.txt"
     },
     {
+      "source": "/:file([^/]+\\.txt)",
+      "destination": "/:file"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
@@ -127,7 +131,7 @@
       "destination": "/resources/index.html"
     },
     {
-      "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$).*)",
+      "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$)(?![^/]+\\.txt$).*)",
       "destination": "/index.html"
     }
   ],
@@ -177,6 +181,15 @@
     },
     {
       "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6.txt",
       "headers": [
         {
           "key": "Content-Type",

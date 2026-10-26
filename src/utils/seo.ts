@@ -17,11 +17,11 @@ interface SEOMetadata {
  */
 export function getHomeSEO(): SEOMetadata {
   return {
-    title: 'GlobalTechEvents — Major tech events in one calendar',
-    description: 'Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals.',
+    title: 'Global tech events calendar 2026 — subscribe once',
+    description: 'A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar.',
     keywords: 'tech events calendar, global conferences, industry events, ICS subscribe',
-    ogTitle: 'GlobalTechEvents — Major tech events in one calendar',
-    ogDescription: 'Unified calendar of globally known major tech events. Subscribe via calendar or WhatsApp—built for industry professionals.',
+    ogTitle: 'Global tech events calendar 2026 — subscribe once',
+    ogDescription: 'A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar.',
     twitterCard: 'summary_large_image',
     canonicalUrl: HOME_CANONICAL_HREF,
   };

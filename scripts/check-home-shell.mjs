@@ -9,10 +9,10 @@ const guides = [
 function assertCrawlableShell(html, label) {
   assert.match(
     html,
-    /<h1[^>]*>The world's major tech events, in one calendar<\/h1>/,
+    /<h1[^>]*>The 2026 global tech events calendar — subscribe once<\/h1>/,
     `${label} must keep the home H1 in the HTML`,
   );
-  for (const href of ['/events', '/guides', '/resources', '/for-agents']) {
+  for (const href of ['/events', '/guides', '/resources', '/for-agents', '/events/openai-devday-2026']) {
     assert.ok(html.includes(`href="${href}"`), `${label} must keep href="${href}" in the HTML`);
   }
 }

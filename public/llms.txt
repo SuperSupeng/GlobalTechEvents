@@ -8,7 +8,7 @@ The public event catalog is live. GET https://www.globaltechevents.xyz/api/event
 
 ## Hubs
 
-- [Home calendar](https://www.globaltechevents.xyz/): Major tech events in one calendar.
+- [Home calendar](https://www.globaltechevents.xyz/): Global tech events calendar 2026 — subscribe once.
 - [Events directory](https://www.globaltechevents.xyz/events): Index of crawlable event guides.
 - [Guides](https://www.globaltechevents.xyz/guides): Evergreen compare and best-of guides.
 - [For agents](https://www.globaltechevents.xyz/for-agents): Humans can copy a prompt on this page for ChatGPT, Claude, or Cursor that fetches the live catalog.

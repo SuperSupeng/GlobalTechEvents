@@ -238,8 +238,8 @@ export function renderHomeShell(guides) {
       <noscript><style>#gte-home-shell{display:block !important}</style></noscript>
       <main id="gte-home-shell" style="max-width:860px;margin:0 auto;padding:48px 20px 80px;font-family:Inter,system-ui,sans-serif;line-height:1.7;">
         <p style="letter-spacing:.14em;text-transform:uppercase;font-size:12px;margin:0 0 12px;">GlobalTechEvents</p>
-        <h1 style="font-size:40px;line-height:1.15;margin:0 0 16px;">The world's major tech events, in one calendar</h1>
-        <p style="margin:0 0 20px;">A unified calendar of globally known tech conferences and industry events. Subscribe once, sync everywhere, and follow updates on WhatsApp.</p>
+        <h1 style="font-size:40px;line-height:1.15;margin:0 0 16px;">The 2026 global tech events calendar — subscribe once</h1>
+        <p style="margin:0 0 20px;">A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar, including <a href="/events/openai-devday-2026">OpenAI DevDay 2026</a>.</p>
         <nav aria-label="Primary">
           <ul>
             <li><a href="/events">Events directory</a></li>
@@ -298,7 +298,7 @@ function renderLlmsTxt(events, guides) {
     '',
     '## Hubs',
     '',
-    `- [Home calendar](${SITE_URL}/): Major tech events in one calendar.`,
+    `- [Home calendar](${SITE_URL}/): Global tech events calendar 2026 — subscribe once.`,
     `- [Events directory](${SITE_URL}/events): Index of crawlable event guides.`,
     `- [Guides](${SITE_URL}/guides): Evergreen compare and best-of guides.`,
     `- [For agents](${SITE_URL}/for-agents): Humans can copy a prompt on this page for ChatGPT, Claude, or Cursor that fetches the live catalog.`,
@@ -489,7 +489,7 @@ function assertForAgentsHtml(html) {
   if (!/<h1>Copy a prompt for the live event catalog<\/h1>/.test(html)) {
     throw new Error('For-agents shell is missing its unique H1.');
   }
-  if (html.includes("The world's major tech events, in one calendar")) {
+  if (html.includes('The 2026 global tech events calendar — subscribe once')) {
     throw new Error('For-agents shell still contains the homepage H1.');
   }
   if (!html.includes('>Copy prompt<')) {

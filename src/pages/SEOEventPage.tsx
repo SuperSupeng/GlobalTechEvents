@@ -147,15 +147,20 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Tech Event Guide</p>
-        <h1 className="text-4xl sm:text-5xl font-serif italic mb-5 leading-tight">{page.eventName}: Dates, Location & Event Guide</h1>
+        <h1 className="text-4xl sm:text-5xl font-serif italic mb-5 leading-tight">
+          {page.headline ?? `${page.eventName}: Dates, Location & Event Guide`}
+        </h1>
         <p className="text-white/75 text-lg leading-relaxed mb-8">{page.whyItMatters}</p>
 
         <section className="glass-panel p-6 sm:p-7 mb-10 border border-primary/20 shadow-[0_0_0_1px_rgba(212,175,55,0.08)]">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div className="max-w-2xl">
-              <h2 className="text-2xl sm:text-3xl font-serif italic mb-3">Save this event before you forget it</h2>
+              <h2 className="text-2xl sm:text-3xl font-serif italic mb-3">
+                {page.calendarHeading ?? 'Save this event before you forget it'}
+              </h2>
               <p className="text-white/70 leading-relaxed">
-                Put {page.shortName} on your calendar first, then choose whether to register now or review the official event site.
+                {page.calendarLead ??
+                  `Put ${page.shortName} on your calendar first, then choose whether to register now or review the official event site.`}
               </p>
             </div>
           </div>
@@ -295,6 +300,22 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             ))}
           </ul>
         </section>
+
+        {page.relatedLinks && page.relatedLinks.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-2xl font-serif italic mb-4">Related pages</h2>
+            <ul className="list-disc pl-6 text-white/80 space-y-2">
+              {page.relatedLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="text-primary-light underline underline-offset-4 hover:text-white">
+                    {link.label}
+                  </a>
+                  {link.note ? `. ${link.note}` : null}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section className="mb-10">
           <h2 className="text-2xl font-serif italic mb-4">Topics to watch</h2>

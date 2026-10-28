@@ -15,6 +15,15 @@ interface GuidePageProps {
 const DEFAULT_DRAFT_NOTICE =
   'Draft shell — not a published guide. This page does not rank conferences and does not state dates, prices, or speakers.';
 
+function opensAsDocument(href: string): boolean {
+  return (
+    href.startsWith('/cities/') ||
+    href.startsWith('/topics/') ||
+    href.startsWith('/tracks/') ||
+    href.startsWith('/api/')
+  );
+}
+
 function GuideAuthorByline({ author, onNavigate }: { author: GuideAuthor; onNavigate: (href: string) => void }) {
   const profileHref = author.slug ? `/authors/${author.slug}` : undefined;
   const linkedIn = author.sameAs?.find((href) => href.includes('linkedin.com'));
@@ -114,12 +123,13 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
       };
     }
 
+    const metaDescription = guide.metaDescription || guide.description;
     updateMetaTags({
       title: guide.seoTitle,
-      description: guide.description,
+      description: metaDescription,
       keywords: guide.primaryKeyword ?? 'tech event guides',
       ogTitle: guide.title,
-      ogDescription: guide.description,
+      ogDescription: metaDescription,
       ogImage: guide.coverImage?.src,
       twitterCard: guide.coverImage?.src ? 'summary_large_image' : 'summary',
       canonicalUrl: guideCanonicalUrl(guide.slug),
@@ -196,6 +206,27 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
                   {paragraph}
                 </p>
               ))}
+              {section.links && section.links.length > 0 && (
+                <ul className="list-disc pl-6 space-y-2 mb-4">
+                  {section.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        className="text-primary-light hover:text-white underline underline-offset-4"
+                        onClick={(event) => {
+                          if (link.href.startsWith('/') && !opensAsDocument(link.href)) {
+                            event.preventDefault();
+                            onNavigate(link.href);
+                          }
+                        }}
+                      >
+                        {link.label}
+                      </a>
+                      {link.note ? <span className="text-white/70">. {link.note}</span> : null}
+                    </li>
+                  ))}
+                </ul>
+              )}
               {section.table && <GuideSectionTable table={section.table} />}
               {section.subsections && section.subsections.length > 0 && (
                 <div className="mt-4 space-y-4">
@@ -258,7 +289,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
                     href={link.href}
                     className="text-primary-light hover:text-white underline underline-offset-4"
                     onClick={(event) => {
-                      if (link.href.startsWith('/')) {
+                      if (link.href.startsWith('/') && !opensAsDocument(link.href)) {
                         event.preventDefault();
                         onNavigate(link.href);
                       }

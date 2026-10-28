@@ -194,6 +194,24 @@ function renderPage(page, whatsappUrl) {
     .map((item) => `<span class="topic">${escapeHtml(item)}</span>`)
     .join('');
 
+  const headline = page.headline || `${page.eventName}: Dates, Location & Event Guide`;
+  const calendarHeading = page.calendarHeading || 'Save this event before you forget it';
+  const calendarLead =
+    page.calendarLead ||
+    `Put ${page.shortName} on your calendar first, then choose whether to register now or review the official event site.`;
+  const relatedHtml =
+    Array.isArray(page.relatedLinks) && page.relatedLinks.length > 0
+      ? `<section class="related">
+        <h2>Related pages</h2>
+        <ul>${page.relatedLinks
+          .map((link) => {
+            const anchor = `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
+            return link.note ? `<li>${anchor}. ${escapeHtml(link.note)}</li>` : `<li>${anchor}</li>`;
+          })
+          .join('')}</ul>
+      </section>`
+      : '';
+
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -237,6 +255,7 @@ function renderPage(page, whatsappUrl) {
       .cta-kicker { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 10px; }
       .cta-note-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-top: 16px; }
       .cta-note { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 14px; }
+      .related a { color: #fdba74; }
       @media (max-width: 640px) {
         h1 { font-size: 34px; }
         .wrap { padding-top: 28px; }
@@ -248,12 +267,12 @@ function renderPage(page, whatsappUrl) {
   <body>
     <main class="wrap">
       <p class="eyebrow">Tech Event Guide</p>
-      <h1>${escapeHtml(page.eventName)}: Dates, Location & Event Guide</h1>
+      <h1>${escapeHtml(headline)}</h1>
       <p>${escapeHtml(page.whyItMatters)}</p>
 
       <section class="card cta-card">
-        <h2 style="margin-top:0;">Save this event before you forget it</h2>
-        <p>Put ${escapeHtml(page.shortName)} on your calendar first, then choose whether to register now or review the official event site.</p>
+        <h2 style="margin-top:0;">${escapeHtml(calendarHeading)}</h2>
+        <p>${escapeHtml(calendarLead)}</p>
         <div class="btn-row">
           <a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
           ${registrationButton}
@@ -285,6 +304,7 @@ function renderPage(page, whatsappUrl) {
         <ul>${whoHtml}</ul>
       </section>
 
+      ${relatedHtml}
       <section>
         <h2>Topics to watch</h2>
         <div class="topics">${topicsHtml}</div>
@@ -540,7 +560,35 @@ async function main() {
   console.log(`Generated ${shells.length} indexable city, track, and topic shells`);
 }
 
-if (process.argv.includes('--hubs-only')) {
+function writeOneEventPage(slug) {
+  const manualPages = loadManualPages();
+  const manual = manualPages.find((page) => page.slug === slug);
+  if (!manual) throw new Error(`No manual page for ${slug}`);
+  const pages = JSON.parse(fs.readFileSync(GENERATED_SOURCE, 'utf8'));
+  const index = pages.findIndex((page) => page.slug === slug);
+  if (index < 0) throw new Error(`Slug ${slug} is not in ${GENERATED_SOURCE}`);
+  pages[index] = manual;
+  fs.writeFileSync(GENERATED_SOURCE, `${JSON.stringify(pages, null, 2)}\n`);
+  const outDir = path.join(EVENTS_DIR, slug);
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'index.html'), renderPage(manual, readWhatsAppUrl()));
+  console.log(`Updated /events/${slug} from the manual page`);
+}
+
+const onlySlugFlag = process.argv.indexOf('--slug');
+if (onlySlugFlag !== -1) {
+  const slug = process.argv[onlySlugFlag + 1];
+  if (!slug || slug.startsWith('--')) {
+    console.error('Usage: node scripts/generate-seo-static-pages.mjs --slug <event-slug>');
+    process.exit(1);
+  }
+  try {
+    writeOneEventPage(slug);
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+} else if (process.argv.includes('--hubs-only')) {
   try {
     writeHubStaticPages();
   } catch (error) {

@@ -31,9 +31,16 @@ export interface SEOEventPageData {
   secondaryKeywords: string[];
   seoTitle: string;
   metaDescription: string;
+  /** Visible H1. Falls back to the dates-and-location template when omitted. */
+  headline?: string;
+  /** CTA heading above Add to Calendar. Falls back to the shared prompt when omitted. */
+  calendarHeading?: string;
+  /** CTA sentence under the heading. Falls back to the shared prompt when omitted. */
+  calendarLead?: string;
   whyItMatters: string;
   whoShouldAttend: string[];
   topics: string[];
+  relatedLinks?: Array<{ href: string; label: string; note?: string }>;
   faq: Array<{ q: string; a: string }>;
   stops?: SEOEventStop[];
   sources?: SEOEventSourceLink[];
@@ -127,16 +134,53 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     officialUrl: 'https://www.nvidia.com/gtc/',
     primaryKeyword: 'NVIDIA GTC 2026 dates',
     secondaryKeywords: ['NVIDIA GTC 2026 location', 'NVIDIA GTC 2026 tickets', 'NVIDIA GTC 2026 agenda'],
-    seoTitle: 'NVIDIA GTC 2026 Dates, Location & AI Agenda | GlobalTechEvents',
-    metaDescription: 'NVIDIA GTC 2026 was 16-19 March 2026 in San Jose.',
+    seoTitle: 'NVIDIA GTC 2026 — subscribe once | GlobalTechEvents',
+    metaDescription:
+      'NVIDIA GTC 2026 was 16-19 March 2026 in San Jose. Subscribe once to add NVIDIA GTC to your calendar.',
+    headline: 'NVIDIA GTC 2026 — add the San Jose GPU week',
+    calendarHeading: 'Add NVIDIA GTC to your calendar',
+    calendarLead:
+      'The 2026 San Jose week has already run. Put 16-19 March on your calendar so the next cycle is not a surprise, then confirm 15-18 March 2027 on the official site before you book travel.',
     whyItMatters:
-      'NVIDIA GTC is where NVIDIA sets its enterprise AI infrastructure plans. The 2026 San Jose meeting ran 16-19 March 2026, and the keynote was on 16 March. Go now only for on-demand sessions. Skip a flight for those dates. The official site lists the next San Jose meeting as 15-18 March 2027. Confirm that page before you plan travel.',
-    whoShouldAttend: ['AI engineers and platform teams', 'CTOs planning model infrastructure', 'Startups building on accelerated computing stacks'],
+      'NVIDIA GTC is the calendar entry for teams whose product depends on NVIDIA GPUs, inference, or accelerated computing. The 2026 San Jose meeting has already run: 16-19 March 2026, keynote on 16 March, in person at the San Jose McEnery Convention Center and livestreamed. Add those dates so the next cycle is on your calendar, then use on-demand sessions if you missed the week. Do not book a flight for March 2026. The official site lists the next San Jose meeting as 15-18 March 2027. Confirm that page before you plan travel.',
+    whoShouldAttend: [
+      'Platform and inference teams who run or buy NVIDIA GPUs',
+      'CTOs deciding the next accelerated-computing plan',
+      'Founders shipping products on the NVIDIA stack',
+    ],
     topics: ['Generative AI', 'Inference', 'Data Platforms', 'Robotics', 'Accelerated Computing'],
+    relatedLinks: [
+      { href: '/topics/ai', label: 'AI conferences', note: 'GTC is the GPU and inference week on this calendar.' },
+      { href: '/tracks/ai', label: 'AI and agent conferences', note: 'The AI track on this calendar, including GTC.' },
+      {
+        href: '/cities/san-francisco',
+        label: 'Tech events in San Francisco',
+        note: 'GTC 2026 was in San Jose, not in San Francisco.',
+      },
+      {
+        href: '/guides/ai-conferences-san-francisco-2026',
+        label: 'AI conferences in San Francisco 2026',
+        note: 'This guide leaves GTC off the San Francisco table because the venue was San Jose.',
+      },
+      {
+        href: '/guides/best-ai-conferences-2026',
+        label: 'Best AI conferences 2026',
+        note: 'A global compare of flagship AI weeks, including GTC.',
+      },
+      {
+        href: '/api/calendar',
+        label: 'Subscribe to the ICS calendar',
+        note: 'One feed for major tech events, including NVIDIA GTC.',
+      },
+    ],
     faq: [
       { q: 'When is NVIDIA GTC 2026?', a: 'NVIDIA GTC 2026 ran 16-19 March 2026 in San Jose. The keynote was on 16 March.' },
       { q: 'Where was NVIDIA GTC 2026 hosted?', a: 'The in-person hub was San Jose, California, centered on the San Jose McEnery Convention Center. The keynote was also livestreamed.' },
       { q: 'Is NVIDIA GTC suitable for non-research teams?', a: 'Yes. Many sessions cover enterprise deployment, inference, and product implementation.' },
+      {
+        q: 'Should I add NVIDIA GTC to my calendar?',
+        a: 'Yes, if you track NVIDIA GPU, inference, or accelerated-computing plans. The 2026 meeting has already run. The official site lists the next San Jose meeting as 15-18 March 2027. Confirm that page before you book travel.',
+      },
     ],
   },
   {

@@ -76,6 +76,18 @@ function renderEventHtml(slug: string) {
   const attendees = page.whoShouldAttend
     .map((item) => `<li>${escapeHtml(item)}</li>`)
     .join('');
+  const headline = escapeHtml(page.headline ?? `${page.eventName}: Dates, Location & Event Guide`);
+  const relatedHtml =
+    page.relatedLinks && page.relatedLinks.length > 0
+      ? `<section><h2>Related pages</h2><ul>${page.relatedLinks
+          .map((link) => {
+            const anchor = `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
+            return link.note
+              ? `<li>${anchor}. ${escapeHtml(link.note)}</li>`
+              : `<li>${anchor}</li>`;
+          })
+          .join('')}</ul></section>`
+      : '';
 
   const faqItems = page.faq
     .map(
@@ -260,7 +272,7 @@ function renderEventHtml(slug: string) {
       </div>
 
       <p class="eyebrow">Tech Event Guide</p>
-      <h1>${escapeHtml(page.eventName)}: Dates, Location & Event Guide</h1>
+      <h1>${headline}</h1>
       <p class="lead">${whyItMatters}</p>
 
       <section class="grid">
@@ -285,6 +297,8 @@ function renderEventHtml(slug: string) {
         <h2>Who should attend</h2>
         <ul>${attendees}</ul>
       </section>
+
+      ${relatedHtml}
 
       <section>
         <h2>Topics to watch</h2>

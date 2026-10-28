@@ -35,11 +35,14 @@ export interface GuideSection {
   paragraphs?: string[];
   table?: ReaderTable;
   subsections?: GuideSubsection[];
+  /** On-site pages to open from this section. Rendered as a list, not mixed into the prose. */
+  links?: GuideLink[];
 }
 
 export interface GuideLink {
   href: string;
   label: string;
+  note?: string;
 }
 
 export interface ReaderRow {
@@ -66,6 +69,8 @@ export interface Guide {
   title: string;
   seoTitle: string;
   description: string;
+  /** Search snippet. Falls back to the opening lead when omitted. */
+  metaDescription?: string;
   /** Editor confirms the opening lead actually answers search intent. */
   intentAnswered: boolean;
   primaryKeyword?: string;

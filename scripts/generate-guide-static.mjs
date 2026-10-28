@@ -89,6 +89,13 @@ function renderSections(guide) {
   return (guide.sections || [])
     .map((section) => {
       const paragraphs = (section.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+      const sectionLinks = (section.links || [])
+        .map((link) => {
+          const anchor = `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
+          return link.note ? `<li>${anchor}. ${escapeHtml(link.note)}</li>` : `<li>${anchor}</li>`;
+        })
+        .join('');
+      const linksHtml = sectionLinks ? `<ul>${sectionLinks}</ul>` : '';
       const subsections = (section.subsections || [])
         .map(
           (subsection) => `
@@ -97,7 +104,7 @@ function renderSections(guide) {
         )
         .join('');
       const table = section.table ? renderTable(section.table) : '';
-      return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${table}${subsections}</section>`;
+      return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${linksHtml}${table}${subsections}</section>`;
     })
     .join('');
 }
@@ -168,12 +175,12 @@ function renderGuidePage(guide) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(guide.seoTitle || guide.title)}</title>
-    <meta name="description" content="${escapeHtml(guide.description || '')}" />
+    <meta name="description" content="${escapeHtml(guide.metaDescription || guide.description || '')}" />
     <meta name="robots" content="${indexable ? 'index, follow' : 'noindex, nofollow'}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="${escapeHtml(guide.title)}" />
-    <meta property="og:description" content="${escapeHtml(guide.description || '')}" />
+    <meta property="og:description" content="${escapeHtml(guide.metaDescription || guide.description || '')}" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:site_name" content="GlobalTechEvents" />
     ${schemas}

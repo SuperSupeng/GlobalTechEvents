@@ -84,17 +84,47 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     officialUrl: 'https://www.mwcbarcelona.com/',
     primaryKeyword: 'MWC Barcelona 2027 dates',
     secondaryKeywords: ['MWC Barcelona 2027 location', 'MWC Barcelona 2027 tickets', 'MWC Barcelona 2027 agenda'],
-    seoTitle: 'MWC Barcelona 2027 Dates, Location & Tickets | GlobalTechEvents',
+    seoTitle: 'MWC Barcelona 2027 — subscribe once | GlobalTechEvents',
     metaDescription:
-      'MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via in Barcelona.',
+      'MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via in Barcelona. Subscribe once if you track carrier roadmaps, device launches, or telecom partnerships.',
+    headline: 'MWC Barcelona 2027 — add the Fira Gran Via week',
+    calendarHeading: 'Add MWC Barcelona to your calendar',
+    calendarLead:
+      'Put 1-4 March 2027 at Fira Gran Via on your calendar first. Then confirm passes on the official site before you book travel. Go if your plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo.',
     whyItMatters:
-      'MWC Barcelona is the GSMA flagship for operators, device makers, and connectivity vendors. Go if your 2027 plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo. Confirm passes on the official site before you book travel.',
+      'Add MWC Barcelona 2027 to your calendar before you decide on travel. It is the GSMA flagship for operators, device makers, and connectivity vendors, 1-4 March 2027 at Fira Gran Via in Barcelona. Go if your 2027 plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo. Confirm passes on the official site before you book travel.',
     whoShouldAttend: ['Telecom and infrastructure teams', 'Product leaders in mobile apps and devices', 'Investors and analysts in connectivity'],
     topics: ['5G/6G', 'Telecom Infrastructure', 'Mobile AI', 'Devices', 'Connectivity'],
+    relatedLinks: [
+      {
+        href: '/api/calendar',
+        label: 'Subscribe to the ICS calendar',
+        note: 'One feed for major tech events, including MWC Barcelona.',
+      },
+      {
+        href: '/events',
+        label: 'Tech events directory',
+        note: 'Browse other dated event guides on this calendar.',
+      },
+      {
+        href: '/events/4yfn-barcelona-2026',
+        label: '4YFN Barcelona 2026',
+        note: 'Listed on this site as co-located with MWC. Already held 1-5 March 2026 in Barcelona. This site does not print a 2027 4YFN date.',
+      },
+      {
+        href: '/guides/best-ai-conferences-2026',
+        label: 'Best AI conferences 2026',
+        note: 'That compare leaves MWC off its AI tables and sends hardware weeks to the events directory.',
+      },
+    ],
     faq: [
       { q: 'When is MWC Barcelona 2027?', a: 'MWC Barcelona 2027 runs 1-4 March 2027. The GSMA Ministerial Programme is listed for 1-3 March 2027.' },
       { q: 'Where is MWC Barcelona 2027?', a: 'It is at Fira Gran Via in Barcelona, Spain.' },
       { q: 'How do I get MWC Barcelona 2027 tickets?', a: 'Pass options are published on the official MWC Barcelona website.' },
+      {
+        q: 'Should I add MWC Barcelona 2027 to my calendar?',
+        a: 'Yes, if you track carrier roadmaps, device launches, or telecom partnerships. The dates on this page are 1-4 March 2027 at Fira Gran Via in Barcelona. Confirm passes on the official site before you book travel. Skip it if you only need a software or crypto expo.',
+      },
     ],
   },
   {

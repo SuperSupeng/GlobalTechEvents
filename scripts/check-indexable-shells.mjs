@@ -25,6 +25,7 @@ assert.deepEqual(
     'microsoft-build-2026',
     'openai-devday-2026',
     'rsa-conference-2026',
+    'stripe-sessions-2027',
     'tech-week-sf-2026',
     'techcrunch-disrupt-2026',
   ].sort(),
@@ -51,9 +52,23 @@ for (const shell of INDEXABLE_SHELLS) {
   assert.match(html, /Join WhatsApp/);
   assert.match(html, whatsappPattern);
   assert.match(html, /href="\/api\/calendar"/);
-  assert.match(html, /ICS subscribe/);
   assert.doesNotMatch(html, /noindex/);
+  if (shell.calendarHeading) {
+    assert.match(html, new RegExp(`<h2>${shell.calendarHeading}</h2>`));
+    assert.match(html, /Subscribe to the ICS calendar/);
+    const buttons = html.slice(html.indexOf('<h2>' + shell.calendarHeading));
+    assert.ok(buttons.indexOf('href="/api/calendar"') < buttons.indexOf('Join WhatsApp'));
+    assert.match(buttons, /class="btn btn-secondary"[^>]*>Join WhatsApp/);
+  } else {
+    assert.match(html, /ICS subscribe/);
+  }
 }
+
+assert.ok(city.metaDescription.length >= 140 && city.metaDescription.length <= 160, `city meta ${city.metaDescription.length}`);
+assert.match(city.seoTitle, /subscribe once/);
+assert.match(city.h1, /Tech events in San Francisco/);
+assert.equal(city.calendarHeading, 'Add San Francisco tech events to your calendar');
+assert.match(city.calendarLead, /Subscribe before you plan travel/);
 
 const cityHtml = fs.readFileSync('public/cities/san-francisco/index.html', 'utf8');
 for (const slug of [
@@ -62,15 +77,25 @@ for (const slug of [
   'openai-devday-2026',
   'databricks-data-ai-summit-2026',
   'techcrunch-disrupt-2026',
+  'stripe-sessions-2027',
+  'rsa-conference-2026',
+  'github-universe-2026',
+  'tech-week-sf-2026',
   'nvidia-gtc-2026',
 ]) {
   assert.match(cityHtml, new RegExp(`href="/events/${slug}"`));
 }
 assert.match(cityHtml, /href="\/guides\/ai-conferences-san-francisco-2026"/);
 assert.match(cityHtml, /San Jose, not in San Francisco/);
+assert.match(cityHtml, /15-18 March 2027/);
+assert.match(cityHtml, /4-6 May 2027/);
+assert.doesNotMatch(cityHtml, /neurips|icml|cvpr/i);
+assert.equal(cityHtml.includes(city.metaDescription), true);
+assert.equal(cityHtml.includes(city.seoTitle), true);
 
 const AI_TOPIC_SLUGS = [
   'nvidia-gtc-2026',
+  'anthropic-events',
   'openai-devday-2026',
   'databricks-data-ai-summit-2026',
   'microsoft-build-2026',
@@ -83,6 +108,7 @@ const AI_TOPIC_SLUGS = [
 ];
 const AGENT_TOPIC_SLUGS = [
   'openai-devday-2026',
+  'anthropic-events',
   'microsoft-build-2026',
   'google-cloud-next-2026',
   'google-io-2026',

@@ -88,7 +88,16 @@ function renderShell(shell, events) {
     })
     .join('');
   const extraBlock = extraSections ? `\n      ${extraSections}` : '';
-  const ctas = `<div class="btn-row">
+  const ctas = shell.calendarHeading
+    ? `<section>
+        <h2>${escapeHtml(shell.calendarHeading)}</h2>
+        ${shell.calendarLead ? `<p>${escapeHtml(shell.calendarLead)}</p>` : ''}
+        <div class="btn-row">
+          <a class="btn" href="/api/calendar">${escapeHtml(shell.calendarLabel || 'Subscribe to the ICS calendar')}</a>
+          <a class="btn btn-secondary" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
+        </div>
+      </section>`
+    : `<div class="btn-row">
         <a class="btn" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
         <a class="btn btn-secondary" href="/api/calendar">ICS subscribe</a>
       </div>`;
@@ -162,8 +171,13 @@ function renderShell(shell, events) {
     <main class="wrap">
       <p class="eyebrow">${shellEyebrow(shell.kind)}</p>
       <h1>${escapeHtml(shell.h1)}</h1>
-      <p>${escapeHtml(shell.intro)}</p>
-      ${ctas}
+      ${
+        shell.calendarHeading
+          ? `${ctas}
+      <p>${escapeHtml(shell.intro)}</p>`
+          : `<p>${escapeHtml(shell.intro)}</p>
+      ${ctas}`
+      }
       ${startHere}${extraBlock}
       <section>
         <h2>Related events</h2>

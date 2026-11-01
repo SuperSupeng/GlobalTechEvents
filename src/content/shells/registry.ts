@@ -43,6 +43,12 @@ export type IndexableShell = {
   seoTitle: string;
   metaDescription: string;
   limit: number;
+  /** CTA heading above the ICS subscribe button. Omitted shells keep the shared button row. */
+  calendarHeading?: string;
+  /** Why-subscribe sentence under the heading. */
+  calendarLead?: string;
+  /** Primary ICS button label. Defaults to "Subscribe to the ICS calendar" when a heading is set. */
+  calendarLabel?: string;
   links?: ShellLink[];
   sections?: ShellSection[];
   match: CityMatch | TrackMatch | TopicMatch;
@@ -59,43 +65,26 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
     kind: 'city',
     slug: 'san-francisco',
     path: '/cities/san-francisco',
-    h1: 'Tech events in San Francisco',
+    h1: 'Tech events in San Francisco — add the Bay Area weeks',
     intro:
-      'As of 16 October 2026, pick a San Francisco or Bay Area week by the stack you ship. Microsoft Build, Dreamforce, OpenAI DevDay, and the Databricks Data + AI Summit were in the city and have already run. Code with Claude listed a San Francisco day on 6 May 2026 and also listed London and Tokyo. NVIDIA GTC was the GPU week in San Jose, not in San Francisco, and it has already run. TechCrunch Disrupt is the startup week listed on this calendar. Stripe Sessions 2027 is 4-6 May 2027 at Moscone North and South. The AI conferences guide separates what is still ahead from weeks that have finished, including Bay Area venues outside the city.',
-    seoTitle: 'Tech events in San Francisco | GlobalTechEvents',
+      'Subscribe once if you track tech events in San Francisco or the Bay Area. As of 16 October 2026, Microsoft Build (2-3 June, Fort Mason), Dreamforce (15-17 September, Moscone Center), OpenAI DevDay (29 September, Fort Mason), and the Databricks Data + AI Summit (15-18 June, Moscone Center) have already run in the city. This calendar prints three later city dates: Stripe Sessions on 4-6 May 2027 at Moscone North and South, the next Databricks summit on 21-24 June 2027 in San Francisco, and Dreamforce on 21-23 September 2027 in San Francisco. The Build and DevDay pages linked here do not list a 2027 date. NVIDIA GTC was 16-19 March 2026 in San Jose, not in San Francisco. The official site lists the next San Jose meeting as 15-18 March 2027. The AI conferences guide separates what is still ahead from weeks that have finished, including Bay Area venues outside the city.',
+    seoTitle: 'Tech events in San Francisco — subscribe once | GlobalTechEvents',
     metaDescription:
-      'San Francisco and Bay Area AI-tech events on this calendar, with guides for Build, Dreamforce, DevDay, Databricks, Disrupt, and NVIDIA GTC in San Jose.',
+      'Tech events in San Francisco and the Bay Area. Subscribe once for Stripe Sessions (4-6 May 2027, Moscone), Dreamforce, Databricks, and NVIDIA GTC in San Jose.',
+    calendarHeading: 'Add San Francisco tech events to your calendar',
+    calendarLead:
+      'One ICS feed covers the major tech events on this site, including the San Francisco weeks on this page and NVIDIA GTC in San Jose. Subscribe before you plan travel, then confirm each date on the event page before you book.',
     limit: 50,
     links: [
       {
-        href: '/events/microsoft-build-2026',
-        label: 'Microsoft Build 2026',
-        note: 'Already held 2-3 June 2026 at Fort Mason, San Francisco, plus an online track.',
+        href: '/api/calendar',
+        label: 'Subscribe to the ICS calendar',
+        note: 'One feed for major tech events, including the San Francisco weeks on this page and NVIDIA GTC in San Jose.',
       },
       {
-        href: '/events/dreamforce-2026',
-        label: 'Dreamforce 2026',
-        note: 'Already held 15-17 September 2026 at Moscone Center, San Francisco, with Salesforce+.',
-      },
-      {
-        href: '/events/openai-devday-2026',
-        label: 'OpenAI DevDay 2026',
-        note: 'Already held 29 September 2026 at Fort Mason, San Francisco.',
-      },
-      {
-        href: '/events/databricks-data-ai-summit-2026',
-        label: 'Databricks Data + AI Summit 2026',
-        note: 'Already held 15-18 June 2026 at Moscone Center, San Francisco, with a virtual track.',
-      },
-      {
-        href: '/events/techcrunch-disrupt-2026',
-        label: 'TechCrunch Disrupt 2026',
-        note: 'Listed 13-16 October 2026 in San Francisco.',
-      },
-      {
-        href: '/events/anthropic-events',
-        label: 'Anthropic events',
-        note: 'Code with Claude had a San Francisco day on 6 May 2026, plus London and Tokyo. The 2026 city page does not name a venue.',
+        href: '/guides/ai-conferences-san-francisco-2026',
+        label: 'AI conferences in San Francisco 2026',
+        note: 'What is still ahead versus weeks that have finished, including Bay Area venues outside the city.',
       },
       {
         href: '/events/stripe-sessions-2027',
@@ -103,14 +92,54 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
         note: '4-6 May 2027 at Moscone North and South, San Francisco.',
       },
       {
-        href: '/events/nvidia-gtc-2026',
-        label: 'NVIDIA GTC 2026',
-        note: 'Already held 16-19 March 2026 in San Jose, not in San Francisco.',
+        href: '/events/dreamforce-2026',
+        label: 'Dreamforce 2026',
+        note: 'Already held 15-17 September 2026 at Moscone Center, San Francisco, with Salesforce+. Salesforce lists Dreamforce 2027 for 21-23 September 2027 in San Francisco, with Salesforce+.',
       },
       {
-        href: '/guides/ai-conferences-san-francisco-2026',
-        label: 'AI conferences in San Francisco 2026',
-        note: 'Upcoming versus held, including Bay Area venues outside the city.',
+        href: '/events/databricks-data-ai-summit-2026',
+        label: 'Databricks Data + AI Summit 2026',
+        note: 'Already held 15-18 June 2026 at Moscone Center, San Francisco, with a virtual track. The official site lists the next summit as 21-24 June 2027 in San Francisco, plus virtual, at Moscone North, West, and South.',
+      },
+      {
+        href: '/events/microsoft-build-2026',
+        label: 'Microsoft Build 2026',
+        note: 'Already held 2-3 June 2026 at Fort Mason, San Francisco, plus an online track. The Build site does not list a 2027 date.',
+      },
+      {
+        href: '/events/openai-devday-2026',
+        label: 'OpenAI DevDay 2026',
+        note: 'Already held 29 September 2026 at Fort Mason, San Francisco. The official site does not list a 2027 DevDay date.',
+      },
+      {
+        href: '/events/techcrunch-disrupt-2026',
+        label: 'TechCrunch Disrupt 2026',
+        note: 'Listed 13-16 October 2026 in San Francisco.',
+      },
+      {
+        href: '/events/rsa-conference-2026',
+        label: 'RSA Conference 2026',
+        note: 'Already held 23-26 March 2026 at Moscone Center, San Francisco.',
+      },
+      {
+        href: '/events/github-universe-2026',
+        label: 'GitHub Universe 2026',
+        note: 'Listed 27-28 January 2026 in San Francisco.',
+      },
+      {
+        href: '/events/tech-week-sf-2026',
+        label: 'Tech Week SF 2026',
+        note: 'Listed 5-12 October 2026 in San Francisco.',
+      },
+      {
+        href: '/events/anthropic-events',
+        label: 'Anthropic events',
+        note: 'Code with Claude had a San Francisco day on 6 May 2026, plus London and Tokyo. The 2026 city page does not name a venue.',
+      },
+      {
+        href: '/events/nvidia-gtc-2026',
+        label: 'NVIDIA GTC 2026',
+        note: 'Already held 16-19 March 2026 in San Jose, not in San Francisco. The official site lists the next San Jose meeting as 15-18 March 2027.',
       },
     ],
     match: { type: 'city', cities: ['San Francisco'] },

@@ -274,6 +274,19 @@ function renderEventHtml(slug: string) {
       <p class="eyebrow">Tech Event Guide</p>
       <h1>${headline}</h1>
       <p class="lead">${whyItMatters}</p>
+      ${
+        page.subscribeFirst
+          ? `<section class="card">
+        <h2>${escapeHtml(page.calendarHeading || 'Add this event to your calendar')}</h2>
+        <p>${escapeHtml(page.calendarLead || description)}</p>
+        <div class="actions">
+          <a class="button button-primary" href="/api/calendar">Subscribe to the ICS calendar</a>
+          <a class="button button-secondary" href="${escapeHtml(WHATSAPP_GROUP_URL)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
+          <a class="button button-secondary" href="${officialUrl}" target="_blank" rel="noreferrer">Official Website</a>
+        </div>
+      </section>`
+          : ''
+      }
 
       <section class="grid">
         <div class="card">
@@ -314,9 +327,15 @@ function renderEventHtml(slug: string) {
         <h2>Official links</h2>
         <p>${description}</p>
         <div class="actions">
-          <a class="button button-primary" href="${officialUrl}" target="_blank" rel="noreferrer">Official Website</a>
+          ${
+            page.subscribeFirst
+              ? `<a class="button button-primary" href="/api/calendar">Subscribe to the ICS calendar</a>
           <a class="button button-secondary" href="${escapeHtml(WHATSAPP_GROUP_URL)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
-          ${registrationUrl ? `<a class="button button-secondary" href="${registrationUrl}" target="_blank" rel="noreferrer">Registration</a>` : ''}
+          <a class="button button-secondary" href="${officialUrl}" target="_blank" rel="noreferrer">Official Website</a>`
+              : `<a class="button button-primary" href="${officialUrl}" target="_blank" rel="noreferrer">Official Website</a>
+          <a class="button button-secondary" href="${escapeHtml(WHATSAPP_GROUP_URL)}" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
+          ${registrationUrl ? `<a class="button button-secondary" href="${registrationUrl}" target="_blank" rel="noreferrer">Registration</a>` : ''}`
+          }
         </div>
         <div class="footer-note">Last updated: ${escapeHtml(new Date().toLocaleDateString('en-US', { timeZone: 'UTC' }))}</div>
       </section>

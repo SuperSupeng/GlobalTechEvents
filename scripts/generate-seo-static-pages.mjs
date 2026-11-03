@@ -247,8 +247,8 @@ function renderPage(page, whatsappUrl) {
       .topic { display: inline-block; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); font-size: 14px; }
       .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
       a.btn, button.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font-size: 15px; }
-      .btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
-      .btn-tertiary { background: transparent; color: #fff; border: 1px dashed rgba(255,255,255,.18); }
+      a.btn.btn-secondary, button.btn.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      a.btn.btn-tertiary, button.btn.btn-tertiary { background: transparent; color: #fff; border: 1px dashed rgba(255,255,255,.18); }
       .muted { color: rgba(255,255,255,.55); font-size: 13px; }
       .faq-item + .faq-item { margin-top: 14px; }
       .cta-card { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(255,255,255,.04)); border-color: rgba(245,158,11,.22); }
@@ -274,11 +274,19 @@ function renderPage(page, whatsappUrl) {
         <h2 style="margin-top:0;">${escapeHtml(calendarHeading)}</h2>
         <p>${escapeHtml(calendarLead)}</p>
         <div class="btn-row">
-          <a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
+          ${
+            page.subscribeFirst
+              ? `<a class="btn" href="/api/calendar" data-track-event="add_to_calendar" data-track-label="Subscribe to the ICS calendar" data-track-provider="ics">Subscribe to the ICS calendar</a>
+          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>
+          ${registrationButton}
+          <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
+          <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>`
+              : `<a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
           ${registrationButton}
           <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
           <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
-          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>
+          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>`
+          }
         </div>
         <p class="muted">${escapeHtml(confirmNote)}</p>
       </section>

@@ -166,6 +166,45 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           </div>
 
           <div className="flex flex-col lg:flex-row gap-3 mt-6">
+            {page.subscribeFirst && (
+              <a
+                href="/api/calendar"
+                onClick={() =>
+                  trackAddToCalendar({
+                    sourcePage: window.location.pathname,
+                    pageType: 'seo_event_page',
+                    calendarProvider: 'ics',
+                    eventSlug: page.slug,
+                    ctaLabel: 'Subscribe to the ICS calendar',
+                  })
+                }
+                className="btn-primary text-center flex-[1.25] inline-flex items-center justify-center gap-2"
+              >
+                <Calendar size={18} />
+                Subscribe to the ICS calendar
+              </a>
+            )}
+            {page.subscribeFirst && (
+              <a
+                href={WHATSAPP_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackOutboundClick({
+                    sourcePage: window.location.pathname,
+                    pageType: 'seo_event_page',
+                    targetUrl: WHATSAPP_GROUP_URL,
+                    eventSlug: page.slug,
+                    ctaLabel: 'Join WhatsApp',
+                  })
+                }
+                className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
+              >
+                <MessageCircle size={18} />
+                Join WhatsApp
+              </a>
+            )}
+            {!page.subscribeFirst && (
             <div className="relative flex-[1.25]">
               <button
                 type="button"
@@ -198,6 +237,8 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
                 </div>
               )}
             </div>
+            )}
+            {!page.subscribeFirst && (
             <a
               href={WHATSAPP_GROUP_URL}
               target="_blank"
@@ -216,6 +257,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
               <MessageCircle size={18} />
               Join WhatsApp
             </a>
+            )}
             {page.registrationUrl && (
               <a
                 href={page.registrationUrl}
@@ -236,6 +278,16 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             >
               Official Website
             </a>
+            {page.subscribeFirst && (
+              <button
+                type="button"
+                onClick={() => handleAddToCalendar('ics')}
+                className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
+              >
+                <Download size={18} />
+                Download .ics
+              </button>
+            )}
           </div>
 
           <p className="mt-4 text-sm text-white/55">

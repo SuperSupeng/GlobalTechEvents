@@ -3788,9 +3788,13 @@
       "AWS re:Invent 2026 tickets",
       "AWS re:Invent 2026 agenda"
     ],
-    "seoTitle": "AWS re:Invent 2026 Dates, Location & Registration | GlobalTechEvents",
-    "metaDescription": "AWS re:Invent 2026 is 30 November through 4 December 2026 in Las Vegas.",
-    "whyItMatters": "AWS re:Invent is still ahead. Go if service launches that week change your cloud, AI, or security plan. Skip the flight if a keynote stream is enough. AWS will livestream keynotes for free. Badge pickup starts 29 November. Sessions run 30 November through 4 December. For 2026, re:Inforce is part of this week, with a security focus day on 3 December at the Wynn.",
+    "seoTitle": "AWS re:Invent 2026 — subscribe once | GlobalTechEvents",
+    "metaDescription": "AWS re:Invent 2026 is 30 November-4 December in Las Vegas. Subscribe once if that week changes your cloud, AI, or security plan. Keynotes stream free.",
+    "headline": "AWS re:Invent 2026 — add the Las Vegas week",
+    "calendarHeading": "Add AWS re:Invent to your calendar",
+    "calendarLead": "Put 30 November-4 December 2026 in Las Vegas on your calendar first. Go if service launches that week change your cloud, AI, or security plan. Skip the flight if a keynote stream is enough. AWS will livestream keynotes for free.",
+    "subscribeFirst": true,
+    "whyItMatters": "Add AWS re:Invent 2026 to your calendar before you decide on travel. It is still ahead. Sessions run 30 November through 4 December in Las Vegas, across Caesars Forum, Caesars Palace, Encore, MGM Grand, the Venetian, and the Wynn. Badge pickup starts 29 November. Go if service launches that week change your cloud, AI, or security plan. Skip the flight if a keynote stream is enough. AWS will livestream keynotes and select live programming for free. For 2026, re:Inforce is part of this week, with a security focus day on 3 December at the Wynn.",
     "whoShouldAttend": [
       "Cloud architects and DevOps teams",
       "CTOs and platform leads",
@@ -3803,18 +3807,74 @@
       "Security",
       "DevOps"
     ],
+    "relatedLinks": [
+      {
+        "href": "/api/calendar",
+        "label": "Subscribe to the ICS calendar",
+        "note": "One feed for major tech events, including AWS re:Invent."
+      },
+      {
+        "href": "/topics/ai",
+        "label": "AI conferences",
+        "note": "re:Invent is the Las Vegas cloud week still ahead on this calendar."
+      },
+      {
+        "href": "/guides/best-ai-conferences-2026",
+        "label": "Best AI conferences 2026",
+        "note": "That compare still treats re:Invent as a week that has not happened yet."
+      },
+      {
+        "href": "/guides/ai-conferences-san-francisco-2026",
+        "label": "AI conferences in San Francisco 2026",
+        "note": "re:Invent is in Las Vegas, so this guide leaves it off the San Francisco table."
+      },
+      {
+        "href": "/cities/san-francisco",
+        "label": "Tech events in San Francisco",
+        "note": "re:Invent 2026 is in Las Vegas. This page is the San Francisco calendar."
+      },
+      {
+        "href": "/events/nvidia-gtc-2026",
+        "label": "NVIDIA GTC 2026",
+        "note": "Already held 16-19 March 2026 in San Jose. The GPU week, separate from this cloud week."
+      },
+      {
+        "href": "/events/openai-devday-2026",
+        "label": "OpenAI DevDay 2026",
+        "note": "Already held 29 September 2026 at Fort Mason in San Francisco."
+      },
+      {
+        "href": "/events/google-cloud-next-2026",
+        "label": "Google Cloud Next 2026",
+        "note": "Already held 22-24 April 2026 at Mandalay Bay in Las Vegas."
+      },
+      {
+        "href": "/events/kubecon-na-2026",
+        "label": "KubeCon North America 2026",
+        "note": "Still ahead, 9-12 November 2026 at the Salt Palace in Salt Lake City."
+      },
+      {
+        "href": "/events/microsoft-build-2026",
+        "label": "Microsoft Build 2026",
+        "note": "Already held 2-3 June 2026 at Fort Mason in San Francisco, plus an online track."
+      }
+    ],
     "faq": [
       {
         "q": "When is AWS re:Invent 2026?",
-        "a": "AWS re:Invent 2026 is 30 November through 4 December 2026."
+        "a": "AWS re:Invent 2026 is 30 November through 4 December 2026. Badge pickup starts 29 November."
       },
       {
         "q": "Where is AWS re:Invent 2026 hosted?",
-        "a": "re:Invent 2026 is in Las Vegas, United States."
+        "a": "re:Invent 2026 is in Las Vegas, across Caesars Forum, Caesars Palace, Encore, MGM Grand, the Venetian, and the Wynn. The security focus day on 3 December is at the Wynn."
       },
       {
         "q": "How do I register for AWS re:Invent?",
-        "a": "Use the official re:Invent event portal for pass options and updates."
+        "a": "Use the official re:Invent event portal for pass options. The official FAQ lists a full conference pass at $2,499. Confirm that page before you book travel."
+      },
+      {
+        "q": "Should I add AWS re:Invent 2026 to my calendar?",
+        "a": "Yes, if service launches that week change your cloud, AI, or security plan. Sessions run 30 November through 4 December 2026 in Las Vegas. AWS will livestream keynotes for free, so skip the flight if a stream is enough. Confirm passes on the official site before you book travel."
       }
     ]
   },

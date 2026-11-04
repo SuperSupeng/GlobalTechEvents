@@ -702,6 +702,106 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     ],
   },
   {
+    slug: 'github-universe-2026',
+    eventName: 'GitHub Universe 2026',
+    shortName: 'GitHub Universe',
+    startDate: '2026-10-28',
+    endDate: '2026-10-29',
+    city: 'San Francisco',
+    country: 'United States',
+    format: 'hybrid',
+    officialUrl: 'https://githubuniverse.com',
+    primaryKeyword: 'GitHub Universe 2026 dates',
+    secondaryKeywords: ['GitHub Universe 2026 location', 'GitHub Universe 2026 tickets', 'GitHub Universe 2026 agenda'],
+    seoTitle: 'GitHub Universe 2026 — subscribe once | GlobalTechEvents',
+    metaDescription:
+      'GitHub Universe 2026 was 28-29 October 2026 at Fort Mason in San Francisco. Subscribe once to add GitHub Universe to your calendar.',
+    headline: 'GitHub Universe 2026 — add the Fort Mason days',
+    calendarHeading: 'Add GitHub Universe to your calendar',
+    calendarLead:
+      'The 2026 Fort Mason days have already run. Put 28-29 October on your calendar so the next cycle is not a surprise. Skip a flight for those dates if a keynote stream is enough. The virtual pass was free. The official site says October 2027 and does not list the days.',
+    subscribeFirst: true,
+    whyItMatters:
+      'GitHub Universe is the calendar entry for teams whose engineering plan depends on GitHub. The 2026 meeting has already run: 28-29 October 2026 at Fort Mason Center in San Francisco, in person and with a free virtual pass. Add those dates so the next cycle is on your calendar. Do not book a flight for October 2026. The official site says October 2027 and does not list the days. Confirm that page before you plan travel.',
+    whoShouldAttend: [
+      'Platform and developer-experience teams who ship on GitHub',
+      'Engineering leads who need the next GitHub product cycle on the calendar',
+      'Open source maintainers who treat the GitHub developer week as a checkpoint',
+    ],
+    topics: ['Git', 'Developer Tools', 'Open Source'],
+    relatedLinks: [
+      {
+        href: '/api/calendar',
+        label: 'Subscribe to the ICS calendar',
+        note: 'One feed for major tech events, including GitHub Universe.',
+      },
+      {
+        href: '/cities/san-francisco',
+        label: 'Tech events in San Francisco',
+        note: 'GitHub Universe 2026 was at Fort Mason Center in San Francisco.',
+      },
+      {
+        href: '/topics/ai',
+        label: 'AI conferences',
+        note: 'GitHub Universe is the developer-platform week on this calendar.',
+      },
+      {
+        href: '/guides/ai-conferences-san-francisco-2026',
+        label: 'AI conferences in San Francisco 2026',
+        note: 'That guide does not list GitHub Universe. It covers the Fort Mason weeks for Build and DevDay.',
+      },
+      {
+        href: '/guides/best-ai-conferences-2026',
+        label: 'Best AI conferences 2026',
+        note: 'That compare does not list GitHub Universe.',
+      },
+      {
+        href: '/events/openai-devday-2026',
+        label: 'OpenAI DevDay 2026',
+        note: 'Already held 29 September 2026 at Fort Mason in San Francisco.',
+      },
+      {
+        href: '/events/microsoft-build-2026',
+        label: 'Microsoft Build 2026',
+        note: 'Already held 2-3 June 2026 at Fort Mason in San Francisco, plus an online track.',
+      },
+      {
+        href: '/events/nvidia-gtc-2026',
+        label: 'NVIDIA GTC 2026',
+        note: 'Already held 16-19 March 2026 in San Jose. The GPU week, separate from this developer week.',
+      },
+      {
+        href: '/events/aws-reinvent-2026',
+        label: 'AWS re:Invent 2026',
+        note: 'Still ahead, 30 November-4 December 2026 in Las Vegas.',
+      },
+      {
+        href: '/events/kubecon-na-2026',
+        label: 'KubeCon North America 2026',
+        note: 'Still ahead, 9-12 November 2026 at the Salt Palace in Salt Lake City.',
+      },
+    ],
+    faq: [
+      { q: 'When was GitHub Universe 2026?', a: 'GitHub Universe 2026 was 28-29 October 2026 at Fort Mason Center in San Francisco. The official agenda also lists invitation-only programming on 27 October and a separate Day of Learning on 30 October at GitHub headquarters. That extra day needed its own ticket and was listed as sold out.' },
+      {
+        q: 'Where was GitHub Universe 2026?',
+        a: 'The main meeting was at Fort Mason Center, 2 Marina Boulevard, San Francisco. Attendance was in person and virtual. The GitHub blog and githubuniverse.com both name Fort Mason Center for 28-29 October 2026.',
+      },
+      {
+        q: 'How much was a GitHub Universe 2026 pass?',
+        a: 'The official Universe listing at githubuniverse.com lists an in-person pass at $1,399 and a virtual pass as free. Groups of four or more were listed at $1,119 per pass. The pricing page now marks in-person sold out. The 2026 meeting has already run.',
+      },
+      {
+        q: 'Does the official site list GitHub Universe 2027 dates?',
+        a: 'The official site says October 2027 and does not list the days. Confirm that page before you book travel.',
+      },
+      {
+        q: 'Should I add GitHub Universe to my calendar?',
+        a: 'Yes, if GitHub product changes set your engineering plan. The 2026 meeting has already run, on 28-29 October at Fort Mason Center in San Francisco. The virtual pass was free, so skip a flight if a keynote stream is enough. The official site says October 2027 and does not list the days. Confirm that page before you book travel.',
+      },
+    ],
+  },
+  {
     slug: 'nrf-2027',
     eventName: 'NRF 2027 Retail\'s Big Show',
     shortName: 'NRF Big Show',

@@ -124,7 +124,7 @@ export const INDEXABLE_SHELLS: IndexableShell[] = [
       {
         href: '/events/github-universe-2026',
         label: 'GitHub Universe 2026',
-        note: 'Listed 27-28 January 2026 in San Francisco.',
+        note: 'Already held 28-29 October 2026 at Fort Mason Center, San Francisco. The official site says October 2027 and does not list the days.',
       },
       {
         href: '/events/tech-week-sf-2026',

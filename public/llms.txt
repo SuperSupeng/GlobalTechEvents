@@ -27,7 +27,6 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [CES 2026](https://www.globaltechevents.xyz/events/ces-2026): January 6, 2026, Las Vegas, United States
 - [AI Summit Tokyo](https://www.globaltechevents.xyz/events/ai-summit-tokyo): January 25, 2026, Tokyo, Japan
 - [TechGALA Japan 2026](https://www.globaltechevents.xyz/events/techgala-japan-2026): January 26, 2026, Nagoya, Japan
-- [GitHub Universe 2026](https://www.globaltechevents.xyz/events/github-universe-2026): January 27, 2026, San Francisco, USA
 - [sTARTUp Day 2026](https://www.globaltechevents.xyz/events/startup-day-2026): January 27, 2026, Tartu, Estonia
 - [TypeScript Deep Dive Workshop](https://www.globaltechevents.xyz/events/typescript-deep-dive-workshop): January 27, 2026, Online
 - [AWS Re:Invent Recap](https://www.globaltechevents.xyz/events/aws-reinvent-recap): January 28, 2026, Online
@@ -109,6 +108,7 @@ Each item below is a crawlable event guide. The events directory and the sitemap
 - [Birmingham Tech Week 2026](https://www.globaltechevents.xyz/events/birmingham-tech-week-2026): October 18, 2026, Birmingham, United Kingdom
 - [Tech in Asia Conference 2026](https://www.globaltechevents.xyz/events/tech-in-asia-conference-2026): October 20, 2026, Jakarta, Indonesia
 - [SWITCH 2026](https://www.globaltechevents.xyz/events/switch-2026): October 27, 2026, Singapore
+- [GitHub Universe 2026](https://www.globaltechevents.xyz/events/github-universe-2026): October 28, 2026, San Francisco, United States
 - [KubeCon + CloudNativeCon North America 2026](https://www.globaltechevents.xyz/events/kubecon-na-2026): November 9, 2026, Salt Lake City, United States
 - [Web Summit Lisbon 2026](https://www.globaltechevents.xyz/events/web-summit-lisbon-2026): November 9, 2026, Lisbon, Portugal
 - [Web Summit 2026](https://www.globaltechevents.xyz/events/web-summit-2026): November 11, 2026, Lisbon, Portugal

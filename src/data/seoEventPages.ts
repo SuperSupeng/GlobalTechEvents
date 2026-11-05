@@ -419,16 +419,88 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     officialUrl: 'https://www.token2049.com/singapore',
     primaryKeyword: 'TOKEN2049 Singapore 2026 dates',
     secondaryKeywords: ['TOKEN2049 Singapore 2026 location', 'TOKEN2049 Singapore 2026 tickets', 'TOKEN2049 Singapore 2026 agenda'],
-    seoTitle: 'TOKEN2049 Singapore 2026 Dates, Location & Tickets | GlobalTechEvents',
-    metaDescription: 'TOKEN2049 Singapore 2026 was 7-8 October 2026 at Marina Bay Sands.',
+    seoTitle: 'TOKEN2049 Singapore 2026 — subscribe once | GlobalTechEvents',
+    metaDescription:
+      'TOKEN2049 Singapore 2026 was 7-8 October 2026 at Marina Bay Sands. Subscribe once to add TOKEN2049 (and related tech weeks) to your calendar.',
+    headline: 'TOKEN2049 Singapore 2026 — add the Marina Bay Sands days',
+    calendarHeading: 'Add TOKEN2049 Singapore to your calendar',
+    calendarLead:
+      'The 2026 Marina Bay Sands days have already run. Put 7-8 October on your calendar so the next cycle is not a surprise. Skip a flight for those dates. The official Singapore page lists 6-7 October 2027. Confirm that page before you book travel.',
+    subscribeFirst: true,
     whyItMatters:
-      'TOKEN2049 Singapore is the Asia crypto conference, separate from the Dubai edition. As of 16 October 2026, the official page hero lists 6-7 October 2027 at Marina Bay Sands, while its structured data still says 7-8 October 2026. Treat the October 2026 dates as the edition that ended. Confirm 2027 on the official page before you book travel.',
+      'TOKEN2049 Singapore is the calendar entry for the Asia crypto conference, separate from the Dubai edition. The 2026 meeting has already run: 7-8 October 2026 at Marina Bay Sands in Singapore. Add those dates so the next cycle is on your calendar. Do not book a flight for October 2026. As of 16 October 2026, the official page hero lists 6-7 October 2027 at Marina Bay Sands, while its structured data still says 7-8 October 2026. Confirm 2027 on the official page before you plan travel.',
     whoShouldAttend: ['Crypto and Web3 founders', 'Exchange, custody, and fintech operators', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Institutional Digital Assets'],
+    relatedLinks: [
+      {
+        href: '/api/calendar',
+        label: 'Subscribe to the ICS calendar',
+        note: 'One feed for major tech events, including TOKEN2049.',
+      },
+      {
+        href: '/topics/ai',
+        label: 'AI conferences',
+        note: 'This hub lists industry AI weeks. TOKEN2049 is the Asia crypto conference, not an AI week.',
+      },
+      {
+        href: '/cities/san-francisco',
+        label: 'Tech events in San Francisco',
+        note: 'The only city hub on this site. TOKEN2049 Singapore 2026 was at Marina Bay Sands, not in San Francisco.',
+      },
+      {
+        href: '/guides/best-ai-conferences-2026',
+        label: 'Best AI conferences 2026',
+        note: 'That compare does not list TOKEN2049. It covers industry AI weeks.',
+      },
+      {
+        href: '/events/superai-singapore-2026',
+        label: 'SuperAI Singapore 2026',
+        note: 'Already held 10-11 June 2026 at Marina Bay Sands. The AI week in the same venue.',
+      },
+      {
+        href: '/events/token2049-singapore-2027',
+        label: 'TOKEN2049 Singapore 2027',
+        note: 'Listed for 6-7 October 2027 in Singapore. Confirm the venue on the official page.',
+      },
+      {
+        href: '/events/token2049-dubai-2027',
+        label: 'TOKEN2049 Dubai 2027',
+        note: 'A separate edition, listed 21-22 April 2027 at Madinat Jumeirah.',
+      },
+      {
+        href: '/events/github-universe-2026',
+        label: 'GitHub Universe 2026',
+        note: 'Already held 28-29 October 2026 at Fort Mason Center in San Francisco.',
+      },
+      {
+        href: '/events/aws-reinvent-2026',
+        label: 'AWS re:Invent 2026',
+        note: 'Still ahead, 30 November-4 December 2026 in Las Vegas.',
+      },
+      {
+        href: '/events/mwc-barcelona-2027',
+        label: 'MWC Barcelona 2027',
+        note: '1-4 March 2027 at Fira Gran Via in Barcelona.',
+      },
+      {
+        href: '/events/openai-devday-2026',
+        label: 'OpenAI DevDay 2026',
+        note: 'Already held 29 September 2026 at Fort Mason in San Francisco.',
+      },
+      {
+        href: '/events',
+        label: 'Tech events directory',
+        note: 'Browse other dated event guides on this calendar.',
+      },
+    ],
     faq: [
       { q: 'When was TOKEN2049 Singapore 2026?', a: 'TOKEN2049 Singapore 2026 was Wednesday 7 October and Thursday 8 October 2026.' },
       { q: 'Where was TOKEN2049 Singapore 2026?', a: 'It was at Marina Bay Sands in Singapore.' },
       { q: 'Is TOKEN2049 Dubai the same event?', a: 'No. Dubai is a separate edition. The next Dubai dates are 21-22 April 2027.' },
+      {
+        q: 'Should I add TOKEN2049 Singapore to my calendar?',
+        a: 'Yes, if the Asia crypto week sets your plan. The 2026 meeting has already run, on 7-8 October at Marina Bay Sands in Singapore. Skip a flight for those dates. As of 16 October 2026, the official Singapore page lists 6-7 October 2027. Confirm that page before you book travel.',
+      },
     ],
   },
   // Official Singapore page hero and FAQ title list 6-7 October 2027.

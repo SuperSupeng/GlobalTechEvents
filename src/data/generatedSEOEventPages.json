@@ -3852,13 +3852,112 @@
       "AWS re:Invent 2026 tickets",
       "AWS re:Invent 2026 agenda"
     ],
-    "seoTitle": "AWS re:Invent 2026 — subscribe once | GlobalTechEvents",
-    "metaDescription": "AWS re:Invent 2026 is 30 November-4 December in Las Vegas. Subscribe once if that week changes your cloud, AI, or security plan. Keynotes stream free.",
-    "headline": "AWS re:Invent 2026 — add the Las Vegas week",
+    "seoTitle": "AWS re:Invent 2026: Dates, Ticket Price & Las Vegas Guide",
+    "metaDescription": "AWS re:Invent 2026 runs Nov 30–Dec 4 in Las Vegas. Check the $2,499 full pass, venues, agenda and free livestream before planning your trip.",
+    "headline": "AWS re:Invent 2026: Dates, Tickets & Planning Guide",
     "calendarHeading": "Add AWS re:Invent to your calendar",
-    "calendarLead": "Put 30 November-4 December 2026 in Las Vegas on your calendar first. Go if service launches that week change your cloud, AI, or security plan. Skip the flight if a keynote stream is enough. AWS will livestream keynotes for free.",
+    "calendarLead": "Save November 30–December 4, 2026 if this Las Vegas week is on your plan. Confirm the $2,499 full pass and the free livestream on the official AWS pages before you book travel.",
     "subscribeFirst": true,
-    "whyItMatters": "Add AWS re:Invent 2026 to your calendar before you decide on travel. It is still ahead. Sessions run 30 November through 4 December in Las Vegas, across Caesars Forum, Caesars Palace, Encore, MGM Grand, the Venetian, and the Wynn. Badge pickup starts 29 November. Go if service launches that week change your cloud, AI, or security plan. Skip the flight if a keynote stream is enough. AWS will livestream keynotes and select live programming for free. For 2026, re:Inforce is part of this week, with a security focus day on 3 December at the Wynn.",
+    "planning": {
+      "sourceLine": "Independent planning guide · Event facts checked November 8, 2026",
+      "answers": [
+        {
+          "text": "Dates: Nov 30–Dec 4, 2026. Badge pickup starts Nov 29.",
+          "sourceLabel": "Official agenda",
+          "sourceUrl": "https://aws.amazon.com/events/reinvent/agenda/"
+        },
+        {
+          "text": "Las Vegas, across Caesars Forum, Caesars Palace, MGM Grand, the Venetian, and Wynn | Encore.",
+          "sourceLabel": "Official agenda",
+          "sourceUrl": "https://aws.amazon.com/events/reinvent/agenda/"
+        },
+        {
+          "text": "Full conference pass: $2,499.",
+          "sourceLabel": "Official pricing",
+          "sourceUrl": "https://aws.amazon.com/events/reinvent/pricing/"
+        },
+        {
+          "text": "Some sessions are free on the livestream.",
+          "sourceLabel": "Livestream",
+          "sourceUrl": "https://aws.amazon.com/events/reinvent/livestream/"
+        }
+      ],
+      "tip": [
+        "Attend in person if the launches that week change your cloud, AI, or security plan.",
+        "Watch the free livestream first if a keynote is enough."
+      ],
+      "actions": [
+        {
+          "label": "Check official ticket options",
+          "href": "https://aws.amazon.com/events/reinvent/pricing/",
+          "tone": "primary"
+        },
+        {
+          "label": "Browse official agenda",
+          "href": "https://aws.amazon.com/events/reinvent/agenda/",
+          "tone": "secondary"
+        },
+        {
+          "label": "Free livestream details",
+          "href": "https://aws.amazon.com/events/reinvent/livestream/",
+          "tone": "text"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Dates and venues",
+          "paragraphs": [
+            "Sessions run November 30 through December 4, 2026. Badge pickup starts November 29 at Harry Reid International Airport and at MGM Grand and the Venetian. Rooms are spread across Caesars Forum, Caesars Palace, MGM Grand, the Venetian, and Wynn | Encore.",
+            "Thursday, December 3, is the security focus at the Wynn. In 2026, re:Inforce joins this week rather than running as a separate conference."
+          ],
+          "links": [
+            {
+              "label": "Official agenda",
+              "href": "https://aws.amazon.com/events/reinvent/agenda/"
+            },
+            {
+              "label": "Security focus",
+              "href": "https://aws.amazon.com/events/reinvent/sessions/security-focus/"
+            },
+            {
+              "label": "re:Inforce",
+              "href": "https://aws.amazon.com/events/reinforce/"
+            }
+          ]
+        },
+        {
+          "heading": "Ticket price and attendance options",
+          "paragraphs": [
+            "Full access is $2,499 on the official pricing page. Early bird pricing ended August 25, and a bulk discount is available when you buy more than one pass.",
+            "Go in person if you are a cloud architect, platform lead, or security engineer and the week’s launches change a system you run. Use the free livestream if you only need the keynotes."
+          ],
+          "links": [
+            {
+              "label": "Official pricing",
+              "href": "https://aws.amazon.com/events/reinvent/pricing/"
+            }
+          ]
+        },
+        {
+          "heading": "Plan your sessions",
+          "paragraphs": [
+            "The agenda lists the Developer Keynote on November 30 and the CEO Keynote on December 1, both in the Venetian and on the virtual stream. Livestream registration opens November 9.",
+            "A free registration covers 50+ live sessions, including theaters at Caesars Palace, the Venetian, and the Security Theater at Wynn and Encore, plus guided labs. On this calendar the week sits with cloud architecture, serverless, data and AI, security, and DevOps."
+          ],
+          "links": [
+            {
+              "label": "Official agenda",
+              "href": "https://aws.amazon.com/events/reinvent/agenda/"
+            },
+            {
+              "label": "Free livestream",
+              "href": "https://aws.amazon.com/events/reinvent/livestream/"
+            }
+          ]
+        }
+      ]
+    },
+    "whyItMatters": "AWS re:Invent 2026 runs November 30 through December 4 in Las Vegas. Full access is $2,499. Keynotes and selected sessions are on the free livestream. Badge pickup starts November 29.",
     "whoShouldAttend": [
       "Cloud architects and DevOps teams",
       "CTOs and platform leads",
@@ -3934,11 +4033,11 @@
       },
       {
         "q": "How do I register for AWS re:Invent?",
-        "a": "Use the official re:Invent event portal for pass options. The official FAQ lists a full conference pass at $2,499. Confirm that page before you book travel."
+        "a": "Full access is $2,499 on the official pricing page. Early bird pricing ended August 25. Livestream registration is separate and free. Confirm the pass on that page before you book travel."
       },
       {
         "q": "Should I add AWS re:Invent 2026 to my calendar?",
-        "a": "Yes, if service launches that week change your cloud, AI, or security plan. Sessions run 30 November through 4 December 2026 in Las Vegas. AWS will livestream keynotes for free, so skip the flight if a stream is enough. Confirm passes on the official site before you book travel."
+        "a": "Attend in person if the launches that week change your cloud, AI, or security plan. Watch the free livestream first if a keynote is enough. Sessions run November 30 through December 4, 2026 in Las Vegas."
       }
     ]
   },

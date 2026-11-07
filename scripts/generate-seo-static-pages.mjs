@@ -164,6 +164,50 @@ function renderStops(page) {
   return `<section><h2>Printed stops</h2><ul>${items}</ul></section>${sourceSection}`;
 }
 
+function renderPlanning(page) {
+  const planning = page.planning;
+  if (!planning) return '';
+  const answers = planning.answers
+    .map(
+      (answer) =>
+        `<li>${escapeHtml(answer.text)} <a href="${escapeHtml(answer.sourceUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(answer.sourceLabel)}" data-track-target="${escapeHtml(answer.sourceUrl)}">${escapeHtml(answer.sourceLabel)}</a></li>`,
+    )
+    .join('');
+  const buttons = planning.actions
+    .filter((action) => action.tone !== 'text')
+    .map((action) => {
+      const className = action.tone === 'primary' ? 'btn' : 'btn btn-secondary';
+      return `<a class="${className}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(action.label)}" data-track-target="${escapeHtml(action.href)}">${escapeHtml(action.label)}</a>`;
+    })
+    .join('\n');
+  const textLinks = planning.actions
+    .filter((action) => action.tone === 'text')
+    .map(
+      (action) =>
+        `<p class="text-link-row"><a class="text-link" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(action.label)}" data-track-target="${escapeHtml(action.href)}">${escapeHtml(action.label)}</a></p>`,
+    )
+    .join('');
+  const sections = planning.sections
+    .map((section) => {
+      const paragraphs = section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+      const links = (section.links || [])
+        .map(
+          (link) =>
+            `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+        )
+        .join(' · ');
+      return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${links ? `<p class="section-links">${links}</p>` : ''}</section>`;
+    })
+    .join('\n');
+  return `<p class="source-line">${escapeHtml(planning.sourceLine)}</p>
+      <h1>${escapeHtml(page.headline || page.eventName)}</h1>
+      <ul class="answers">${answers}</ul>
+      <p class="tip">${escapeHtml(planning.tip[0])}<br />${escapeHtml(planning.tip[1])}</p>
+      <div class="answer-actions">${buttons}</div>
+      ${textLinks}
+      ${sections}`;
+}
+
 function renderPage(page, whatsappUrl) {
   const collection = isSeoCollection(page);
   const canonical = `${SITE_URL}/events/${page.slug}`;
@@ -256,19 +300,37 @@ function renderPage(page, whatsappUrl) {
       .cta-note-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-top: 16px; }
       .cta-note { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 14px; }
       .related a { color: #fdba74; }
+      .source-line { color: rgba(255,255,255,.55); font-size: 12px; margin: 0 0 8px; }
+      .answers { list-style: none; padding: 0; margin: 0 0 12px; }
+      .answers li { margin: 0 0 4px; font-size: 15px; line-height: 1.35; }
+      .answers a, .text-link, .section-links a { color: #fdba74; }
+      .tip { margin: 0 0 12px; font-size: 14px; line-height: 1.4; }
+      .answer-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+      .text-link-row { margin: 8px 0 0; }
+      .planning h1 { font-size: 28px; line-height: 1.15; margin: 0 0 10px; }
+      .planning h2 { margin-top: 28px; }
+      main.planning { padding-top: 16px; }
       @media (max-width: 640px) {
         h1 { font-size: 34px; }
         .wrap { padding-top: 28px; }
         .btn-row { flex-direction: column; }
         a.btn, button.btn { width: 100%; }
+        .planning h1 { font-size: 26px; }
+        main.planning { padding-top: 12px; }
+        .answer-actions { flex-direction: column; }
+        .answer-actions a.btn { width: 100%; }
       }
     </style>
   </head>
   <body>
-    <main class="wrap">
-      <p class="eyebrow">Tech Event Guide</p>
+    <main class="${page.planning ? 'wrap planning' : 'wrap'}">
+      ${
+        page.planning
+          ? renderPlanning(page)
+          : `<p class="eyebrow">Tech Event Guide</p>
       <h1>${escapeHtml(headline)}</h1>
-      <p>${escapeHtml(page.whyItMatters)}</p>
+      <p>${escapeHtml(page.whyItMatters)}</p>`
+      }
 
       <section class="card cta-card">
         <h2 style="margin-top:0;">${escapeHtml(calendarHeading)}</h2>
@@ -291,7 +353,10 @@ function renderPage(page, whatsappUrl) {
         <p class="muted">${escapeHtml(confirmNote)}</p>
       </section>
 
-      <section class="grid">
+      ${
+        page.planning
+          ? ''
+          : `<section class="grid">
         <div class="card">
           <div class="meta-label">Date</div>
           <div>${escapeHtml(dateLabel)}</div>
@@ -310,10 +375,14 @@ function renderPage(page, whatsappUrl) {
       <section>
         <h2>Who should attend</h2>
         <ul>${whoHtml}</ul>
-      </section>
+      </section>`
+      }
 
       ${relatedHtml}
-      <section>
+      ${
+        page.planning
+          ? ''
+          : `<section>
         <h2>Topics to watch</h2>
         <div class="topics">${topicsHtml}</div>
       </section>
@@ -322,7 +391,8 @@ function renderPage(page, whatsappUrl) {
         <h2>Why this event matters</h2>
         <p>${escapeHtml(page.metaDescription)}</p>
         <p>${escapeHtml(page.whyItMatters)}</p>
-      </section>
+      </section>`
+      }
 
       <section>
         <h2>FAQ</h2>

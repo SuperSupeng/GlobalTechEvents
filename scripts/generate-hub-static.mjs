@@ -239,7 +239,7 @@ export function renderHomeShell(guides) {
       <main id="gte-home-shell" style="max-width:860px;margin:0 auto;padding:48px 20px 80px;font-family:Inter,system-ui,sans-serif;line-height:1.7;">
         <p style="letter-spacing:.14em;text-transform:uppercase;font-size:12px;margin:0 0 12px;">GlobalTechEvents</p>
         <h1 style="font-size:40px;line-height:1.15;margin:0 0 16px;">The 2026 global tech events calendar — subscribe once</h1>
-        <p style="margin:0 0 20px;">A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar, including <a href="/events/openai-devday-2026">OpenAI DevDay 2026</a>.</p>
+        <p style="margin:0 0 20px;">A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar, including <a href="/events/openai-devday-2026">OpenAI DevDay 2026</a> and <a href="/events/aws-reinvent-2026">AWS re:Invent 2026 dates, tickets and planning guide</a>.</p>
         <nav aria-label="Primary">
           <ul>
             <li><a href="/events">Events directory</a></li>

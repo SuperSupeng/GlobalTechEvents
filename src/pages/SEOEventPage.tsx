@@ -145,12 +145,106 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Tech Event Guide</p>
-        <h1 className="text-4xl sm:text-5xl font-serif italic mb-5 leading-tight">
-          {page.headline ?? `${page.eventName}: Dates, Location & Event Guide`}
-        </h1>
-        <p className="text-white/75 text-lg leading-relaxed mb-8">{page.whyItMatters}</p>
+      <main className={page.planning ? 'max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12 sm:py-14' : 'max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14'}>
+        {page.planning ? (
+          <>
+            <p className="text-white/55 text-xs mb-2">{page.planning.sourceLine}</p>
+            <h1 className="text-[1.75rem] sm:text-5xl font-serif italic mb-3 leading-tight">
+              {page.headline}
+            </h1>
+            <ul className="mb-3 space-y-1 text-sm sm:text-base text-white/85 leading-snug">
+              {page.planning.answers.map((answer) => (
+                <li key={`${answer.sourceUrl}-${answer.text}`}>
+                  {answer.text}{' '}
+                  <a
+                    href={answer.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleOfficialClick(answer.sourceUrl, answer.sourceLabel)}
+                    className="text-primary-light underline underline-offset-2 hover:text-white"
+                  >
+                    {answer.sourceLabel}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="text-sm text-white/75 leading-snug mb-3">
+              {page.planning.tip[0]}
+              <br />
+              {page.planning.tip[1]}
+            </p>
+            <div className="flex flex-col items-stretch gap-2 mb-2 sm:flex-row sm:flex-wrap sm:items-center">
+              {page.planning.actions
+                .filter((action) => action.tone !== 'text')
+                .map((action) => (
+                  <a
+                    key={action.href + action.label}
+                    href={action.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleOfficialClick(action.href, action.label)}
+                    className={
+                      action.tone === 'primary'
+                        ? 'btn-primary text-center inline-flex items-center justify-center'
+                        : 'btn-secondary text-center inline-flex items-center justify-center'
+                    }
+                  >
+                    {action.label}
+                  </a>
+                ))}
+            </div>
+            {page.planning.actions
+              .filter((action) => action.tone === 'text')
+              .map((action) => (
+                <a
+                  key={action.href + action.label}
+                  href={action.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleOfficialClick(action.href, action.label)}
+                  className="inline-block text-sm text-primary-light underline underline-offset-4 hover:text-white mb-8"
+                >
+                  {action.label}
+                </a>
+              ))}
+            {page.planning.sections.map((section) => (
+              <section key={section.heading} className="mb-8">
+                <h2 className="text-2xl font-serif italic mb-3">{section.heading}</h2>
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph} className="text-white/80 leading-relaxed mb-3">
+                    {paragraph}
+                  </p>
+                ))}
+                {section.links && section.links.length > 0 && (
+                  <p className="text-sm text-white/70">
+                    {section.links.map((link, index) => (
+                      <span key={link.href}>
+                        {index > 0 ? ' · ' : null}
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => handleOfficialClick(link.href, link.label)}
+                          className="text-primary-light underline underline-offset-4 hover:text-white"
+                        >
+                          {link.label}
+                        </a>
+                      </span>
+                    ))}
+                  </p>
+                )}
+              </section>
+            ))}
+          </>
+        ) : (
+          <>
+            <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Tech Event Guide</p>
+            <h1 className="text-4xl sm:text-5xl font-serif italic mb-5 leading-tight">
+              {page.headline ?? `${page.eventName}: Dates, Location & Event Guide`}
+            </h1>
+            <p className="text-white/75 text-lg leading-relaxed mb-8">{page.whyItMatters}</p>
+          </>
+        )}
 
         <section className="glass-panel p-6 sm:p-7 mb-10 border border-primary/20 shadow-[0_0_0_1px_rgba(212,175,55,0.08)]">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -295,6 +389,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           </p>
         </section>
 
+        {!page.planning && (
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
           <div className="glass-panel p-5">
             <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Date</p>
@@ -313,8 +408,9 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             <p className="flex items-center gap-2 text-white/90"><Globe size={16} /> {page.format}</p>
           </div>
         </section>
+        )}
 
-        {isSeoCollection(page) && (
+        {!page.planning && isSeoCollection(page) && (
           <section className="mb-10">
             <h2 className="text-2xl font-serif italic mb-4">Printed stops</h2>
             <ul className="list-disc pl-6 text-white/80 space-y-3">
@@ -344,6 +440,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           </section>
         )}
 
+        {!page.planning && (
         <section className="mb-10">
           <h2 className="text-2xl font-serif italic mb-4">Who should attend</h2>
           <ul className="list-disc pl-6 text-white/80 space-y-2">
@@ -352,6 +449,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             ))}
           </ul>
         </section>
+        )}
 
         {page.relatedLinks && page.relatedLinks.length > 0 && (
           <section className="mb-10">
@@ -369,6 +467,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           </section>
         )}
 
+        {!page.planning && (
         <section className="mb-10">
           <h2 className="text-2xl font-serif italic mb-4">Topics to watch</h2>
           <div className="flex flex-wrap gap-2">
@@ -380,6 +479,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             ))}
           </div>
         </section>
+        )}
 
         <section className="mb-10">
           <h2 className="text-2xl font-serif italic mb-4">FAQ</h2>

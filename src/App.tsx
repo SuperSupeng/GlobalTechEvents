@@ -385,7 +385,9 @@ const App: React.FC = () => {
               className="text-base sm:text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-12 font-sans px-4 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]"
             >
               A 2026 industry conference calendar. Subscribe once, in one click, and keep major tech events on your calendar, including{' '}
-              <a href="/events/openai-devday-2026" className="text-white underline decoration-white/40 underline-offset-4 hover:text-primary-light">OpenAI DevDay 2026</a>.
+              <a href="/events/openai-devday-2026" className="text-white underline decoration-white/40 underline-offset-4 hover:text-primary-light">OpenAI DevDay 2026</a>
+              {' '}and{' '}
+              <a href="/events/aws-reinvent-2026" className="text-white underline decoration-white/40 underline-offset-4 hover:text-primary-light">AWS re:Invent 2026 dates, tickets and planning guide</a>.
             </motion.p>
 
             <motion.div

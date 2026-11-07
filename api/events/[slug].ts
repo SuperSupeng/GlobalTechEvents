@@ -271,9 +271,47 @@ function renderEventHtml(slug: string) {
         <div class="brand">GlobalTechEvents</div>
       </div>
 
-      <p class="eyebrow">Tech Event Guide</p>
+      ${
+        page.planning
+          ? `<p class="source-line">${escapeHtml(page.planning.sourceLine)}</p>
       <h1>${headline}</h1>
-      <p class="lead">${whyItMatters}</p>
+      <ul class="answers">${page.planning.answers
+        .map(
+          (answer) =>
+            `<li>${escapeHtml(answer.text)} <a href="${escapeHtml(answer.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(answer.sourceLabel)}</a></li>`,
+        )
+        .join('')}</ul>
+      <p class="tip">${escapeHtml(page.planning.tip[0])}<br />${escapeHtml(page.planning.tip[1])}</p>
+      <div class="actions">${page.planning.actions
+        .filter((action) => action.tone !== 'text')
+        .map(
+          (action) =>
+            `<a class="button ${action.tone === 'primary' ? 'button-primary' : 'button-secondary'}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(action.label)}</a>`,
+        )
+        .join('')}</div>
+      ${page.planning.actions
+        .filter((action) => action.tone === 'text')
+        .map(
+          (action) =>
+            `<p><a href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(action.label)}</a></p>`,
+        )
+        .join('')}
+      ${page.planning.sections
+        .map((section) => {
+          const paragraphs = section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+          const links = (section.links ?? [])
+            .map(
+              (link) =>
+                `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+            )
+            .join(' · ');
+          return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${links ? `<p>${links}</p>` : ''}</section>`;
+        })
+        .join('')}`
+          : `<p class="eyebrow">Tech Event Guide</p>
+      <h1>${headline}</h1>
+      <p class="lead">${whyItMatters}</p>`
+      }
       ${
         page.subscribeFirst
           ? `<section class="card">
@@ -288,7 +326,10 @@ function renderEventHtml(slug: string) {
           : ''
       }
 
-      <section class="grid">
+      ${
+        page.planning
+          ? ''
+          : `<section class="grid">
         <div class="card">
           <div class="label">Date</div>
           <div>${dateRange}</div>
@@ -302,21 +343,19 @@ function renderEventHtml(slug: string) {
           <div>${format}</div>
         </div>
       </section>
-
       ${stopsHtml}
       ${sourcesHtml}
-
       <section>
         <h2>Who should attend</h2>
         <ul>${attendees}</ul>
       </section>
-
-      ${relatedHtml}
-
       <section>
         <h2>Topics to watch</h2>
         <div class="tags">${topicTags}</div>
-      </section>
+      </section>`
+      }
+
+      ${relatedHtml}
 
       <section>
         <h2>FAQ</h2>

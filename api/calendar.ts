@@ -1,135 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
+import { generateIcs, ICS_FEED_STATUSES } from './_lib/calendar-ics.js';
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-interface TechEvent {
-  id: string;
-  title: string;
-  summary: string;
-  start_time: string;
-  end_time: string;
-  timezone: string;
-  is_all_day: boolean;
-  format: string;
-  location: {
-    country?: string;
-    city?: string;
-    address?: string;
-  } | null;
-  links: {
-    officialSite?: string;
-    registration?: string;
-    source?: string;
-  };
-  organizer: {
-    name: string;
-    logo?: string;
-  };
-  tags: string[];
-}
-
-function escapeIcsText(text: string): string {
-  return text
-    .replace(/\\/g, '\\\\')
-    .replace(/;/g, '\\;')
-    .replace(/,/g, '\\,')
-    .replace(/\n/g, '\\n');
-}
-
-function formatIcsDate(dateStr: string, isAllDay: boolean): string {
-  const date = new Date(dateStr);
-  if (isAllDay) {
-    // Format: YYYYMMDD
-    return date.toISOString().slice(0, 10).replace(/-/g, '');
-  }
-  // Format: YYYYMMDDTHHMMSSZ
-  return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-}
-
-function generateIcs(events: TechEvent[]): string {
-  const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-  
-  let ics = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//GlobalTechEvents//Calendar//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-CALNAME:GlobalTechEvents
-X-WR-CALDESC:Global Tech Events Calendar - Conferences, Hackathons, Meetups
-X-WR-TIMEZONE:UTC
-REFRESH-INTERVAL;VALUE=DURATION:P1D
-X-PUBLISHED-TTL:P1D
-`;
-
-  for (const event of events) {
-    const uid = `${event.id}@globaltechevents.com`;
-    const dtStart = formatIcsDate(event.start_time, event.is_all_day);
-    const dtEnd = formatIcsDate(event.end_time, event.is_all_day);
-    
-    let location = '';
-    if (event.location) {
-      const parts = [event.location.address, event.location.city, event.location.country].filter(Boolean);
-      location = parts.join(', ');
-    }
-    
-    let description = event.summary || '';
-    if (event.links?.officialSite) {
-      description += `\\n\\nOfficial Site: ${event.links.officialSite}`;
-    }
-    if (event.links?.registration) {
-      description += `\\nRegistration: ${event.links.registration}`;
-    }
-    if (event.format) {
-      description += `\\n\\nFormat: ${event.format}`;
-    }
-    if (event.tags?.length) {
-      description += `\\nTags: ${event.tags.join(', ')}`;
-    }
-    description += `\\n\\n---\\nPowered by GlobalTechEvents.com`;
-
-    ics += `BEGIN:VEVENT
-UID:${uid}
-DTSTAMP:${now}
-`;
-
-    if (event.is_all_day) {
-      ics += `DTSTART;VALUE=DATE:${dtStart}
-DTEND;VALUE=DATE:${dtEnd}
-`;
-    } else {
-      ics += `DTSTART:${dtStart}
-DTEND:${dtEnd}
-`;
-    }
-
-    ics += `SUMMARY:${escapeIcsText(event.title)}
-DESCRIPTION:${escapeIcsText(description)}
-`;
-
-    if (location) {
-      ics += `LOCATION:${escapeIcsText(location)}
-`;
-    }
-
-    if (event.links?.officialSite) {
-      ics += `URL:${event.links.officialSite}
-`;
-    }
-
-    ics += `STATUS:CONFIRMED
-TRANSP:OPAQUE
-END:VEVENT
-`;
-  }
-
-  ics += 'END:VCALENDAR';
-  return ics;
-}
 
 // Changing the hash input gives every IP a new hash and inflates the /api/followers unique-IP count.
 function hashIp(ip: string): string {
@@ -154,11 +31,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 解析查询参数
     const { eventId, format, location, tags } = req.query;
 
-    // 构建查询
+    // Subscription feed includes upcoming, live, and ended so past events stay
+    // on their original day. Canceled rows stay out. A direct eventId download
+    // still returns that one row at any status.
     let query = supabase
       .from('events')
       .select('*')
-      .in('status', ['upcoming', 'live'])
+      .in('status', [...ICS_FEED_STATUSES])
       .order('start_time', { ascending: true });
 
     // 单个活动

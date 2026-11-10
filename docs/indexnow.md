@@ -10,7 +10,7 @@ The key file is meant to be public at the site root. Do not put the key in `robo
 - File: `public/7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6.txt` (UTF-8 text; the body is the key)
 - Public URL: `https://www.globaltechevents.xyz/7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6.txt`
 
-`vercel.json` serves root `*.txt` (this key, `robots.txt`, `llms.txt`) as the static file. Those paths are excluded from the SPA catch-all that rewrites unknown routes to `index.html`, and the key URL is sent as `text/plain; charset=utf-8`.
+`vercel.json` serves root `*.txt` (this key, `robots.txt`, `llms.txt`) as the static file, and the key URL is sent as `text/plain; charset=utf-8`. Unknown routes are not rewritten to the homepage.
 
 ## Submit one URL
 

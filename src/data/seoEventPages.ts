@@ -76,7 +76,7 @@ export interface SEOEventPageData {
   whyItMatters: string;
   whoShouldAttend: string[];
   topics: string[];
-  relatedLinks?: Array<{ href: string; label: string; note?: string }>;
+  relatedLinks?: Array<{ href?: string; label: string; note?: string }>;
   faq: Array<{ q: string; a: string }>;
   stops?: SEOEventStop[];
   sources?: SEOEventSourceLink[];
@@ -142,7 +142,6 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
         note: 'Browse other dated event guides on this calendar.',
       },
       {
-        href: '/events/4yfn-barcelona-2026',
         label: '4YFN Barcelona 2026',
         note: 'Listed on this site as co-located with MWC. Already held 1-5 March 2026 in Barcelona. This site does not print a 2027 4YFN date.',
       },

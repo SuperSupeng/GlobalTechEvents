@@ -2,12 +2,6 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { INDEXABLE_SHELLS, relatedEventsForShell } from '../src/content/shells/registry.ts';
 
-const SPA_CATCHALL = /^\/((?!events\/[^/]+\/?$)(?!events\/[^/]+\/index\.html$)(?![^/]+\.txt$).*)$/;
-
-function catchAllMatches(pathname) {
-  return SPA_CATCHALL.test(pathname);
-}
-
 const pages = JSON.parse(fs.readFileSync('src/data/generatedSEOEventPages.json', 'utf8'));
 const city = INDEXABLE_SHELLS.find((shell) => shell.path === '/cities/san-francisco');
 const track = INDEXABLE_SHELLS.find((shell) => shell.path === '/tracks/ai');
@@ -186,35 +180,56 @@ assert.doesNotMatch(llms, /neurips|icml|cvpr/i);
 
 const ces = fs.readFileSync('public/events/ces-2026/index.html', 'utf8');
 assert.match(ces, /<h1>CES 2026/);
+assert.match(ces, /class="page-scroll"/);
+assert.doesNotMatch(ces, /position:\s*sticky/);
 
-assert.equal(catchAllMatches('/'), true);
-assert.equal(catchAllMatches('/privacy'), true);
-assert.equal(catchAllMatches('/events'), true);
-assert.equal(catchAllMatches('/guides/best-ai-conferences-2026'), true);
-assert.equal(catchAllMatches('/cities/san-francisco'), true);
-assert.equal(catchAllMatches('/events/ces-2026'), false);
-assert.equal(catchAllMatches('/events/ces-2026/'), false);
-assert.equal(catchAllMatches('/events/not-a-real-event'), false);
-assert.equal(catchAllMatches('/events/not-a-real-event/'), false);
-assert.equal(catchAllMatches('/events/not-a-real-event/index.html'), false);
-assert.equal(catchAllMatches('/robots.txt'), false);
-assert.equal(catchAllMatches('/llms.txt'), false);
-assert.equal(catchAllMatches('/7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6.txt'), false);
-assert.equal(catchAllMatches('/indexnow-key.txt'), false);
-assert.equal(catchAllMatches('/sitemap.xml'), true);
-assert.equal(catchAllMatches('/guides/foo.txt'), true);
+const aws = fs.readFileSync('public/events/aws-reinvent-2026/index.html', 'utf8');
+assert.match(aws, /<title>AWS re:Invent 2026: Dates, Ticket Price &amp; Las Vegas Guide<\/title>/);
+assert.match(aws, /<h1>AWS re:Invent 2026: Dates, Tickets &amp; Planning Guide<\/h1>/);
+assert.match(aws, /November 30/);
+assert.match(aws, /Las Vegas/);
+assert.match(aws, /\$2,499/);
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
-const catchAll = vercel.rewrites.find((rule) => rule.destination === '/index.html' && rule.source.includes('?!events/'));
-assert.ok(catchAll, 'SPA catch-all must exclude /events/{slug}');
 assert.equal(
-  catchAll.source,
-  '/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$)(?![^/]+\\.txt$).*)',
+  vercel.rewrites.some((rule) => rule.destination === '/index.html'),
+  false,
+  'unknown routes must not rewrite to the homepage',
 );
+for (const source of ['/events/:slug', '/events/:slug/', '/guides/:slug', '/guides/:slug/', '/authors/:slug([^./]+)']) {
+  assert.equal(
+    vercel.rewrites.some((rule) => rule.source === source),
+    false,
+    `${source} must not rewrite to a file that may be missing`,
+  );
+}
 const rootTxt = vercel.rewrites.find((rule) => rule.source === '/:file([^/]+\\.txt)');
-assert.ok(rootTxt, 'root *.txt must be rewritten to the static file before the SPA catch-all');
+assert.ok(rootTxt, 'root *.txt must be rewritten to the static file');
 assert.equal(rootTxt.destination, '/:file');
-assert.ok(vercel.rewrites.indexOf(rootTxt) < vercel.rewrites.indexOf(catchAll));
+
+for (const indexPath of ['/cities', '/topics', '/tracks', '/authors']) {
+  const html = fs.readFileSync(`public${indexPath}/index.html`, 'utf8');
+  assert.match(html, new RegExp(`<link rel="canonical" href="https://www.globaltechevents.xyz${indexPath}" />`));
+  assert.match(html, new RegExp(`<title>[^<]+\\| GlobalTechEvents</title>`));
+  assert.doesNotMatch(html, /The 2026 global tech events calendar/);
+  assert.match(html, /<h1>/);
+  assert.ok(
+    vercel.rewrites.some((rule) => rule.source === indexPath && rule.destination === `${indexPath}/index.html`),
+    indexPath,
+  );
+}
+const notFound = fs.readFileSync('public/404.html', 'utf8');
+assert.match(notFound, /<title>Page not found \| GlobalTechEvents<\/title>/);
+assert.match(notFound, /<h1>Page not found<\/h1>/);
+assert.match(notFound, /noindex/);
+assert.match(notFound, /href="\/"/);
+assert.match(notFound, /href="\/events"/);
+assert.doesNotMatch(notFound, /rel="canonical"/);
+assert.doesNotMatch(notFound, /The 2026 global tech events calendar/);
+assert.doesNotMatch(notFound, /NOT_FOUND|Copy Debug Prompt/);
+const ico = fs.readFileSync('public/favicon.ico');
+assert.ok(ico.length > 32 && ico.readUInt16LE(2) === 1, 'favicon.ico must be an icon, not homepage HTML');
+assert.notEqual(ico.subarray(0, 15).toString('utf8').toLowerCase(), '<!doctype html>');
 const indexNowKey = '7b3e8e8c-65fb-4d06-9a5e-9de3232ce1a6';
 const indexNowBody = fs.readFileSync(`public/${indexNowKey}.txt`, 'utf8');
 assert.equal(indexNowBody, `${indexNowKey}\n`);

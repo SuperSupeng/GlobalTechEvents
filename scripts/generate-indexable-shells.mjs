@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { INDEXABLE_SHELLS, relatedEventsForShell } from '../src/content/shells/registry.ts';
 import { GUIDE_SITE_ORIGIN as SITE_URL } from '../src/content/guides/site.ts';
+import { loadAuthors } from './generate-guide-static.mjs';
 
 const PUBLIC_DIR = path.resolve('public');
 
@@ -189,7 +190,172 @@ function renderShell(shell, events) {
 </html>`;
 }
 
+const DIRECTORY_CSS = `
+      :root { color-scheme: dark; }
+      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #050505; color: #f5f5f5; line-height: 1.7; }
+      a { color: #fdba74; }
+      nav { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+      nav a { color: #fff; text-decoration: none; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+      .brand { font-weight: 700; letter-spacing: 0; text-transform: none; font-size: 18px; margin-right: auto; }
+      .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+      .eyebrow { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 16px; }
+      h1 { font-size: 42px; line-height: 1.1; margin: 0 0 16px; }
+      p, li { color: rgba(255,255,255,.85); }
+      ul { padding-left: 22px; }
+      li { margin: 10px 0; }
+      .meta { color: rgba(255,255,255,.55); }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+      a.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; }
+      a.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+      @media (max-width: 640px) {
+        h1 { font-size: 34px; }
+        .wrap { padding-top: 28px; }
+        a.btn { width: 100%; }
+      }
+`;
+
+function directoryChrome(title, description, canonical, robots, body) {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeHtml(description)}" />
+    <meta name="robots" content="${robots}" />
+    ${canonical ? `<link rel="canonical" href="${canonical}" />` : ''}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="${escapeHtml(title)}" />
+    <meta property="og:description" content="${escapeHtml(description)}" />
+    ${canonical ? `<meta property="og:url" content="${canonical}" />` : ''}
+    <meta property="og:site_name" content="GlobalTechEvents" />
+    <style>${DIRECTORY_CSS}</style>
+  </head>
+  <body>
+    <nav>
+      <a class="brand" href="/">GlobalTechEvents</a>
+      <a href="/">Calendar</a>
+      <a href="/events">Events</a>
+      <a href="/guides">Guides</a>
+    </nav>
+    <main class="wrap">
+      ${body}
+    </main>
+  </body>
+</html>
+`;
+}
+
+function renderLinkList(items) {
+  if (!items.length) {
+    return '<p>No pages are listed yet. Browse the <a href="/events">events directory</a> or return to the <a href="/">calendar</a>.</p>';
+  }
+  return `<ul>${items
+    .map((item) => {
+      const note = item.note ? ` <span class="meta">${escapeHtml(item.note)}</span>` : '';
+      return `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>${note}</li>`;
+    })
+    .join('')}</ul>`;
+}
+
+const DIRECTORY_INDEXES = [
+  {
+    path: '/cities',
+    title: 'Cities | GlobalTechEvents',
+    description: 'City pages for tech events already listed on GlobalTechEvents.',
+    eyebrow: 'Cities',
+    h1: 'Cities',
+    intro: 'City pages that already exist on this site. Open one for the events listed there.',
+    items: () =>
+      INDEXABLE_SHELLS.filter((shell) => shell.kind === 'city').map((shell) => ({
+        href: shell.path,
+        label: shell.h1,
+      })),
+  },
+  {
+    path: '/topics',
+    title: 'Topics | GlobalTechEvents',
+    description: 'Topic pages for conferences already listed on GlobalTechEvents.',
+    eyebrow: 'Topics',
+    h1: 'Topics',
+    intro: 'Topic pages that already exist on this site.',
+    items: () =>
+      INDEXABLE_SHELLS.filter((shell) => shell.kind === 'topic').map((shell) => ({
+        href: shell.path,
+        label: shell.h1,
+      })),
+  },
+  {
+    path: '/tracks',
+    title: 'Tracks | GlobalTechEvents',
+    description: 'Track pages for conferences already listed on GlobalTechEvents.',
+    eyebrow: 'Tracks',
+    h1: 'Tracks',
+    intro: 'Track pages that already exist on this site.',
+    items: () =>
+      INDEXABLE_SHELLS.filter((shell) => shell.kind === 'track').map((shell) => ({
+        href: shell.path,
+        label: shell.h1,
+      })),
+  },
+  {
+    path: '/authors',
+    title: 'Authors | GlobalTechEvents',
+    description: 'Authors with a page on GlobalTechEvents.',
+    eyebrow: 'Authors',
+    h1: 'Authors',
+    intro: 'People with an author page on this site.',
+    items: () =>
+      loadAuthors().map((author) => ({
+        href: `/authors/${author.slug}`,
+        label: author.name,
+        note: author.headline,
+      })),
+  },
+];
+
+export function directoryIndexPaths() {
+  return DIRECTORY_INDEXES.map((page) => page.path);
+}
+
+export function writeDirectoryIndexes() {
+  for (const page of DIRECTORY_INDEXES) {
+    const canonical = `${SITE_URL}${page.path}`;
+    const html = directoryChrome(
+      page.title,
+      page.description,
+      canonical,
+      'index, follow',
+      `<p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
+      <h1>${escapeHtml(page.h1)}</h1>
+      <p>${escapeHtml(page.intro)}</p>
+      ${renderLinkList(page.items())}`,
+    );
+    const outDir = path.join(PUBLIC_DIR, page.path.replace(/^\//, ''));
+    fs.mkdirSync(outDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, 'index.html'), html);
+  }
+
+  const notFound = directoryChrome(
+    'Page not found | GlobalTechEvents',
+    'That address is not a page on GlobalTechEvents.',
+    '',
+    'noindex',
+    `<p class="eyebrow">GlobalTechEvents</p>
+      <h1>Page not found</h1>
+      <p>That address is not a page on this site.</p>
+      <div class="actions">
+        <a class="btn" href="/">Back to the calendar</a>
+        <a class="btn btn-secondary" href="/events">Events directory</a>
+      </div>`,
+  );
+  fs.writeFileSync(path.join(PUBLIC_DIR, '404.html'), notFound);
+  return DIRECTORY_INDEXES.map((page) => page.path);
+}
+
 export function writeIndexableShells(events) {
+  writeDirectoryIndexes();
   for (const shell of INDEXABLE_SHELLS) {
     const relative = shell.path.replace(/^\//, '');
     const outDir = path.join(PUBLIC_DIR, relative);
@@ -208,7 +374,7 @@ export function ensureShellsInExistingSitemap() {
   if (!fs.existsSync(sitemapPath)) return;
   let xml = fs.readFileSync(sitemapPath, 'utf8');
   const today = new Date().toISOString().slice(0, 10);
-  for (const loc of indexableShellUrls()) {
+  for (const loc of [...directoryIndexPaths().map((pagePath) => `${SITE_URL}${pagePath}`), ...indexableShellUrls()]) {
     if (xml.includes(`<loc>${loc}</loc>`)) continue;
     const block = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
     xml = xml.replace('</urlset>', `${block}</urlset>`);

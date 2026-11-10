@@ -30,7 +30,7 @@ const GuidesIndexPage: React.FC<GuidesIndexPageProps> = ({ guides, onOpenGuide }
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white pt-28 pb-20">
+    <div className="min-h-full bg-[#030303] text-white pt-8 sm:pt-10 pb-20">
       <main className="max-w-6xl mx-auto px-4 sm:px-6">
         <header className="mb-10 max-w-3xl">
           <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Guides</p>

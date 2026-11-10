@@ -23,7 +23,12 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"COMEUP 2026","startDate":"2026-12-08T09:00:00Z","endDate":"2026-12-11T18:00:00Z","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Seoul, South Korea","address":{"@type":"PostalAddress","addressLocality":"Seoul","addressCountry":"South Korea"}},"organizer":{"@type":"Organization","name":"COMEUP","url":"https://www.comeup.org/"},"url":"https://www.globaltechevents.xyz/events/comeup-2026","description":"COMEUP 2026 dates, location, format, and registration info. Korea global startup festival.","keywords":"COMEUP 2026 dates, COMEUP 2026 location, COMEUP 2026 registration, COMEUP 2026 agenda"}</script>
     <style>.event-guide-root {
   margin: 0;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   color: #f4f1ec;
   background:
     radial-gradient(980px 420px at 100% -8%, rgba(255, 122, 24, 0.16), transparent 58%),
@@ -62,12 +67,24 @@
 }
 
 .event-guide-root .site-header {
-  position: sticky;
-  top: 0;
+  position: relative;
+  flex: none;
   z-index: 30;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 11, 10, 0.96);
   backdrop-filter: blur(16px);
+}
+
+.event-guide-root .page-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-padding-top: 1.5rem;
+}
+
+.event-guide-root .page-scroll :is(h1, h2, h3) {
+  scroll-margin-top: 1.5rem;
 }
 
 .event-guide-root .header-inner,
@@ -402,7 +419,8 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.event-guide-root .related-list a {
+.event-guide-root .related-list a,
+.event-guide-root .related-list .name {
   color: #fff;
   font-size: 1.12rem;
   font-weight: 600;
@@ -626,6 +644,7 @@
         </nav>
       </div>
     </header>
+    <div class="page-scroll">
     <main class="page" id="content">
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="/">Calendar</a>
@@ -721,6 +740,7 @@
         <p class="legal">© 2026 GlobalTechEvents</p>
       </div>
     </footer>
+    </div>
     <script>
       (() => {
         const payloadBase = {"page_type":"seo_event_page","event_slug":"comeup-2026","source_page":"/events/comeup-2026"};

@@ -264,12 +264,12 @@
           "label": "OpenAI DevDay 2026"
         },
         {
-          "href": "/events/techcrunch-disrupt-2026",
-          "label": "TechCrunch Disrupt 2026"
+          "href": "https://techcrunch.com/events/techcrunch-disrupt/attendee-portal/",
+          "label": "TechCrunch Disrupt official site"
         },
         {
-          "href": "/events/tech-week-sf-2026",
-          "label": "Tech Week SF 2026"
+          "href": "https://www.tech-week.com/",
+          "label": "Tech Week official site"
         },
         {
           "href": "/events/nvidia-gtc-2026",
@@ -337,14 +337,6 @@
     {
       "href": "/events/openai-devday-2026",
       "label": "OpenAI DevDay 2026 event guide"
-    },
-    {
-      "href": "/events/techcrunch-disrupt-2026",
-      "label": "TechCrunch Disrupt 2026 event guide"
-    },
-    {
-      "href": "/events/tech-week-sf-2026",
-      "label": "Tech Week SF 2026 event guide"
     },
     {
       "href": "/events/nvidia-gtc-2026",

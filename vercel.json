@@ -35,14 +35,6 @@
       "destination": "/events/index.html"
     },
     {
-      "source": "/events/:slug",
-      "destination": "/events/:slug/index.html"
-    },
-    {
-      "source": "/events/:slug/",
-      "destination": "/events/:slug/index.html"
-    },
-    {
       "source": "/guides",
       "destination": "/guides/index.html"
     },
@@ -51,20 +43,36 @@
       "destination": "/guides/index.html"
     },
     {
-      "source": "/guides/:slug",
-      "destination": "/guides/:slug/index.html"
+      "source": "/cities",
+      "destination": "/cities/index.html"
     },
     {
-      "source": "/guides/:slug/",
-      "destination": "/guides/:slug/index.html"
+      "source": "/cities/",
+      "destination": "/cities/index.html"
     },
     {
-      "source": "/authors/:slug([^./]+)",
-      "destination": "/authors/:slug/index.html"
+      "source": "/topics",
+      "destination": "/topics/index.html"
     },
     {
-      "source": "/authors/:slug([^./]+)/",
-      "destination": "/authors/:slug/index.html"
+      "source": "/topics/",
+      "destination": "/topics/index.html"
+    },
+    {
+      "source": "/tracks",
+      "destination": "/tracks/index.html"
+    },
+    {
+      "source": "/tracks/",
+      "destination": "/tracks/index.html"
+    },
+    {
+      "source": "/authors",
+      "destination": "/authors/index.html"
+    },
+    {
+      "source": "/authors/",
+      "destination": "/authors/index.html"
     },
     {
       "source": "/cities/san-francisco",
@@ -129,10 +137,6 @@
     {
       "source": "/resources/",
       "destination": "/resources/index.html"
-    },
-    {
-      "source": "/((?!events/[^/]+/?$)(?!events/[^/]+/index\\.html$)(?![^/]+\\.txt$).*)",
-      "destination": "/index.html"
     }
   ],
   "headers": [

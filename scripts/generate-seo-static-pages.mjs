@@ -97,7 +97,7 @@ function renderPage(page, whatsappUrl) {
 }
 
 function generateSitemap(pages, guides = []) {
-  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events', '/guides', '/for-agents'];
+  const staticUrls = ['/', '/privacy', '/terms', '/resources', '/events', '/guides', '/for-agents', '/cities', '/topics', '/tracks', '/authors'];
   const today = new Date().toISOString().slice(0, 10);
   const urls = [
     ...staticUrls.map((p) => `${SITE_URL}${p}`),
@@ -117,8 +117,9 @@ ${urls
     const isGuidePage = url.includes('/guides/');
     const isGuidesHub = url.endsWith('/guides');
     const isAuthorPage = url.includes('/authors/');
+    const isDirectoryIndex = /\/(cities|topics|tracks|authors)$/.test(url);
     const isIndexableShell = url.includes('/cities/') || url.includes('/tracks/') || url.includes('/topics/');
-    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell ? 'weekly' : 'monthly';
+    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell || isDirectoryIndex ? 'weekly' : 'monthly';
     const priority = isHome
       ? '1.0'
       : isEventPage || isGuidePage
@@ -127,7 +128,7 @@ ${urls
           ? '0.6'
         : isEventsHub
           ? '0.9'
-          : isGuidesHub || isIndexableShell
+          : isGuidesHub || isIndexableShell || isDirectoryIndex
             ? '0.7'
             : '0.3';
     return `  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;

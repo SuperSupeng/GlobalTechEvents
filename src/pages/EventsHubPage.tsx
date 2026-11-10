@@ -102,7 +102,7 @@ const EventsHubPage: React.FC<EventsHubPageProps> = ({ onToast }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white pt-28 pb-20">
+    <div className="min-h-full bg-[#030303] text-white pt-8 sm:pt-10 pb-20">
       <main className="max-w-6xl mx-auto px-4 sm:px-6">
         <section className="mb-12 glass-panel p-8 sm:p-10">
           <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Events Hub</p>

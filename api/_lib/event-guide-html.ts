@@ -191,7 +191,10 @@ function renderRelated(page: SEOEventPageData): string {
   const items = links
     .map((link) => {
       const note = link.note ? `<p>${escapeHtml(link.note)}</p>` : '';
-      return `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>${note}</li>`;
+      const name = link.href
+        ? `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`
+        : `<span class="name">${escapeHtml(link.label)}</span>`;
+      return `<li>${name}${note}</li>`;
     })
     .join('');
   return `<section class="block">
@@ -296,6 +299,7 @@ export function renderEventGuideDocument(page: SEOEventPageData, whatsappUrl: st
   </head>
   <body class="event-guide-root">
     ${chromeHeader()}
+    <div class="page-scroll">
     <main class="page" id="content">
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="/">Calendar</a>
@@ -321,6 +325,7 @@ export function renderEventGuideDocument(page: SEOEventPageData, whatsappUrl: st
       </section>
     </main>
     ${chromeFooter(whatsappUrl)}
+    </div>
     <script>
       (() => {
         const payloadBase = ${JSON.stringify({ page_type: 'seo_event_page', event_slug: page.slug, source_page: `/events/${page.slug}` })};

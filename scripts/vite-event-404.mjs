@@ -1,26 +1,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const EVENT_SLUG = /^\/events\/([^/]+)\/?$/;
-const SHELL_PATH = /^\/(cities|tracks)\/([^/]+)\/?$/;
 const SPA_SHELL_ROUTE = /^\/(privacy|terms|resources)\/?$/;
 
-const NOT_FOUND_HTML = `<!doctype html>
+const FALLBACK_NOT_FOUND_HTML = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <title>Event not found | GlobalTechEvents</title>
+    <title>Page not found | GlobalTechEvents</title>
   </head>
   <body>
-    <h1>Event not found</h1>
-    <p>No event page exists for this address.</p>
-    <p><a href="/events">All events</a></p>
+    <h1>Page not found</h1>
+    <p>That address is not a page on this site.</p>
+    <p><a href="/">Back to the calendar</a> · <a href="/events">Events directory</a></p>
   </body>
 </html>`;
 
-function safeIndexFile(root, ...segments) {
+function safePath(root, ...segments) {
   const base = path.resolve(root);
   const file = path.resolve(base, ...segments);
   if (file !== base && !file.startsWith(base + path.sep)) return null;
@@ -34,6 +32,12 @@ function sendHtml(res, status, html) {
   res.end(html);
 }
 
+function loadNotFound(root) {
+  const file = safePath(root, '404.html');
+  if (file && fs.existsSync(file) && fs.statSync(file).isFile()) return fs.readFileSync(file);
+  return FALLBACK_NOT_FOUND_HTML;
+}
+
 function rewriteSpaShell(req) {
   const [pathname, query] = (req.url || '').split('?');
   const match = pathname.match(SPA_SHELL_ROUTE);
@@ -42,45 +46,70 @@ function rewriteSpaShell(req) {
   return true;
 }
 
+function isViteInternal(pathname) {
+  return (
+    pathname.startsWith('/src/') ||
+    pathname.startsWith('/@') ||
+    pathname.startsWith('/node_modules/') ||
+    pathname.startsWith('/__vite')
+  );
+}
+
+const STATIC_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.json': 'application/json; charset=utf-8',
+};
+
+function resolvePublicFile(root, pathname) {
+  let decoded = pathname;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    return null;
+  }
+  if (decoded.includes('\0')) return null;
+  const rel = decoded.replace(/^\/+/, '').replace(/\/+$/, '');
+  if (!rel) return null;
+  const file = safePath(root, rel);
+  const index = safePath(root, rel, 'index.html');
+  if (index && fs.existsSync(index) && fs.statSync(index).isFile()) return index;
+  if (file && fs.existsSync(file) && fs.statSync(file).isFile()) return file;
+  return null;
+}
+
+function sendFile(res, file) {
+  const type = STATIC_TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream';
+  res.statusCode = 200;
+  res.setHeader('Content-Type', type);
+  fs.createReadStream(file).pipe(res);
+}
+
 function eventShellMiddleware(root) {
+  const notFound = loadNotFound(root);
   return (req, res, next) => {
     if (rewriteSpaShell(req)) {
       next();
       return;
     }
     const pathname = (req.url || '').split('?')[0];
-    const shellMatch = pathname.match(SHELL_PATH);
-    if (shellMatch) {
-      const file = safeIndexFile(root, shellMatch[1], shellMatch[2], 'index.html');
-      if (file && fs.existsSync(file)) {
-        sendHtml(res, 200, fs.readFileSync(file));
-        return;
-      }
+    if (pathname === '/' || pathname === '/index.html' || isViteInternal(pathname)) {
       next();
       return;
     }
-
-    const eventMatch = pathname.match(EVENT_SLUG);
-    if (!eventMatch) {
-      next();
+    const file = resolvePublicFile(root, pathname);
+    if (file) {
+      sendFile(res, file);
       return;
     }
-
-    let slug = eventMatch[1];
-    try {
-      slug = decodeURIComponent(slug);
-    } catch {
-      next();
-      return;
-    }
-
-    const file = safeIndexFile(root, 'events', slug, 'index.html');
-    if (file && fs.existsSync(file)) {
-      next();
-      return;
-    }
-
-    sendHtml(res, 404, NOT_FOUND_HTML);
+    sendHtml(res, 404, notFound);
   };
 }
 

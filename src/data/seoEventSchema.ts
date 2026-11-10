@@ -1,5 +1,13 @@
 import type { SEOEventPageData, SEOEventStop } from './seoEventPages';
 
+function placeName(city: string, country: string): string {
+  const place = city.trim();
+  const region = country.trim();
+  if (!region || place.toLowerCase() === region.toLowerCase()) return place;
+  if (/^(international|global|tba|worldwide)$/i.test(region)) return place;
+  return `${place}, ${region}`;
+}
+
 const SITE_ORIGIN = 'https://www.globaltechevents.xyz';
 
 export function isSeoCollection(page: Pick<SEOEventPageData, 'stops'>): boolean {
@@ -72,7 +80,7 @@ function buildSingleEventJsonLd(page: SEOEventPageData) {
         ? { '@type': 'VirtualLocation', url: page.officialUrl }
         : {
             '@type': 'Place',
-            name: `${page.city}, ${page.country}`,
+            name: placeName(page.city, page.country),
             address: {
               '@type': 'PostalAddress',
               addressLocality: page.city,
@@ -111,7 +119,7 @@ function buildCollectionJsonLd(page: SEOEventPageData) {
           eventStatus: 'https://schema.org/EventScheduled',
           location: {
             '@type': 'Place',
-            name: `${stop.city}, ${stop.country}`,
+            name: placeName(stop.city, stop.country),
             address: {
               '@type': 'PostalAddress',
               addressLocality: stop.city,
@@ -148,7 +156,7 @@ export function buildSeoCollectionIcs(page: SEOEventPageData): string {
       `DTEND;VALUE=DATE:${end}`,
       `SUMMARY:${stop.name}`,
       `DESCRIPTION:${stop.detail}\\n\\nMore info: ${stop.officialUrl}`,
-      `LOCATION:${stop.city}, ${stop.country}`,
+      `LOCATION:${placeName(stop.city, stop.country)}`,
       `URL:${stop.officialUrl}`,
       'STATUS:CONFIRMED',
       'END:VEVENT',
@@ -175,7 +183,7 @@ export function collectionGoogleCalendarUrl(page: SEOEventPageData): string {
     text: stop.name,
     dates: `${start}/${end}`,
     details: `${stop.detail}\n\nSeries: ${page.officialUrl}`,
-    location: `${stop.city}, ${stop.country}`,
+    location: placeName(stop.city, stop.country),
     sprop: 'website:globaltechevents.com',
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;

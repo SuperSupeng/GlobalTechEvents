@@ -1,15 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  buildSeoCollectionIcs,
-  buildSeoEventJsonLd,
-  collectionCalendarNote,
-  collectionDateLabel,
-  collectionGoogleCalendarUrl,
-  collectionLocationLabel,
-  formatStopDate,
-  isSeoCollection,
-} from '../src/data/seoEventSchema.ts';
+import { renderEventGuideDocument } from '../api/_lib/event-guide-html.ts';
 import { ensureGuidesInExistingSitemap, indexableAuthorUrls, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 import { writeHubStaticPages } from './generate-hub-static.mjs';
 import { ensureShellsInExistingSitemap, indexableShellUrls, writeIndexableShells } from './generate-indexable-shells.mjs';
@@ -94,44 +85,6 @@ function formatDateRange(start, end) {
   return `${fmt.format(new Date(start))} - ${fmt.format(new Date(end))}`;
 }
 
-function buildGoogleCalendarUrl(page) {
-  const startDate = String(page.startDate || '').replace(/-/g, '');
-  const endDate = String(page.endDate || page.startDate || '').replace(/-/g, '');
-  const location = page.format === 'online' ? 'Online Event' : `${page.city}, ${page.country}`;
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: page.eventName,
-    dates: `${startDate}T090000Z/${endDate}T180000Z`,
-    details: `${page.whyItMatters}\n\nOrganizer: ${page.shortName}\n\nMore info: ${page.officialUrl}`,
-    location,
-    sprop: 'website:globaltechevents.com',
-  });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
-}
-
-function buildIcsContent(page) {
-  const location = page.format === 'online' ? 'Online Event' : `${page.city}, ${page.country}`;
-  return [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//GlobalTechEvents//SEO Event Page//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${page.slug}@globaltechevents.com`,
-    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
-    `DTSTART:${String(page.startDate).replace(/-/g, '')}T090000Z`,
-    `DTEND:${String(page.endDate).replace(/-/g, '')}T180000Z`,
-    `SUMMARY:${page.eventName}`,
-    `DESCRIPTION:${page.whyItMatters.replace(/\n/g, '\\n')}\\n\\nOrganizer: ${page.shortName}\\n\\nMore info: ${page.officialUrl}`,
-    `LOCATION:${location}`,
-    `URL:${page.officialUrl}`,
-    'STATUS:CONFIRMED',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n');
-}
-
 function readWhatsAppUrl() {
   const raw = fs.readFileSync(path.resolve('src/config/constants.ts'), 'utf8');
   const match = raw.match(/WHATSAPP_GROUP_URL = '([^']+)'/);
@@ -139,329 +92,8 @@ function readWhatsAppUrl() {
   return match[1];
 }
 
-function renderStops(page) {
-  if (!isSeoCollection(page)) return '';
-  const items = page.stops
-    .map(
-      (stop) => `
-        <li>
-          <a href="${escapeHtml(stop.officialUrl)}">${escapeHtml(stop.name)}</a>.
-          ${escapeHtml(formatStopDate(stop))}.
-          ${escapeHtml(stop.city)}, ${escapeHtml(stop.country)}.
-          ${escapeHtml(stop.detail)}
-        </li>`,
-    )
-    .join('');
-  const sources = (page.sources || [])
-    .map(
-      (source) => `
-        <li><a href="${escapeHtml(source.url)}">${escapeHtml(source.label)}</a></li>`,
-    )
-    .join('');
-  const sourceSection = sources
-    ? `<section><h2>Official pages</h2><ul>${sources}</ul></section>`
-    : '';
-  return `<section><h2>Printed stops</h2><ul>${items}</ul></section>${sourceSection}`;
-}
-
-function renderPlanning(page) {
-  const planning = page.planning;
-  if (!planning) return '';
-  const answers = planning.answers
-    .map(
-      (answer) =>
-        `<li>${escapeHtml(answer.text)} <a href="${escapeHtml(answer.sourceUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(answer.sourceLabel)}" data-track-target="${escapeHtml(answer.sourceUrl)}">${escapeHtml(answer.sourceLabel)}</a></li>`,
-    )
-    .join('');
-  const buttons = planning.actions
-    .filter((action) => action.tone !== 'text')
-    .map((action) => {
-      const className = action.tone === 'primary' ? 'btn' : 'btn btn-secondary';
-      return `<a class="${className}" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(action.label)}" data-track-target="${escapeHtml(action.href)}">${escapeHtml(action.label)}</a>`;
-    })
-    .join('\n');
-  const textLinks = planning.actions
-    .filter((action) => action.tone === 'text')
-    .map(
-      (action) =>
-        `<p class="text-link-row"><a class="text-link" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="${escapeHtml(action.label)}" data-track-target="${escapeHtml(action.href)}">${escapeHtml(action.label)}</a></p>`,
-    )
-    .join('');
-  const sections = planning.sections
-    .map((section) => {
-      const paragraphs = section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
-      const links = (section.links || [])
-        .map(
-          (link) =>
-            `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
-        )
-        .join(' · ');
-      return `<section><h2>${escapeHtml(section.heading)}</h2>${paragraphs}${links ? `<p class="section-links">${links}</p>` : ''}</section>`;
-    })
-    .join('\n');
-  return `<p class="source-line">${escapeHtml(planning.sourceLine)}</p>
-      <h1>${escapeHtml(page.headline || page.eventName)}</h1>
-      <ul class="answers">${answers}</ul>
-      <p class="tip">${escapeHtml(planning.tip[0])}<br />${escapeHtml(planning.tip[1])}</p>
-      <div class="answer-actions">${buttons}</div>
-      ${textLinks}
-      ${sections}`;
-}
-
 function renderPage(page, whatsappUrl) {
-  const collection = isSeoCollection(page);
-  const canonical = `${SITE_URL}/events/${page.slug}`;
-  const jsonLd = JSON.stringify(buildSeoEventJsonLd(page));
-  const googleCalendarUrl = collection ? collectionGoogleCalendarUrl(page) : buildGoogleCalendarUrl(page);
-  const icsContent = collection ? buildSeoCollectionIcs(page) : buildIcsContent(page);
-  const dateLabel = collection ? collectionDateLabel(page) : formatDateRange(page.startDate, page.endDate);
-  const locationLabel = collection ? collectionLocationLabel(page) : `${page.city}, ${page.country}`;
-  const confirmNote = collection ? collectionCalendarNote(page) : 'Always confirm details on the official site.';
-  const registrationButton = page.registrationUrl
-    ? `<a class="btn btn-secondary" href="${escapeHtml(page.registrationUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Registration" data-track-target="${escapeHtml(page.registrationUrl)}">Registration</a>`
-    : '';
-  const faqHtml = page.faq
-    .map(
-      (item) => `
-        <article class="card faq-item">
-          <h3>${escapeHtml(item.q)}</h3>
-          <p>${escapeHtml(item.a)}</p>
-        </article>`,
-    )
-    .join('');
-
-  const whoHtml = page.whoShouldAttend
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join('');
-
-  const topicsHtml = page.topics
-    .map((item) => `<span class="topic">${escapeHtml(item)}</span>`)
-    .join('');
-
-  const headline = page.headline || `${page.eventName}: Dates, Location & Event Guide`;
-  const calendarHeading = page.calendarHeading || 'Save this event before you forget it';
-  const calendarLead =
-    page.calendarLead ||
-    `Put ${page.shortName} on your calendar first, then choose whether to register now or review the official event site.`;
-  const relatedHtml =
-    Array.isArray(page.relatedLinks) && page.relatedLinks.length > 0
-      ? `<section class="related">
-        <h2>Related pages</h2>
-        <ul>${page.relatedLinks
-          .map((link) => {
-            const anchor = `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
-            return link.note ? `<li>${anchor}. ${escapeHtml(link.note)}</li>` : `<li>${anchor}</li>`;
-          })
-          .join('')}</ul>
-      </section>`
-      : '';
-
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(page.seoTitle)}</title>
-    <meta name="description" content="${escapeHtml(page.metaDescription)}" />
-    <meta name="keywords" content="${escapeHtml([page.primaryKeyword, ...page.secondaryKeywords, ...page.topics].join(', '))}" />
-    <link rel="canonical" href="${canonical}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="${escapeHtml(page.seoTitle)}" />
-    <meta property="og:description" content="${escapeHtml(page.metaDescription)}" />
-    <meta property="og:url" content="${canonical}" />
-    <meta property="og:site_name" content="GlobalTechEvents" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="${escapeHtml(page.seoTitle)}" />
-    <meta name="twitter:description" content="${escapeHtml(page.metaDescription)}" />
-    <script type="application/ld+json">${jsonLd}</script>
-    <style>
-      :root { color-scheme: dark; }
-      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #050505; color: #f5f5f5; line-height: 1.7; }
-      .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
-      .eyebrow { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin-bottom: 16px; }
-      h1 { font-size: 42px; line-height: 1.1; margin: 0 0 20px; }
-      h2 { font-size: 26px; margin: 40px 0 16px; }
-      h3 { font-size: 18px; margin: 0 0 10px; }
-      p, li { color: rgba(255,255,255,.85); }
-      .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; }
-      .card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 18px; }
-      .meta-label { color: rgba(255,255,255,.55); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 8px; }
-      ul { padding-left: 22px; }
-      .topics { display: flex; flex-wrap: wrap; gap: 10px; }
-      .topic { display: inline-block; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); font-size: 14px; }
-      .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
-      a.btn, button.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; background: #f59e0b; color: #111; text-decoration: none; font-weight: 700; border: 0; cursor: pointer; font-size: 15px; }
-      a.btn.btn-secondary, button.btn.btn-secondary { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12); }
-      a.btn.btn-tertiary, button.btn.btn-tertiary { background: transparent; color: #fff; border: 1px dashed rgba(255,255,255,.18); }
-      .muted { color: rgba(255,255,255,.55); font-size: 13px; }
-      .faq-item + .faq-item { margin-top: 14px; }
-      .cta-card { background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(255,255,255,.04)); border-color: rgba(245,158,11,.22); }
-      .cta-kicker { color: #f59e0b; text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 10px; }
-      .cta-note-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-top: 16px; }
-      .cta-note { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 14px; }
-      .related a { color: #fdba74; }
-      .source-line { color: rgba(255,255,255,.55); font-size: 12px; margin: 0 0 8px; }
-      .answers { list-style: none; padding: 0; margin: 0 0 12px; }
-      .answers li { margin: 0 0 4px; font-size: 15px; line-height: 1.35; }
-      .answers a, .text-link, .section-links a { color: #fdba74; }
-      .tip { margin: 0 0 12px; font-size: 14px; line-height: 1.4; }
-      .answer-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-      .text-link-row { margin: 8px 0 0; }
-      .planning h1 { font-size: 28px; line-height: 1.15; margin: 0 0 10px; }
-      .planning h2 { margin-top: 28px; }
-      main.planning { padding-top: 16px; }
-      @media (max-width: 640px) {
-        h1 { font-size: 34px; }
-        .wrap { padding-top: 28px; }
-        .btn-row { flex-direction: column; }
-        a.btn, button.btn { width: 100%; }
-        .planning h1 { font-size: 26px; }
-        main.planning { padding-top: 12px; }
-        .answer-actions { flex-direction: column; }
-        .answer-actions a.btn { width: 100%; }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="${page.planning ? 'wrap planning' : 'wrap'}">
-      ${
-        page.planning
-          ? renderPlanning(page)
-          : `<p class="eyebrow">Tech Event Guide</p>
-      <h1>${escapeHtml(headline)}</h1>
-      <p>${escapeHtml(page.whyItMatters)}</p>`
-      }
-
-      <section class="card cta-card">
-        <h2 style="margin-top:0;">${escapeHtml(calendarHeading)}</h2>
-        <p>${escapeHtml(calendarLead)}</p>
-        <div class="btn-row">
-          ${
-            page.subscribeFirst
-              ? `<a class="btn" href="/api/calendar" data-track-event="add_to_calendar" data-track-label="Subscribe to the ICS calendar" data-track-provider="ics">Subscribe to the ICS calendar</a>
-          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>
-          ${registrationButton}
-          <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
-          <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>`
-              : `<a class="btn" href="${escapeHtml(googleCalendarUrl)}" target="_blank" rel="noreferrer" data-track-event="add_to_calendar" data-track-label="Add to Calendar" data-track-provider="google">Add to Calendar</a>
-          ${registrationButton}
-          <a class="btn btn-secondary" href="${escapeHtml(page.officialUrl)}" target="_blank" rel="noreferrer" data-track-event="outbound_click" data-track-label="Official Website" data-track-target="${escapeHtml(page.officialUrl)}">Official Website</a>
-          <button class="btn btn-tertiary" type="button" data-download-ics="true">Download .ics</button>
-          <a class="btn btn-secondary" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" data-track-event="outbound_click" data-track-label="Join WhatsApp" data-track-target="${escapeHtml(whatsappUrl)}">Join WhatsApp</a>`
-          }
-        </div>
-        <p class="muted">${escapeHtml(confirmNote)}</p>
-      </section>
-
-      ${
-        page.planning
-          ? ''
-          : `<section class="grid">
-        <div class="card">
-          <div class="meta-label">Date</div>
-          <div>${escapeHtml(dateLabel)}</div>
-        </div>
-        <div class="card">
-          <div class="meta-label">Location</div>
-          <div>${escapeHtml(locationLabel)}</div>
-        </div>
-        <div class="card">
-          <div class="meta-label">Format</div>
-          <div>${escapeHtml(page.format)}</div>
-        </div>
-      </section>
-
-      ${renderStops(page)}
-      <section>
-        <h2>Who should attend</h2>
-        <ul>${whoHtml}</ul>
-      </section>`
-      }
-
-      ${relatedHtml}
-      ${
-        page.planning
-          ? ''
-          : `<section>
-        <h2>Topics to watch</h2>
-        <div class="topics">${topicsHtml}</div>
-      </section>
-
-      <section>
-        <h2>Why this event matters</h2>
-        <p>${escapeHtml(page.metaDescription)}</p>
-        <p>${escapeHtml(page.whyItMatters)}</p>
-      </section>`
-      }
-
-      <section>
-        <h2>FAQ</h2>
-        ${faqHtml}
-      </section>
-
-      <section class="card">
-        <h2>Ready?</h2>
-        <p>Add it to your calendar, then register on the official site.</p>
-      </section>
-    </main>
-    <script>
-      (() => {
-        const payloadBase = ${JSON.stringify({ page_type: 'seo_event_page', event_slug: page.slug, source_page: `/events/${page.slug}` })};
-        const icsContent = ${JSON.stringify(icsContent)};
-        const fileName = ${JSON.stringify(`${page.slug}.ics`)};
-
-        const sendTrack = async (eventName, payload) => {
-          try {
-            const body = JSON.stringify({ eventName, payload: { ...payloadBase, ...payload } });
-            if (navigator.sendBeacon) {
-              const blob = new Blob([body], { type: 'application/json' });
-              navigator.sendBeacon('/api/track-cta', blob);
-              return;
-            }
-            await fetch('/api/track-cta', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body,
-              keepalive: true,
-            });
-          } catch (error) {
-            console.warn('Failed to track CTA event', error);
-          }
-        };
-
-        document.querySelectorAll('[data-track-event]').forEach((element) => {
-          element.addEventListener('click', () => {
-            const target = element.getAttribute('data-track-target');
-            const provider = element.getAttribute('data-track-provider');
-            sendTrack(element.getAttribute('data-track-event'), {
-              cta_label: element.getAttribute('data-track-label') || '',
-              target_url: target || '',
-              calendar_provider: provider || '',
-            });
-          });
-        });
-
-        const downloadButton = document.querySelector('[data-download-ics="true"]');
-        if (downloadButton) {
-          downloadButton.addEventListener('click', async () => {
-            await sendTrack('add_to_calendar', {
-              cta_label: 'Download .ics',
-              calendar_provider: 'ics',
-            });
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(link.href), 0);
-          });
-        }
-      })();
-    </script>
-  </body>
-</html>`;
+  return renderEventGuideDocument(page, whatsappUrl);
 }
 
 function generateSitemap(pages, guides = []) {
@@ -679,6 +311,28 @@ if (onlySlugFlag !== -1) {
     ensureGuidesInExistingSitemap(guides);
     writeHubStaticPages();
     console.log(`Generated ${guides.length} guide shell pages into public/guides/*`);
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+} else if (process.argv.includes('--rerender')) {
+  try {
+    const manualPages = loadManualPages();
+    const manualBySlug = new Map(manualPages.map((page) => [page.slug, page]));
+    const pages = JSON.parse(fs.readFileSync(GENERATED_SOURCE, 'utf8'));
+    const merged = pages.map((page) => manualBySlug.get(page.slug) ?? page);
+    const known = new Set(merged.map((page) => page.slug));
+    for (const page of manualPages) {
+      if (!known.has(page.slug)) merged.push(page);
+    }
+    fs.writeFileSync(GENERATED_SOURCE, `${JSON.stringify(merged, null, 2)}\n`);
+    const whatsappUrl = readWhatsAppUrl();
+    for (const page of merged) {
+      const outDir = path.join(EVENTS_DIR, page.slug);
+      fs.mkdirSync(outDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, 'index.html'), renderPage(page, whatsappUrl));
+    }
+    console.log(`Rerendered ${merged.length} event pages from the saved catalog`);
   } catch (error) {
     console.error(error);
     process.exit(1);

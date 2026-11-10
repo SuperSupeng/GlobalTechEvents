@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TechEvent } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Globe, User, ShieldCheck, ArrowUpRight, ChevronDown, Download, Info, Link2 } from 'lucide-react';
+import { X, Calendar, MapPin, Globe, User, ArrowUpRight, ChevronDown, Download, Link2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { 
   downloadICS, 
@@ -24,6 +24,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
   if (!event) return null;
   
   const smartTags = identifyTags(event);
+  const pricePrimary = event.price.type === 'free'
+    ? 'Free'
+    : event.price.range || (event.price.type === 'paid' ? 'Paid' : 'See the official site');
+  const priceNote = event.price.range && event.price.type === 'paid' ? 'Paid' : undefined;
+  const city = event.location?.city?.trim();
+  const country = event.location?.country?.trim();
+  const placeLabel = !city ? country : !country || city.toLowerCase() === country.toLowerCase() ? city : `${city}, ${country}`;
 
   const handleAddToCalendar = (type: 'google' | 'apple' | 'outlook' | 'ics') => {
     trackAddToCalendar({
@@ -103,12 +110,12 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
           
           <button 
             onClick={onClose}
-            className="absolute top-8 right-8 p-3 rounded-full bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all z-20"
+            className="absolute top-4 right-4 sm:top-8 sm:right-8 p-3 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all z-20"
           >
             <X size={20} />
           </button>
 
-          <div className="p-10 pt-16 overflow-y-auto max-h-[85vh]">
+          <div className="px-5 pt-16 pb-8 sm:p-10 sm:pt-16 overflow-y-auto max-h-[85vh]">
             {/* Smart Tags */}
             {smartTags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
@@ -129,58 +136,52 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
             
             <div className="flex flex-wrap gap-3 mb-6">
                {event.format === 'online' ? (
-                <span className="flex items-center gap-2 text-[10px] font-bold text-emerald-400 uppercase tracking-[0.2em] bg-emerald-400/10 px-4 py-1.5 rounded-full border border-emerald-400/20">
+                <span className="flex items-center gap-2 text-xs font-medium text-emerald-300 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
                   <Globe size={14} /> Online
                 </span>
               ) : (
-                <span className="flex items-center gap-2 text-[10px] font-bold text-primary-light uppercase tracking-[0.2em] bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20">
-                  <MapPin size={14} /> {event.location?.city}, {event.location?.country}
+                <span className="flex items-center gap-2 text-xs font-medium text-primary-light bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+                  <MapPin size={14} /> {placeLabel}
                 </span>
               )}
-              <span className="flex items-center gap-2 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] bg-white/[0.03] px-4 py-1.5 rounded-full border border-white/[0.05]">
+              <span className="flex items-center gap-2 text-xs font-medium text-white/70 bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/10">
                 <User size={14} /> {event.organizer.name}
               </span>
             </div>
 
-            <h2 className="text-5xl font-serif italic text-white mb-8 leading-[1.1]">
+            <h2 className="text-[2.15rem] sm:text-5xl font-serif italic text-white mb-8 leading-[1.08] text-balance">
               {event.title}
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
-                <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-4">Date & Time</h4>
-                <div className="flex items-center gap-4 text-white">
-                  <Calendar size={20} className="text-primary flex-shrink-0" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+              <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                <h4 className="text-xs font-medium text-white/55 mb-2">When</h4>
+                <div className="flex items-start gap-3 text-white">
+                  <Calendar size={18} className="text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <p className="text-lg font-medium">{format(new Date(event.startTime), 'MMMM do, yyyy')}</p>
-                    <p className="text-sm text-white/70 mb-1">{format(new Date(event.startTime), 'HH:mm')} <span className="text-white/50">(Your Local Time)</span></p>
-                    <p className="text-xs text-white/40">Event timezone: {event.timezone}</p>
+                    <p className="text-lg font-medium leading-snug">{format(new Date(event.startTime), 'MMMM d, yyyy')}</p>
+                    <p className="text-sm text-white/70 mt-1">{format(new Date(event.startTime), 'HH:mm')} your local time</p>
+                    <p className="text-sm text-white/50 mt-1">Timezone: {event.timezone}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
-                <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-4">Investment</h4>
-                <div className="flex items-center gap-4 text-white">
-                  <ShieldCheck size={20} className="text-accent" />
-                  <div>
-                    <p className="text-lg font-medium capitalize">{event.price.type === 'free' ? 'Complementary' : 'Paid Event'}</p>
-                    {event.price.range && <p className="text-xs text-white/40">{event.price.range}</p>}
-                  </div>
-                </div>
+              <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                <h4 className="text-xs font-medium text-white/55 mb-2">Price</h4>
+                <p className="text-lg font-medium text-white">{pricePrimary}</p>
+                {priceNote ? <p className="text-sm text-white/60 mt-1">{priceNote}</p> : null}
               </div>
             </div>
 
-            <div className="mb-12">
-              <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-4">Manifesto</h4>
-              <p className="text-white/60 leading-relaxed font-sans text-lg">
+            <div className="mb-10">
+              <h4 className="text-xs font-medium text-white/55 mb-2">About</h4>
+              <p className="text-white/75 leading-relaxed font-sans text-base sm:text-lg">
                 {event.summary}
               </p>
             </div>
 
-            {/* Original Tags */}
-            <div className="mb-12">
-              <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3">Topics</h4>
+            <div className="mb-10">
+              <h4 className="text-xs font-medium text-white/55 mb-3">Topics</h4>
               <div className="flex flex-wrap gap-2">
                 {event.tags.map(tag => (
                   <span key={tag} className="text-xs text-white/50 bg-white/[0.02] px-3 py-1.5 rounded-lg border border-white/[0.05]">
@@ -255,19 +256,9 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
               </div>
             </div>
             
-            <div className="mt-12 pt-8 border-t border-white/[0.05]">
-              <div className="flex items-start gap-3 mb-4 text-[10px] text-white/30">
-                <Info size={14} className="flex-shrink-0 mt-0.5" />
-                <p className="leading-relaxed">
-                  Tags are automatically generated based on event information and may not be 100% accurate. 
-                  Please refer to the official website for complete details.
-                </p>
-              </div>
-              <div className="flex items-center justify-between text-[9px] text-white/20 font-bold uppercase tracking-[0.3em]">
-                <span>Index: {event.links.source}</span>
-                <span>Updated: 2026</span>
-              </div>
-            </div>
+            <p className="mt-10 pt-6 border-t border-white/10 text-sm text-white/50 leading-relaxed">
+              Confirm the details on the official site.
+            </p>
           </div>
         </motion.div>
       </div>

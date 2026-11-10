@@ -24,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 sm:py-6">
+    <nav className="relative z-50 shrink-0 px-4 sm:px-6 py-4 sm:py-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 glass-panel !rounded-full relative">
         <button onClick={scrollToTop} className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
           <Logo size={32} className="group-hover:scale-110 transition-transform duration-300" />

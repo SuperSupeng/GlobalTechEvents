@@ -17,8 +17,11 @@ assert.equal(canonicalHrefForPath('/'), HOME_CANONICAL_HREF);
 assert.equal(canonicalHrefForPath('/guides'), null);
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
-const catchAllAt = vercel.rewrites.findIndex((rule) => rule.destination === '/index.html');
-assert.ok(catchAllAt > 0, 'SPA catch-all');
+assert.equal(
+  vercel.rewrites.some((rule) => rule.destination === '/index.html'),
+  false,
+  'unknown routes must not rewrite to the homepage',
+);
 
 for (const route of SPA_SHELL_ROUTES) {
   const file = `.${route.path}/index.html`;
@@ -37,7 +40,6 @@ for (const route of SPA_SHELL_ROUTES) {
     const rule = vercel.rewrites.find((item) => item.source === source);
     assert.ok(rule, `missing rewrite ${source}`);
     assert.equal(rule.destination, `${route.path}/index.html`);
-    assert.ok(vercel.rewrites.indexOf(rule) < catchAllAt, `${source} must be served before the SPA catch-all`);
   }
 }
 

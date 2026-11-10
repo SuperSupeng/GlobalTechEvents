@@ -162,6 +162,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           </nav>
         </div>
       </header>
+      <div className="page-scroll">
       <main className="page" id="content">
         <nav className="crumb" aria-label="Breadcrumb">
           <a href="/">Calendar</a>
@@ -270,8 +271,8 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
             <h2>Also on this calendar</h2>
             <ul className="related-list">
               {related.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href}>{link.label}</a>
+                <li key={`${link.href ?? 'text'}:${link.label}`}>
+                  {link.href ? <a href={link.href}>{link.label}</a> : <span className="name">{link.label}</span>}
                   {link.note ? <p>{link.note}</p> : null}
                 </li>
               ))}
@@ -317,6 +318,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
           <p className="legal">© 2026 GlobalTechEvents</p>
         </div>
       </footer>
+      </div>
     </div>
   );
 };

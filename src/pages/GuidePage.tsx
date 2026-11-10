@@ -146,7 +146,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
 
   if (!guide || !gate) {
     return (
-      <div className="min-h-screen bg-[#030303] text-white pt-28 pb-20">
+      <div className="min-h-full bg-[#030303] text-white pt-8 sm:pt-10 pb-20">
         <main className="max-w-3xl mx-auto px-4 sm:px-6">
           <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Guides</p>
           <h1 className="text-4xl font-serif italic mb-4">Guide not found</h1>
@@ -162,7 +162,7 @@ const GuidePage: React.FC<GuidePageProps> = ({ guide, slug, onNavigate }) => {
   const notice = guide.shellNotice || (guide.status === 'draft' ? DEFAULT_DRAFT_NOTICE : '');
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white pt-28 pb-20">
+    <div className="min-h-full bg-[#030303] text-white pt-8 sm:pt-10 pb-20">
       <main className="max-w-3xl mx-auto px-4 sm:px-6">
         <article>
           {notice && (

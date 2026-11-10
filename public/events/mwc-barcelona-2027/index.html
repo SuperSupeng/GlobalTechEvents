@@ -23,7 +23,12 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"MWC Barcelona 2027","startDate":"2027-03-01T09:00:00Z","endDate":"2027-03-04T18:00:00Z","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Barcelona, Spain","address":{"@type":"PostalAddress","addressLocality":"Barcelona","addressCountry":"Spain"}},"organizer":{"@type":"Organization","name":"MWC Barcelona","url":"https://www.mwcbarcelona.com/"},"url":"https://www.globaltechevents.xyz/events/mwc-barcelona-2027","description":"MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via in Barcelona. Subscribe once if you track carrier roadmaps, device launches, or telecom partnerships.","keywords":"MWC Barcelona 2027 dates, MWC Barcelona 2027 location, MWC Barcelona 2027 tickets, MWC Barcelona 2027 agenda"}</script>
     <style>.event-guide-root {
   margin: 0;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   color: #f4f1ec;
   background:
     radial-gradient(980px 420px at 100% -8%, rgba(255, 122, 24, 0.16), transparent 58%),
@@ -62,12 +67,24 @@
 }
 
 .event-guide-root .site-header {
-  position: sticky;
-  top: 0;
+  position: relative;
+  flex: none;
   z-index: 30;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 11, 10, 0.96);
   backdrop-filter: blur(16px);
+}
+
+.event-guide-root .page-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-padding-top: 1.5rem;
+}
+
+.event-guide-root .page-scroll :is(h1, h2, h3) {
+  scroll-margin-top: 1.5rem;
 }
 
 .event-guide-root .header-inner,
@@ -402,7 +419,8 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.event-guide-root .related-list a {
+.event-guide-root .related-list a,
+.event-guide-root .related-list .name {
   color: #fff;
   font-size: 1.12rem;
   font-weight: 600;
@@ -626,6 +644,7 @@
         </nav>
       </div>
     </header>
+    <div class="page-scroll">
     <main class="page" id="content">
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="/">Calendar</a>
@@ -678,7 +697,7 @@
       
       <section class="block">
         <h2>Also on this calendar</h2>
-        <ul class="related-list"><li><a href="/events">Tech events directory</a><p>Browse other dated event guides on this calendar.</p></li><li><a href="/events/4yfn-barcelona-2026">4YFN Barcelona 2026</a><p>Listed on this site as co-located with MWC. Already held 1-5 March 2026 in Barcelona. This site does not print a 2027 4YFN date.</p></li><li><a href="/guides/best-ai-conferences-2026">Best AI conferences 2026</a><p>A compare of flagship AI weeks. MWC is the telecom week, not one of those tables.</p></li></ul>
+        <ul class="related-list"><li><a href="/events">Tech events directory</a><p>Browse other dated event guides on this calendar.</p></li><li><span class="name">4YFN Barcelona 2026</span><p>Listed on this site as co-located with MWC. Already held 1-5 March 2026 in Barcelona. This site does not print a 2027 4YFN date.</p></li><li><a href="/guides/best-ai-conferences-2026">Best AI conferences 2026</a><p>A compare of flagship AI weeks. MWC is the telecom week, not one of those tables.</p></li></ul>
       </section>
       <section class="block faq">
         <h2>Common questions</h2>
@@ -727,6 +746,7 @@
         <p class="legal">© 2026 GlobalTechEvents</p>
       </div>
     </footer>
+    </div>
     <script>
       (() => {
         const payloadBase = {"page_type":"seo_event_page","event_slug":"mwc-barcelona-2027","source_page":"/events/mwc-barcelona-2027"};

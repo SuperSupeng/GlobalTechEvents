@@ -10,15 +10,17 @@ export type AppPage =
   | 'guidesIndex'
   | 'guide'
   | 'author'
-  | 'forAgents';
+  | 'forAgents'
+  | 'notFound';
 
 export type ResolvedAppRoute =
-  | { page: 'home' | 'privacy' | 'terms' | 'resources' | 'eventsHub' | 'guidesIndex' | 'forAgents' }
+  | { page: 'home' | 'privacy' | 'terms' | 'resources' | 'eventsHub' | 'guidesIndex' | 'forAgents' | 'notFound' }
   | { page: 'guide'; slug: string }
   | { page: 'author'; slug: string }
   | { page: 'seoEvent'; seoEventPage: SEOEventPageData };
 
 export function resolveAppRoute(pathname: string): ResolvedAppRoute {
+  if (pathname === '/' || pathname === '') return { page: 'home' };
   if (pathname === '/privacy' || pathname === '/privacy/') return { page: 'privacy' };
   if (pathname === '/terms' || pathname === '/terms/') return { page: 'terms' };
   if (pathname === '/resources' || pathname === '/resources/') return { page: 'resources' };
@@ -35,5 +37,5 @@ export function resolveAppRoute(pathname: string): ResolvedAppRoute {
   const seoEventPage = getSEOEventPageByPath(pathname);
   if (seoEventPage) return { page: 'seoEvent', seoEventPage };
 
-  return { page: 'home' };
+  return { page: 'notFound' };
 }

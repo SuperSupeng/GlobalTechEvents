@@ -9,7 +9,6 @@ import WeekView from './components/WeekView';
 import ListView from './components/ListView';
 import EventDetail from './components/EventDetail';
 import FilterPanel from './components/FilterPanel';
-import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Toast from './components/Toast';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -21,6 +20,8 @@ import ForAgentsPage from './pages/ForAgentsPage';
 import GuidesIndexPage from './pages/GuidesIndexPage';
 import GuidePage from './pages/GuidePage';
 import AuthorPage from './pages/AuthorPage';
+import NotFoundPage from './pages/NotFoundPage';
+import AppShell from './components/AppShell';
 import { getGuideBySlug, listGuides } from './content/guides';
 import { getAuthorBySlug } from './content/authors';
 import { resolveAppRoute, type AppPage } from './routing/resolveAppRoute';
@@ -112,6 +113,10 @@ const App: React.FC = () => {
       return;
     }
     const path = href.split(/[?#]/)[0] || '/';
+    if (resolveAppRoute(path).page === 'notFound') {
+      window.location.assign(href);
+      return;
+    }
     if (path === '/') {
       navigateToHomeAndScrollToCalendar();
       return;
@@ -171,6 +176,11 @@ const App: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
+    if (currentPage === 'notFound') {
+      document.title = 'Page not found | GlobalTechEvents';
+      document.querySelector('link[rel="canonical"]')?.remove();
+      return;
+    }
     if (currentPage === 'home') {
       updateMetaTags(getHomeSEO());
       return;
@@ -207,16 +217,25 @@ const App: React.FC = () => {
     return <Resources onBack={navigateToHome} />;
   }
 
+  const shellNav = {
+    onExploreClick: navigateToHomeAndScrollToCalendar,
+    onResourcesClick: navigateToResources,
+    onSubmitClick: navigateToEventsHub,
+    onEventsHubClick: navigateToEventsHub,
+    onGuidesClick: navigateToGuides,
+  };
+
+  if (currentPage === 'notFound') {
+    return (
+      <AppShell {...shellNav}>
+        <NotFoundPage />
+      </AppShell>
+    );
+  }
+
   if (currentPage === 'forAgents') {
     return (
-      <>
-        <Navbar
-          onExploreClick={navigateToHomeAndScrollToCalendar}
-          onResourcesClick={navigateToResources}
-          onSubmitClick={navigateToEventsHub}
-          onEventsHubClick={navigateToEventsHub}
-          onGuidesClick={navigateToGuides}
-        />
+      <AppShell {...shellNav}>
         <ForAgentsPage />
         <Footer
           onCalendarClick={navigateToHomeAndScrollToCalendar}
@@ -229,20 +248,13 @@ const App: React.FC = () => {
           onTermsClick={navigateToTerms}
         />
         <Toast toasts={toasts} onRemove={removeToast} />
-      </>
+      </AppShell>
     );
   }
 
   if (currentPage === 'eventsHub') {
     return (
-      <>
-        <Navbar
-          onExploreClick={navigateToHomeAndScrollToCalendar}
-          onResourcesClick={navigateToResources}
-          onSubmitClick={navigateToEventsHub}
-          onEventsHubClick={navigateToEventsHub}
-          onGuidesClick={navigateToGuides}
-        />
+      <AppShell {...shellNav}>
         <EventsHubPage onToast={success} />
         <Footer
           onCalendarClick={navigateToHomeAndScrollToCalendar}
@@ -255,7 +267,7 @@ const App: React.FC = () => {
           onTermsClick={navigateToTerms}
         />
         <Toast toasts={toasts} onRemove={removeToast} />
-      </>
+      </AppShell>
     );
   }
 
@@ -267,14 +279,7 @@ const App: React.FC = () => {
     const activeGuide = guideSlug ? getGuideBySlug(guideSlug) ?? null : null;
     const activeAuthor = authorSlug ? getAuthorBySlug(authorSlug) ?? null : null;
     return (
-      <>
-        <Navbar
-          onExploreClick={navigateToHomeAndScrollToCalendar}
-          onResourcesClick={navigateToResources}
-          onSubmitClick={navigateToEventsHub}
-          onEventsHubClick={navigateToEventsHub}
-          onGuidesClick={navigateToGuides}
-        />
+      <AppShell {...shellNav}>
         {currentPage === 'guidesIndex' ? (
           <GuidesIndexPage guides={listGuides()} onOpenGuide={(slug) => navigateToPath(`/guides/${slug}`)} />
         ) : currentPage === 'author' ? (
@@ -298,12 +303,15 @@ const App: React.FC = () => {
           onTermsClick={navigateToTerms}
         />
         <Toast toasts={toasts} onRemove={removeToast} />
-      </>
+      </AppShell>
     );
   }
 
   return (
-    <div className="min-h-screen relative" style={{ overflow: 'visible' }}>
+    <AppShell
+      {...shellNav}
+      onExploreClick={scrollToCalendar}
+      background={
       <div className="shader-bg-container" style={{ pointerEvents: 'none', touchAction: 'none' }}>
         <ShaderGradientCanvas
           style={{
@@ -323,17 +331,10 @@ const App: React.FC = () => {
         </ShaderGradientCanvas>
         <div className="absolute inset-0 bg-black/15 pointer-events-none" style={{ touchAction: 'none' }} />
       </div>
-
-      <Navbar
-        onExploreClick={scrollToCalendar}
-        onResourcesClick={navigateToResources}
-        onSubmitClick={navigateToEventsHub}
-        onEventsHubClick={navigateToEventsHub}
-        onGuidesClick={navigateToGuides}
-      />
-
+      }
+    >
       <main className="relative z-10">
-        <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 relative z-10 w-full">
+        <section className="flex min-h-[calc(100dvh-7.5rem)] sm:min-h-[calc(100dvh-9rem)] items-center justify-center px-4 sm:px-6 py-10 sm:py-14 relative z-10 w-full">
           <div className="text-center max-w-4xl mx-auto w-full px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -427,7 +428,7 @@ const App: React.FC = () => {
           </motion.div>
         </section>
 
-        <div ref={calendarRef} className="relative z-20 content-section max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-32 sm:pb-40">
+        <div ref={calendarRef} className="relative z-20 content-section scroll-mt-4 max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-32 sm:pb-40">
           <QuickFilters
             onFilterClick={(searchTerm) => {
               setSearchQuery(searchTerm);
@@ -562,7 +563,7 @@ const App: React.FC = () => {
       />
 
       <Toast toasts={toasts} onRemove={removeToast} />
-    </div>
+    </AppShell>
   );
 };
 

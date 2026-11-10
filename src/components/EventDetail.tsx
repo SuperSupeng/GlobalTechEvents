@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { TechEvent } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, MapPin, Globe, User, ArrowUpRight, ChevronDown, Download, Link2 } from 'lucide-react';
@@ -18,8 +19,50 @@ interface EventDetailProps {
   onToast?: (message: string) => void;
 }
 
+const CALENDAR_MENU_HEIGHT = 232;
+
+function calendarMenuStyle(button: HTMLElement, menuHeight = CALENDAR_MENU_HEIGHT): React.CSSProperties {
+  const rect = button.getBoundingClientRect();
+  const gap = 8;
+  const spaceBelow = window.innerHeight - rect.bottom - gap - 12;
+  const spaceAbove = rect.top - gap - 12;
+  const openUp = spaceAbove > spaceBelow;
+  const available = Math.max(openUp ? spaceAbove : spaceBelow, 120);
+  const height = Math.min(menuHeight, available);
+  const top = openUp ? Math.max(12, rect.top - gap - height) : rect.bottom + gap;
+  const width = rect.width;
+  const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+  return {
+    position: 'fixed',
+    top,
+    left,
+    width,
+    maxHeight: available,
+    zIndex: 200,
+    overflowY: 'auto',
+  };
+}
+
 const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) => {
   const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+  const calendarButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!showCalendarDropdown) return;
+    const place = () => {
+      const button = calendarButtonRef.current;
+      if (!button) return;
+      setMenuStyle(calendarMenuStyle(button));
+    };
+    place();
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, true);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', place, true);
+    };
+  }, [showCalendarDropdown]);
 
   if (!event) return null;
   
@@ -208,22 +251,33 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
                 </button>
               </div>
               
-              {/* Add to Calendar Dropdown */}
-              <div className="relative">
-                <button 
-                  onClick={() => setShowCalendarDropdown(!showCalendarDropdown)}
+              <div>
+                <button
+                  ref={calendarButtonRef}
+                  type="button"
+                  aria-expanded={showCalendarDropdown}
+                  aria-haspopup="menu"
+                  onClick={() => {
+                    const button = calendarButtonRef.current;
+                    if (button) setMenuStyle(calendarMenuStyle(button));
+                    setShowCalendarDropdown((open) => !open);
+                  }}
                   className="w-full btn-secondary flex items-center justify-center gap-3 !py-5"
                 >
                   <Calendar size={20} /> Add to Calendar <ChevronDown size={18} />
                 </button>
-                
-                {showCalendarDropdown && (
+
+                {showCalendarDropdown && createPortal(
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
+                    role="menu"
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-10"
+                    style={menuStyle}
+                    className="bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl"
                   >
                     <button
+                      type="button"
+                      role="menuitem"
                       onClick={() => handleAddToCalendar('google')}
                       className="w-full px-6 py-4 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm"
                     >
@@ -231,6 +285,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
                       Google Calendar
                     </button>
                     <button
+                      type="button"
+                      role="menuitem"
                       onClick={() => handleAddToCalendar('apple')}
                       className="w-full px-6 py-4 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm border-t border-white/5"
                     >
@@ -238,6 +294,8 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
                       Apple Calendar
                     </button>
                     <button
+                      type="button"
+                      role="menuitem"
                       onClick={() => handleAddToCalendar('outlook')}
                       className="w-full px-6 py-4 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm border-t border-white/5"
                     >
@@ -245,13 +303,16 @@ const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, onToast }) =>
                       Outlook
                     </button>
                     <button
+                      type="button"
+                      role="menuitem"
                       onClick={() => handleAddToCalendar('ics')}
                       className="w-full px-6 py-4 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm border-t border-white/5"
                     >
                       <Download size={16} className="text-white/60" />
                       Download .ics
                     </button>
-                  </motion.div>
+                  </motion.div>,
+                  document.body,
                 )}
               </div>
             </div>

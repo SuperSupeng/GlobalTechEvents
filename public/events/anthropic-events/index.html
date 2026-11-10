@@ -23,7 +23,12 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Anthropic events","url":"https://www.globaltechevents.xyz/events/anthropic-events","description":"Code with Claude 2026 listed San Francisco, London, and Tokyo. Official city pages only, with no single venue.","mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Event","name":"Code with Claude San Francisco","startDate":"2026-05-06","endDate":"2026-05-06","eventAttendanceMode":"https://schema.org/MixedEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"San Francisco, United States","address":{"@type":"PostalAddress","addressLocality":"San Francisco","addressCountry":"United States"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/san-francisco"}},{"@type":"ListItem","position":2,"item":{"@type":"Event","name":"Code with Claude: Extended San Francisco","startDate":"2026-05-07","endDate":"2026-05-07","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"San Francisco, United States","address":{"@type":"PostalAddress","addressLocality":"San Francisco","addressCountry":"United States"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/san-francisco-extended"}},{"@type":"ListItem","position":3,"item":{"@type":"Event","name":"Code with Claude London","startDate":"2026-05-19","endDate":"2026-05-19","eventAttendanceMode":"https://schema.org/MixedEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"London, United Kingdom","address":{"@type":"PostalAddress","addressLocality":"London","addressCountry":"United Kingdom"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/london"}},{"@type":"ListItem","position":4,"item":{"@type":"Event","name":"Code with Claude: Extended London","startDate":"2026-05-20","endDate":"2026-05-20","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"London, United Kingdom","address":{"@type":"PostalAddress","addressLocality":"London","addressCountry":"United Kingdom"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/london-extended"}},{"@type":"ListItem","position":5,"item":{"@type":"Event","name":"Code with Claude Tokyo","startDate":"2026-06-10","endDate":"2026-06-10","eventAttendanceMode":"https://schema.org/MixedEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Tokyo, Japan","address":{"@type":"PostalAddress","addressLocality":"Tokyo","addressCountry":"Japan"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/tokyo"}},{"@type":"ListItem","position":6,"item":{"@type":"Event","name":"Code with Claude: Extended Tokyo","startDate":"2026-06-11","endDate":"2026-06-11","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Tokyo, Japan","address":{"@type":"PostalAddress","addressLocality":"Tokyo","addressCountry":"Japan"}},"organizer":{"@type":"Organization","name":"Anthropic","url":"https://claude.com/code-with-claude"},"url":"https://claude.com/code-with-claude/tokyo-extended"}}]}}</script>
     <style>.event-guide-root {
   margin: 0;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   color: #f4f1ec;
   background:
     radial-gradient(980px 420px at 100% -8%, rgba(255, 122, 24, 0.16), transparent 58%),
@@ -62,12 +67,24 @@
 }
 
 .event-guide-root .site-header {
-  position: sticky;
-  top: 0;
+  position: relative;
+  flex: none;
   z-index: 30;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 11, 10, 0.96);
   backdrop-filter: blur(16px);
+}
+
+.event-guide-root .page-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-padding-top: 1.5rem;
+}
+
+.event-guide-root .page-scroll :is(h1, h2, h3) {
+  scroll-margin-top: 1.5rem;
 }
 
 .event-guide-root .header-inner,
@@ -402,7 +419,8 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.event-guide-root .related-list a {
+.event-guide-root .related-list a,
+.event-guide-root .related-list .name {
   color: #fff;
   font-size: 1.12rem;
   font-weight: 600;
@@ -626,6 +644,7 @@
         </nav>
       </div>
     </header>
+    <div class="page-scroll">
     <main class="page" id="content">
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="/">Calendar</a>
@@ -721,6 +740,7 @@
         <p class="legal">© 2026 GlobalTechEvents</p>
       </div>
     </footer>
+    </div>
     <script>
       (() => {
         const payloadBase = {"page_type":"seo_event_page","event_slug":"anthropic-events","source_page":"/events/anthropic-events"};

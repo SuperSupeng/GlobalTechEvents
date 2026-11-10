@@ -228,6 +228,6 @@ export function secondaryLinks(page: SEOEventPageData, whatsappUrl: string): Eve
   return links;
 }
 
-export function relatedLinks(page: SEOEventPageData): Array<{ href: string; label: string; note?: string }> {
+export function relatedLinks(page: SEOEventPageData): Array<{ href?: string; label: string; note?: string }> {
   return (page.relatedLinks ?? []).filter((link) => link.href !== '/api/calendar');
 }

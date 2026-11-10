@@ -34,9 +34,10 @@ export interface SEOEventPlanningSection {
   links?: Array<{ label: string; href: string }>;
 }
 
-/** Above-the-fold answers for one event page. The ICS module renders after `sections`. */
+/** Extra sections for one deepened event page. The visible page leads with dates, place, and price. */
 export interface SEOEventPlanningGuide {
-  sourceLine: string;
+  /** Retained for older data. Not shown on the page. */
+  sourceLine?: string;
   answers: SEOEventPlanningAnswer[];
   tip: [string, string];
   actions: SEOEventPlanningAction[];
@@ -66,8 +67,12 @@ export interface SEOEventPageData {
   calendarLead?: string;
   /** Orange button is the site ICS feed, then WhatsApp. Other event pages keep Add to Calendar first. */
   subscribeFirst?: boolean;
-  /** When set, the page leads with answers and official actions. The ICS module follows `sections`. */
+  /** When set, extra sections follow the fact block. Official actions stay secondary. */
   planning?: SEOEventPlanningGuide;
+  /** Short line under the date, such as badge pickup. */
+  dateNote?: string;
+  /** Shown in the fact block when a price is known. */
+  admission?: { amount: string; detail?: string };
   whyItMatters: string;
   whoShouldAttend: string[];
   topics: string[];
@@ -120,10 +125,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       'MWC Barcelona 2027 is 1-4 March 2027 at Fira Gran Via in Barcelona. Subscribe once if you track carrier roadmaps, device launches, or telecom partnerships.',
     headline: 'MWC Barcelona 2027 — add the Fira Gran Via week',
     calendarHeading: 'Add MWC Barcelona to your calendar',
-    calendarLead:
-      'Put 1-4 March 2027 at Fira Gran Via on your calendar first. Then confirm passes on the official site before you book travel. Go if your plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo.',
+    calendarLead: 'Add the Barcelona week to your calendar before you book travel.',
     whyItMatters:
-      'Add MWC Barcelona 2027 to your calendar before you decide on travel. It is the GSMA flagship for operators, device makers, and connectivity vendors, 1-4 March 2027 at Fira Gran Via in Barcelona. Go if your 2027 plan depends on carrier roadmaps, device launches, or telecom partnerships. Skip it if you only need a software or crypto expo. Confirm passes on the official site before you book travel.',
+      'MWC Barcelona is the GSMA flagship for operators, device makers, and connectivity vendors. Go if your 2027 plan depends on carrier roadmaps, device launches, or telecom partnerships.',
     whoShouldAttend: ['Telecom and infrastructure teams', 'Product leaders in mobile apps and devices', 'Investors and analysts in connectivity'],
     topics: ['5G/6G', 'Telecom Infrastructure', 'Mobile AI', 'Devices', 'Connectivity'],
     relatedLinks: [
@@ -145,7 +149,7 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       {
         href: '/guides/best-ai-conferences-2026',
         label: 'Best AI conferences 2026',
-        note: 'That compare leaves MWC off its AI tables and sends hardware weeks to the events directory.',
+        note: 'A compare of flagship AI weeks. MWC is the telecom week, not one of those tables.',
       },
     ],
     faq: [
@@ -200,10 +204,9 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       'NVIDIA GTC 2026 was 16-19 March 2026 in San Jose. Subscribe once to add NVIDIA GTC to your calendar.',
     headline: 'NVIDIA GTC 2026 — add the San Jose GPU week',
     calendarHeading: 'Add NVIDIA GTC to your calendar',
-    calendarLead:
-      'The 2026 San Jose week has already run. Put 16-19 March on your calendar so the next cycle is not a surprise, then confirm 15-18 March 2027 on the official site before you book travel.',
+    calendarLead: 'Keep the next San Jose week on your calendar.',
     whyItMatters:
-      'NVIDIA GTC is the calendar entry for teams whose product depends on NVIDIA GPUs, inference, or accelerated computing. The 2026 San Jose meeting has already run: 16-19 March 2026, keynote on 16 March, in person at the San Jose McEnery Convention Center and livestreamed. Add those dates so the next cycle is on your calendar, then use on-demand sessions if you missed the week. Do not book a flight for March 2026. The official site lists the next San Jose meeting as 15-18 March 2027. Confirm that page before you plan travel.',
+      'NVIDIA GTC is the conference for teams whose products depend on NVIDIA GPUs, inference, or accelerated computing. The 2026 San Jose week at the McEnery Convention Center has already run. The official site lists the next San Jose meeting as 15–18 March 2027.',
     whoShouldAttend: [
       'Platform and inference teams who run or buy NVIDIA GPUs',
       'CTOs deciding the next accelerated-computing plan',
@@ -230,8 +233,8 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       },
       {
         href: '/api/calendar',
-        label: 'Subscribe to the ICS calendar',
-        note: 'One feed for major tech events, including NVIDIA GTC.',
+        label: 'Add events to your calendar',
+        note: 'One calendar for the major tech events on this site, including NVIDIA GTC.',
       },
     ],
     faq: [
@@ -261,11 +264,11 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       'AWS re:Invent 2026 runs Nov 30–Dec 4 in Las Vegas. Check the $2,499 full pass, venues, agenda and free livestream before planning your trip.',
     headline: 'AWS re:Invent 2026: Dates, Tickets & Planning Guide',
     calendarHeading: 'Add AWS re:Invent to your calendar',
-    calendarLead:
-      'Save November 30–December 4, 2026 if this Las Vegas week is on your plan. Confirm the $2,499 full pass and the free livestream on the official AWS pages before you book travel.',
+    calendarLead: 'Save the week, then confirm your pass before you book travel.',
     subscribeFirst: true,
+    dateNote: 'Badge pickup starts November 29.',
+    admission: { amount: '$2,499', detail: 'Full conference pass' },
     planning: {
-      sourceLine: 'Independent planning guide · Event facts checked November 8, 2026',
       answers: [
         {
           text: 'Dates: Nov 30–Dec 4, 2026. Badge pickup starts Nov 29.',
@@ -311,10 +314,10 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       ],
       sections: [
         {
-          heading: 'Dates and venues',
+          heading: 'Where the rooms are',
           paragraphs: [
-            'Sessions run November 30 through December 4, 2026. Badge pickup starts November 29 at Harry Reid International Airport and at MGM Grand and the Venetian. Rooms are spread across Caesars Forum, Caesars Palace, MGM Grand, the Venetian, and Wynn | Encore.',
-            'Thursday, December 3, is the security focus at the Wynn. In 2026, re:Inforce joins this week rather than running as a separate conference.',
+            'Badge pickup starts November 29 at Harry Reid International Airport, MGM Grand, and the Venetian. Sessions are spread across Caesars Forum, Caesars Palace, MGM Grand, the Venetian, and Wynn | Encore.',
+            'Thursday, December 3, is the security day at the Wynn. In 2026, re:Inforce joins this week instead of running as its own conference.',
           ],
           links: [
             { label: 'Official agenda', href: 'https://aws.amazon.com/events/reinvent/agenda/' },
@@ -323,18 +326,17 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
           ],
         },
         {
-          heading: 'Ticket price and attendance options',
+          heading: 'Passes',
           paragraphs: [
-            'Full access is $2,499 on the official pricing page. Early bird pricing ended August 25, and a bulk discount is available when you buy more than one pass.',
-            'Go in person if you are a cloud architect, platform lead, or security engineer and the week’s launches change a system you run. Use the free livestream if you only need the keynotes.',
+            'Early-bird pricing ended August 25. A bulk discount applies when you buy more than one full pass. Livestream registration is separate, and free, if the keynotes are enough.',
           ],
           links: [{ label: 'Official pricing', href: 'https://aws.amazon.com/events/reinvent/pricing/' }],
         },
         {
-          heading: 'Plan your sessions',
+          heading: 'Keynotes and the stream',
           paragraphs: [
-            'The agenda lists the Developer Keynote on November 30 and the CEO Keynote on December 1, both in the Venetian and on the virtual stream. Livestream registration opens November 9.',
-            'A free registration covers 50+ live sessions, including theaters at Caesars Palace, the Venetian, and the Security Theater at Wynn and Encore, plus guided labs. On this calendar the week sits with cloud architecture, serverless, data and AI, security, and DevOps.',
+            'The Developer Keynote is November 30 and the CEO Keynote is December 1, both at the Venetian and on the stream. Livestream registration opens November 9.',
+            'A free registration covers 50+ live sessions, including theaters at Caesars Palace, the Venetian, and the Security Theater at Wynn and Encore, plus guided labs.',
           ],
           links: [
             { label: 'Official agenda', href: 'https://aws.amazon.com/events/reinvent/agenda/' },
@@ -344,59 +346,54 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       ],
     },
     whyItMatters:
-      'AWS re:Invent 2026 runs November 30 through December 4 in Las Vegas. Full access is $2,499. Keynotes and selected sessions are on the free livestream. Badge pickup starts November 29.',
+      'AWS re:Invent 2026 runs November 30 through December 4 in Las Vegas. The full conference pass is $2,499. Keynotes and selected sessions are on the free livestream.',
     whoShouldAttend: ['Cloud architects and DevOps teams', 'CTOs and platform leads', 'Security and data engineering teams'],
     topics: ['Cloud Architecture', 'Serverless', 'Data & AI', 'Security', 'DevOps'],
     relatedLinks: [
       {
-        href: '/api/calendar',
-        label: 'Subscribe to the ICS calendar',
-        note: 'One feed for major tech events, including AWS re:Invent.',
-      },
-      {
         href: '/topics/ai',
         label: 'AI conferences',
-        note: 're:Invent is the Las Vegas cloud week still ahead on this calendar.',
+        note: 'Other AI and cloud weeks on this calendar.',
       },
       {
         href: '/guides/best-ai-conferences-2026',
         label: 'Best AI conferences 2026',
-        note: 'That compare still treats re:Invent as a week that has not happened yet.',
+        note: 'A short compare of the flagship AI weeks this year.',
       },
       {
         href: '/guides/ai-conferences-san-francisco-2026',
         label: 'AI conferences in San Francisco 2026',
-        note: 're:Invent is in Las Vegas, so this guide leaves it off the San Francisco table.',
+        note: 'Meetings in San Francisco. re:Invent is in Las Vegas.',
       },
       {
         href: '/cities/san-francisco',
         label: 'Tech events in San Francisco',
-        note: 're:Invent 2026 is in Las Vegas. This page is the San Francisco calendar.',
+        note: 'The San Francisco calendar. re:Invent 2026 is in Las Vegas.',
       },
       {
         href: '/events/nvidia-gtc-2026',
         label: 'NVIDIA GTC 2026',
-        note: 'Already held 16-19 March 2026 in San Jose. The GPU week, separate from this cloud week.',
+        note: 'The GPU week in San Jose, 16–19 March 2026.',
       },
       {
         href: '/events/openai-devday-2026',
         label: 'OpenAI DevDay 2026',
-        note: 'Already held 29 September 2026 at Fort Mason in San Francisco.',
+        note: 'Held 29 September 2026 at Fort Mason in San Francisco.',
       },
       {
         href: '/events/google-cloud-next-2026',
         label: 'Google Cloud Next 2026',
-        note: 'Already held 22-24 April 2026 at Mandalay Bay in Las Vegas.',
+        note: 'Held 22–24 April 2026 at Mandalay Bay in Las Vegas.',
       },
       {
         href: '/events/kubecon-na-2026',
         label: 'KubeCon North America 2026',
-        note: 'Still ahead, 9-12 November 2026 at the Salt Palace in Salt Lake City.',
+        note: '9–12 November 2026 at the Salt Palace in Salt Lake City.',
       },
       {
         href: '/events/microsoft-build-2026',
         label: 'Microsoft Build 2026',
-        note: 'Already held 2-3 June 2026 at Fort Mason in San Francisco, plus an online track.',
+        note: 'Held 2–3 June 2026 at Fort Mason in San Francisco, with an online track.',
       },
     ],
     faq: [
@@ -532,38 +529,32 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       'TOKEN2049 Singapore 2026 was 7-8 October 2026 at Marina Bay Sands. Subscribe once to add TOKEN2049 (and related tech weeks) to your calendar.',
     headline: 'TOKEN2049 Singapore 2026 — add the Marina Bay Sands days',
     calendarHeading: 'Add TOKEN2049 Singapore to your calendar',
-    calendarLead:
-      'The 2026 Marina Bay Sands days have already run. Put 7-8 October on your calendar so the next cycle is not a surprise. Skip a flight for those dates. The official Singapore page lists 6-7 October 2027. Confirm that page before you book travel.',
+    calendarLead: 'Add the Singapore dates to your calendar.',
     subscribeFirst: true,
     whyItMatters:
-      'TOKEN2049 Singapore is the calendar entry for the Asia crypto conference, separate from the Dubai edition. The 2026 meeting has already run: 7-8 October 2026 at Marina Bay Sands in Singapore. Add those dates so the next cycle is on your calendar. Do not book a flight for October 2026. As of 16 October 2026, the official page hero lists 6-7 October 2027 at Marina Bay Sands, while its structured data still says 7-8 October 2026. Confirm 2027 on the official page before you plan travel.',
+      'TOKEN2049 Singapore is the Asia crypto conference, separate from the Dubai edition. The 2026 meeting at Marina Bay Sands has already taken place. The official Singapore page lists the next edition for 6–7 October 2027.',
     whoShouldAttend: ['Crypto and Web3 founders', 'Exchange, custody, and fintech operators', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Institutional Digital Assets'],
     relatedLinks: [
       {
-        href: '/api/calendar',
-        label: 'Subscribe to the ICS calendar',
-        note: 'One feed for major tech events, including TOKEN2049.',
-      },
-      {
         href: '/topics/ai',
         label: 'AI conferences',
-        note: 'This hub lists industry AI weeks. TOKEN2049 is the Asia crypto conference, not an AI week.',
+        note: 'Industry AI weeks. TOKEN2049 is the Asia crypto conference.',
       },
       {
         href: '/cities/san-francisco',
         label: 'Tech events in San Francisco',
-        note: 'The only city hub on this site. TOKEN2049 Singapore 2026 was at Marina Bay Sands, not in San Francisco.',
+        note: 'The San Francisco calendar. TOKEN2049 Singapore 2026 was at Marina Bay Sands.',
       },
       {
         href: '/guides/best-ai-conferences-2026',
         label: 'Best AI conferences 2026',
-        note: 'That compare does not list TOKEN2049. It covers industry AI weeks.',
+        note: 'A compare of flagship AI weeks. TOKEN2049 is a crypto conference.',
       },
       {
         href: '/events/superai-singapore-2026',
         label: 'SuperAI Singapore 2026',
-        note: 'Already held 10-11 June 2026 at Marina Bay Sands. The AI week in the same venue.',
+        note: 'The AI week at the same venue, 10–11 June 2026.',
       },
       {
         href: '/events/token2049-singapore-2027',
@@ -607,7 +598,7 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       { q: 'Is TOKEN2049 Dubai the same event?', a: 'No. Dubai is a separate edition. The next Dubai dates are 21-22 April 2027.' },
       {
         q: 'Should I add TOKEN2049 Singapore to my calendar?',
-        a: 'Yes, if the Asia crypto week sets your plan. The 2026 meeting has already run, on 7-8 October at Marina Bay Sands in Singapore. Skip a flight for those dates. As of 16 October 2026, the official Singapore page lists 6-7 October 2027. Confirm that page before you book travel.',
+        a: 'Yes, if the Asia crypto week is part of your plan. The 2026 dates have passed. The official page lists 6–7 October 2027. Confirm them there before you travel.',
       },
     ],
   },
@@ -653,7 +644,7 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     seoTitle: 'TOKEN2049 Dubai 2027 Dates, Location & Tickets | GlobalTechEvents',
     metaDescription: 'TOKEN2049 Dubai 2027 is 21-22 April 2027 at Madinat Jumeirah.',
     whyItMatters:
-      'TOKEN2049 Dubai is the Middle East crypto conference, not the Singapore edition. Go if you need digital-asset meetings in Dubai in April 2027. Skip it if your counterparties attend Singapore instead. The official Dubai page lists 21-22 April 2027 at Madinat Jumeirah. Confirm tickets there before you book flights. Checked 16 October 2026.',
+      'TOKEN2049 Dubai is the Middle East crypto conference, separate from Singapore. The official page lists 21–22 April 2027 at Madinat Jumeirah. Confirm tickets there before you book flights.',
     whoShouldAttend: ['Crypto and Web3 founders', 'Regional fintech and exchange teams', 'Investors covering digital assets'],
     topics: ['Crypto', 'Web3', 'Fintech', 'Institutional Digital Assets'],
     faq: [
@@ -872,7 +863,7 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
     metaDescription:
       'OpenAI DevDay 2026 was 29 September 2026 at Fort Mason in San Francisco. Subscribe once to add OpenAI DevDay to your calendar.',
     whyItMatters:
-      'OpenAI DevDay is the developer day for people building on OpenAI models, APIs, and agents. The 2026 meeting already happened. In-person entry required an invitation. Use it now for the keynote replay and the sessions OpenAI posts on openai.com. Do not book travel for 29 September. The official site does not list a 2027 DevDay date.',
+      'OpenAI DevDay is the developer day for people building on OpenAI models, APIs, and agents. The 2026 meeting at Fort Mason has already happened, and the keynote is available to watch. The official site does not list a 2027 date.',
     whoShouldAttend: ['Developers building on OpenAI APIs', 'Product teams shipping agents', 'Platform leads evaluating model providers'],
     topics: ['AI', 'Agents', 'APIs', 'DevRel', 'Developer Tools'],
     faq: [
@@ -898,11 +889,10 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       'GitHub Universe 2026 was 28-29 October 2026 at Fort Mason in San Francisco. Subscribe once to add GitHub Universe to your calendar.',
     headline: 'GitHub Universe 2026 — add the Fort Mason days',
     calendarHeading: 'Add GitHub Universe to your calendar',
-    calendarLead:
-      'The 2026 Fort Mason days have already run. Put 28-29 October on your calendar so the next cycle is not a surprise. Skip a flight for those dates if a keynote stream is enough. The virtual pass was free. The official site says October 2027 and does not list the days.',
+    calendarLead: 'Keep the next Universe week on your calendar.',
     subscribeFirst: true,
     whyItMatters:
-      'GitHub Universe is the calendar entry for teams whose engineering plan depends on GitHub. The 2026 meeting has already run: 28-29 October 2026 at Fort Mason Center in San Francisco, in person and with a free virtual pass. Add those dates so the next cycle is on your calendar. Do not book a flight for October 2026. The official site says October 2027 and does not list the days. Confirm that page before you plan travel.',
+      'GitHub Universe is the developer conference for teams whose engineering plan depends on GitHub. The 2026 meeting at Fort Mason Center has already run, in person and with a free virtual pass. The official site says October 2027 and does not list the days yet.',
     whoShouldAttend: [
       'Platform and developer-experience teams who ship on GitHub',
       'Engineering leads who need the next GitHub product cycle on the calendar',
@@ -928,12 +918,12 @@ export const SEO_EVENT_PAGES: SEOEventPageData[] = [
       {
         href: '/guides/ai-conferences-san-francisco-2026',
         label: 'AI conferences in San Francisco 2026',
-        note: 'That guide does not list GitHub Universe. It covers the Fort Mason weeks for Build and DevDay.',
+        note: 'San Francisco AI meetings, including Build and DevDay at Fort Mason.',
       },
       {
         href: '/guides/best-ai-conferences-2026',
         label: 'Best AI conferences 2026',
-        note: 'That compare does not list GitHub Universe.',
+        note: 'A compare of flagship AI weeks.',
       },
       {
         href: '/events/openai-devday-2026',

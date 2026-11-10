@@ -1,18 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Calendar, ChevronDown, Download, Globe, MapPin, MessageCircle, Tag } from 'lucide-react';
+import React, { useEffect, useMemo } from 'react';
 import Logo from '../components/Logo';
 import { WHATSAPP_GROUP_URL } from '../config/constants';
 import type { SEOEventPageData } from '../data/seoEventPages';
 import {
   buildSeoCollectionIcs,
   buildSeoEventJsonLd,
-  collectionCalendarNote,
-  collectionDateLabel,
   collectionGoogleCalendarUrl,
-  collectionLocationLabel,
-  formatStopDate,
   isSeoCollection,
 } from '../data/seoEventSchema';
+import {
+  calendarAction,
+  eventFacts,
+  eventHeadline,
+  eventLede,
+  relatedLinks,
+  secondaryLinks,
+} from '../seo/eventPageDisplay';
+import '../seo/eventGuide.css';
 import { injectSchema, updateMetaTags } from '../utils/seo';
 import { trackAddToCalendar, trackLandingPageView, trackOutboundClick } from '../utils/analytics';
 import { downloadICS, getGoogleCalendarUrl } from '../utils/calendar';
@@ -24,18 +28,7 @@ interface SEOEventPageProps {
   onToast?: (message: string) => void;
 }
 
-function formatDateRange(start: string, end: string) {
-  const s = new Date(start);
-  const e = new Date(end);
-  const fmt = (d: Date) =>
-    d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-  return `${fmt(s)} - ${fmt(e)}`;
-}
-
 const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }) => {
-  const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
-
   const calendarEvent = useMemo<TechEvent>(() => ({
     id: page.slug,
     title: page.eventName,
@@ -66,6 +59,17 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
     },
     status: 'upcoming',
   }), [page]);
+
+  const googleCalendarUrl = isSeoCollection(page) ? collectionGoogleCalendarUrl(page) : getGoogleCalendarUrl(calendarEvent);
+  const primary = calendarAction(page, googleCalendarUrl);
+  const links = secondaryLinks(page, WHATSAPP_GROUP_URL);
+  const facts = eventFacts(page);
+  const lede = eventLede(page);
+  const headline = eventHeadline(page);
+  const related = relatedLinks(page);
+  const calendarHeading = page.calendarHeading ?? `Add ${page.shortName} to your calendar`;
+  const calendarLead = page.calendarLead ?? 'Save the dates, then confirm them on the official site.';
+
   useEffect(() => {
     updateMetaTags({
       title: page.seoTitle,
@@ -88,7 +92,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
     });
   }, [page.slug]);
 
-  const handleOfficialClick = (targetUrl: string, ctaLabel: string) => {
+  const trackOfficial = (targetUrl: string, ctaLabel: string) => {
     trackOutboundClick({
       sourcePage: window.location.pathname,
       pageType: 'seo_event_page',
@@ -98,20 +102,19 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
     });
   };
 
-  const handleAddToCalendar = (provider: 'google' | 'ics') => {
+  const trackCalendar = (provider: 'google' | 'ics', ctaLabel: string) => {
     trackAddToCalendar({
       sourcePage: window.location.pathname,
       pageType: 'seo_event_page',
       calendarProvider: provider,
       eventSlug: page.slug,
-      ctaLabel: `Add to Calendar - ${provider}`,
+      ctaLabel,
     });
+  };
 
-    if (provider === 'google') {
-      const url = isSeoCollection(page) ? collectionGoogleCalendarUrl(page) : getGoogleCalendarUrl(calendarEvent);
-      window.open(url, '_blank', 'noopener,noreferrer');
-      onToast?.('Opening Google Calendar...');
-    } else if (isSeoCollection(page)) {
+  const downloadCalendarFile = () => {
+    trackCalendar('ics', 'Download .ics');
+    if (isSeoCollection(page)) {
       const icsContent = buildSeoCollectionIcs(page);
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
@@ -121,388 +124,199 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
-      onToast?.('Calendar file downloaded!');
     } else {
       downloadICS(calendarEvent);
-      onToast?.('Calendar file downloaded!');
     }
-
-    setShowCalendarDropdown(false);
+    onToast?.('Calendar file downloaded!');
   };
 
+  const renderPrimary = () => (
+    <div className="primary-block">
+      <a
+        className="primary"
+        href={primary.href}
+        target={primary.provider === 'google' ? '_blank' : undefined}
+        rel={primary.provider === 'google' ? 'noopener noreferrer' : undefined}
+        onClick={() => trackCalendar(primary.provider, primary.trackLabel)}
+      >
+        {primary.label}
+      </a>
+      <p className="hint">{primary.hint}</p>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-[#030303] text-white">
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0a0a0a]/90 backdrop-blur-xl">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <button onClick={onBackHome} className="inline-flex items-center gap-2 text-white/80 hover:text-white">
-            <ArrowLeft size={16} />
-            Back to Calendar
+    <div className="event-guide-root">
+      <a className="skip" href="#content">Skip to content</a>
+      <header className="site-header">
+        <div className="header-inner">
+          <button type="button" className="brand" onClick={onBackHome}>
+            <Logo size={28} />
+            GlobalTech<em>Events</em>
           </button>
-          <div className="flex items-center gap-2 text-white/80">
-            <Logo size={24} />
-            <span className="text-sm">GlobalTechEvents</span>
-          </div>
+          <nav className="site-nav" aria-label="Primary">
+            <a href="/">Calendar</a>
+            <a href="/events">Events</a>
+            <a href="/guides">Guides</a>
+            <a href="/resources">Resources</a>
+          </nav>
         </div>
       </header>
-
-      <main className={page.planning ? 'max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12 sm:py-14' : 'max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14'}>
-        {page.planning ? (
-          <>
-            <p className="text-white/55 text-xs mb-2">{page.planning.sourceLine}</p>
-            <h1 className="text-[1.75rem] sm:text-5xl font-serif italic mb-3 leading-tight">
-              {page.headline}
-            </h1>
-            <ul className="mb-3 space-y-1 text-sm sm:text-base text-white/85 leading-snug">
-              {page.planning.answers.map((answer) => (
-                <li key={`${answer.sourceUrl}-${answer.text}`}>
-                  {answer.text}{' '}
-                  <a
-                    href={answer.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleOfficialClick(answer.sourceUrl, answer.sourceLabel)}
-                    className="text-primary-light underline underline-offset-2 hover:text-white"
-                  >
-                    {answer.sourceLabel}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="text-sm text-white/75 leading-snug mb-3">
-              {page.planning.tip[0]}
-              <br />
-              {page.planning.tip[1]}
-            </p>
-            <div className="flex flex-col items-stretch gap-2 mb-2 sm:flex-row sm:flex-wrap sm:items-center">
-              {page.planning.actions
-                .filter((action) => action.tone !== 'text')
-                .map((action) => (
-                  <a
-                    key={action.href + action.label}
-                    href={action.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleOfficialClick(action.href, action.label)}
-                    className={
-                      action.tone === 'primary'
-                        ? 'btn-primary text-center inline-flex items-center justify-center'
-                        : 'btn-secondary text-center inline-flex items-center justify-center'
-                    }
-                  >
-                    {action.label}
-                  </a>
-                ))}
+      <main className="page" id="content">
+        <nav className="crumb" aria-label="Breadcrumb">
+          <a href="/">Calendar</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{page.eventName}</span>
+        </nav>
+        <h1>{headline}</h1>
+        <p className="lede">{lede}</p>
+        <dl className={`facts facts-${facts.length}`}>
+          {facts.map((fact) => (
+            <div className="fact" key={fact.label}>
+              <dt>{fact.label}</dt>
+              <dd>
+                <span className="sr-only">{[fact.primary, fact.secondary, fact.note].filter(Boolean).join(', ')}</span>
+                <span aria-hidden="true">
+                  {fact.lines ? fact.lines.map((line) => <span className="line" key={line}>{line}</span>) : fact.primary}
+                </span>
+                {fact.secondary ? <span className="sub" aria-hidden="true">{fact.secondary}</span> : null}
+                {fact.note ? <span className="note" aria-hidden="true">{fact.note}</span> : null}
+              </dd>
             </div>
-            {page.planning.actions
-              .filter((action) => action.tone === 'text')
-              .map((action) => (
-                <a
-                  key={action.href + action.label}
-                  href={action.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => handleOfficialClick(action.href, action.label)}
-                  className="inline-block text-sm text-primary-light underline underline-offset-4 hover:text-white mb-8"
-                >
-                  {action.label}
-                </a>
-              ))}
-            {page.planning.sections.map((section) => (
-              <section key={section.heading} className="mb-8">
-                <h2 className="text-2xl font-serif italic mb-3">{section.heading}</h2>
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="text-white/80 leading-relaxed mb-3">
-                    {paragraph}
-                  </p>
-                ))}
-                {section.links && section.links.length > 0 && (
-                  <p className="text-sm text-white/70">
-                    {section.links.map((link, index) => (
-                      <span key={link.href}>
-                        {index > 0 ? ' · ' : null}
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => handleOfficialClick(link.href, link.label)}
-                          className="text-primary-light underline underline-offset-4 hover:text-white"
-                        >
-                          {link.label}
-                        </a>
-                      </span>
-                    ))}
-                  </p>
-                )}
-              </section>
-            ))}
-          </>
-        ) : (
-          <>
-            <p className="text-primary-light text-xs uppercase tracking-[0.2em] mb-3">Tech Event Guide</p>
-            <h1 className="text-4xl sm:text-5xl font-serif italic mb-5 leading-tight">
-              {page.headline ?? `${page.eventName}: Dates, Location & Event Guide`}
-            </h1>
-            <p className="text-white/75 text-lg leading-relaxed mb-8">{page.whyItMatters}</p>
-          </>
-        )}
-
-        <section className="glass-panel p-6 sm:p-7 mb-10 border border-primary/20 shadow-[0_0_0_1px_rgba(212,175,55,0.08)]">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <div className="max-w-2xl">
-              <h2 className="text-2xl sm:text-3xl font-serif italic mb-3">
-                {page.calendarHeading ?? 'Save this event before you forget it'}
-              </h2>
-              <p className="text-white/70 leading-relaxed">
-                {page.calendarLead ??
-                  `Put ${page.shortName} on your calendar first, then choose whether to register now or review the official event site.`}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-3 mt-6">
-            {page.subscribeFirst && (
-              <a
-                href="/api/calendar"
-                onClick={() =>
-                  trackAddToCalendar({
-                    sourcePage: window.location.pathname,
-                    pageType: 'seo_event_page',
-                    calendarProvider: 'ics',
-                    eventSlug: page.slug,
-                    ctaLabel: 'Subscribe to the ICS calendar',
-                  })
-                }
-                className="btn-primary text-center flex-[1.25] inline-flex items-center justify-center gap-2"
-              >
-                <Calendar size={18} />
-                Subscribe to the ICS calendar
-              </a>
-            )}
-            {page.subscribeFirst && (
-              <a
-                href={WHATSAPP_GROUP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() =>
-                  trackOutboundClick({
-                    sourcePage: window.location.pathname,
-                    pageType: 'seo_event_page',
-                    targetUrl: WHATSAPP_GROUP_URL,
-                    eventSlug: page.slug,
-                    ctaLabel: 'Join WhatsApp',
-                  })
-                }
-                className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
-              >
-                <MessageCircle size={18} />
-                Join WhatsApp
-              </a>
-            )}
-            {!page.subscribeFirst && (
-            <div className="relative flex-[1.25]">
-              <button
-                type="button"
-                onClick={() => setShowCalendarDropdown((current) => !current)}
-                className="w-full btn-primary flex items-center justify-center gap-2"
-              >
-                <Calendar size={18} />
-                Add to Calendar
-                <ChevronDown size={16} />
-              </button>
-
-              {showCalendarDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-10">
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCalendar('google')}
-                    className="w-full px-4 py-3 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm"
-                  >
-                    <Globe size={16} className="text-blue-400" />
-                    Google Calendar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCalendar('ics')}
-                    className="w-full px-4 py-3 text-left text-white/80 hover:bg-white/5 hover:text-white transition-all flex items-center gap-3 text-sm border-t border-white/5"
-                  >
-                    <Download size={16} className="text-white/60" />
+          ))}
+        </dl>
+        <div className="hero-actions">
+          {renderPrimary()}
+          <ul className="link-row">
+            {links.map((link) => (
+              <li key={link.label}>
+                {link.downloadIcs ? (
+                  <button type="button" className="text-link" onClick={downloadCalendarFile}>
                     Download .ics
                   </button>
-                </div>
-              )}
-            </div>
-            )}
-            {!page.subscribeFirst && (
-            <a
-              href={WHATSAPP_GROUP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() =>
-                trackOutboundClick({
-                  sourcePage: window.location.pathname,
-                  pageType: 'seo_event_page',
-                  targetUrl: WHATSAPP_GROUP_URL,
-                  eventSlug: page.slug,
-                  ctaLabel: 'Join WhatsApp',
-                })
-              }
-              className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
-            >
-              <MessageCircle size={18} />
-              Join WhatsApp
-            </a>
-            )}
-            {page.registrationUrl && (
-              <a
-                href={page.registrationUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => handleOfficialClick(page.registrationUrl!, 'Registration')}
-                className="btn-secondary text-center flex-1"
-              >
-                Registration
-              </a>
-            )}
-            <a
-              href={page.officialUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => handleOfficialClick(page.officialUrl, 'Official Website')}
-              className="btn-secondary text-center flex-1"
-            >
-              Official Website
-            </a>
-            {page.subscribeFirst && (
-              <button
-                type="button"
-                onClick={() => handleAddToCalendar('ics')}
-                className="btn-secondary text-center flex-1 inline-flex items-center justify-center gap-2"
-              >
-                <Download size={18} />
-                Download .ics
-              </button>
-            )}
-          </div>
+                ) : (
+                  <a
+                    href={link.href}
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                    onClick={() => trackOfficial(link.href, link.trackLabel)}
+                  >
+                    {link.label}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <p className="mt-4 text-sm text-white/55">
-            {isSeoCollection(page) ? collectionCalendarNote(page) : 'Always confirm details on the official site.'}
-          </p>
-        </section>
+        {page.planning
+          ? page.planning.sections.map((section) => (
+              <section className="block prose" key={section.heading}>
+                <h2>{section.heading}</h2>
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+                {section.links && section.links.length > 0 ? (
+                  <ul className="link-row">
+                    {section.links.map((link) => (
+                      <li key={link.href}>
+                        <a href={link.href} target="_blank" rel="noopener noreferrer" onClick={() => trackOfficial(link.href, link.label)}>
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </section>
+            ))
+          : null}
 
-        {!page.planning && (
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-          <div className="glass-panel p-5">
-            <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Date</p>
-            <p className="flex items-center gap-2 text-white/90">
-              <Calendar size={16} /> {isSeoCollection(page) ? collectionDateLabel(page) : formatDateRange(page.startDate, page.endDate)}
-            </p>
-          </div>
-          <div className="glass-panel p-5">
-            <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Location</p>
-            <p className="flex items-center gap-2 text-white/90">
-              <MapPin size={16} /> {isSeoCollection(page) ? collectionLocationLabel(page) : `${page.city}, ${page.country}`}
-            </p>
-          </div>
-          <div className="glass-panel p-5">
-            <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">Format</p>
-            <p className="flex items-center gap-2 text-white/90"><Globe size={16} /> {page.format}</p>
-          </div>
-        </section>
-        )}
-
-        {!page.planning && isSeoCollection(page) && (
-          <section className="mb-10">
-            <h2 className="text-2xl font-serif italic mb-4">Printed stops</h2>
-            <ul className="list-disc pl-6 text-white/80 space-y-3">
+        {!page.planning && isSeoCollection(page) ? (
+          <section className="block">
+            <h2>Cities</h2>
+            <ul className="stack stops">
               {page.stops?.map((stop) => (
                 <li key={stop.officialUrl}>
-                  <a href={stop.officialUrl} className="underline" target="_blank" rel="noreferrer">
-                    {stop.name}
-                  </a>
-                  . {formatStopDate(stop)}. {stop.city}, {stop.country}. {stop.detail}
+                  <a href={stop.officialUrl}>{stop.name}</a>
+                  {`. ${stop.detail}`}
                 </li>
               ))}
             </ul>
-            {page.sources && page.sources.length > 0 && (
-              <>
-                <h2 className="text-2xl font-serif italic mb-4 mt-8">Official pages</h2>
-                <ul className="list-disc pl-6 text-white/80 space-y-2">
-                  {page.sources.map((source) => (
-                    <li key={source.url}>
-                      <a href={source.url} className="underline" target="_blank" rel="noreferrer">
-                        {source.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
           </section>
-        )}
+        ) : null}
 
-        {!page.planning && (
-        <section className="mb-10">
-          <h2 className="text-2xl font-serif italic mb-4">Who should attend</h2>
-          <ul className="list-disc pl-6 text-white/80 space-y-2">
-            {page.whoShouldAttend.map((item) => (
-              <li key={item}>{item}</li>
+        {!page.planning ? (
+          <section className="block">
+            <h2>Who it’s for</h2>
+            <ul className="stack">
+              {page.whoShouldAttend.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        <section className="block">
+          <h2>Topics</h2>
+          <ul className="topics">
+            {page.topics.map((topic) => (
+              <li className="topic" key={topic}>{topic}</li>
             ))}
           </ul>
         </section>
-        )}
 
-        {page.relatedLinks && page.relatedLinks.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-2xl font-serif italic mb-4">Related pages</h2>
-            <ul className="list-disc pl-6 text-white/80 space-y-2">
-              {page.relatedLinks.map((link) => (
+        {related.length > 0 ? (
+          <section className="block">
+            <h2>Also on this calendar</h2>
+            <ul className="related-list">
+              {related.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="text-primary-light underline underline-offset-4 hover:text-white">
-                    {link.label}
-                  </a>
-                  {link.note ? `. ${link.note}` : null}
+                  <a href={link.href}>{link.label}</a>
+                  {link.note ? <p>{link.note}</p> : null}
                 </li>
               ))}
             </ul>
           </section>
-        )}
+        ) : null}
 
-        {!page.planning && (
-        <section className="mb-10">
-          <h2 className="text-2xl font-serif italic mb-4">Topics to watch</h2>
-          <div className="flex flex-wrap gap-2">
-            {page.topics.map((topic) => (
-              <span key={topic} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-white/80">
-                <Tag size={14} />
-                {topic}
-              </span>
-            ))}
-          </div>
-        </section>
-        )}
-
-        <section className="mb-10">
-          <h2 className="text-2xl font-serif italic mb-4">FAQ</h2>
-          <div className="space-y-4">
-            {page.faq.map((item) => (
-              <div key={item.q} className="glass-panel p-5">
-                <h3 className="text-lg font-semibold mb-2 not-italic font-sans">{item.q}</h3>
-                <p className="text-white/75 leading-relaxed">{item.a}</p>
-              </div>
-            ))}
-          </div>
+        <section className="block faq">
+          <h2>Common questions</h2>
+          {page.faq.map((item) => (
+            <article key={item.q}>
+              <h3>{item.q}</h3>
+              <p>{item.a}</p>
+            </article>
+          ))}
         </section>
 
-        <section className="glass-panel p-6">
-          <h2 className="text-2xl font-serif italic mb-3">Ready?</h2>
-          <p className="text-white/70 leading-relaxed">
-            Add it to your calendar, then register on the official site.
-          </p>
-          <p className="text-xs text-white/50 mt-3">
-            Last updated: {new Date().toLocaleDateString('en-US')}
-          </p>
+        <section className="close">
+          <h2>{calendarHeading}</h2>
+          <p>{calendarLead}</p>
+          {renderPrimary()}
+          <p className="fine">Confirm the details on the official site before you travel.</p>
         </section>
       </main>
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div>
+            <a className="footer-brand" href="/">
+              <Logo size={26} />
+              GlobalTech<em>Events</em>
+            </a>
+            <p>One calendar for the major tech events the industry actually tracks.</p>
+          </div>
+          <nav className="footer-nav" aria-label="Footer">
+            <a href="/">Calendar</a>
+            <a href="/events">Events</a>
+            <a href="/guides">Guides</a>
+            <a href="/resources">Resources</a>
+            <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+          </nav>
+          <p className="legal">© 2026 GlobalTechEvents</p>
+        </div>
+      </footer>
     </div>
   );
 };

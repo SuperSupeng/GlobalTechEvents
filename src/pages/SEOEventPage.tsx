@@ -8,6 +8,7 @@ import {
   collectionGoogleCalendarUrl,
   isSeoCollection,
 } from '../data/seoEventSchema';
+import { recapPathForEvent } from '../content/recaps/pages';
 import {
   calendarAction,
   eventFacts,
@@ -69,6 +70,7 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
   const related = relatedLinks(page);
   const calendarHeading = page.calendarHeading ?? `Add ${page.shortName} to your calendar`;
   const calendarLead = page.calendarLead ?? 'Save the dates, then confirm them on the official site.';
+  const recapHref = recapPathForEvent(page.slug);
 
   useEffect(() => {
     updateMetaTags({
@@ -171,6 +173,11 @@ const SEOEventPage: React.FC<SEOEventPageProps> = ({ page, onBackHome, onToast }
         </nav>
         <h1>{headline}</h1>
         <p className="lede">{lede}</p>
+        {recapHref ? (
+          <p className="recap-link">
+            <a href={recapHref}>Public notes and recap posts</a> from this meeting.
+          </p>
+        ) : null}
         <dl className={`facts facts-${facts.length}`}>
           {facts.map((fact) => (
             <div className="fact" key={fact.label}>

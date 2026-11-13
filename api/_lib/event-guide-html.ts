@@ -8,6 +8,7 @@ import {
   isSeoCollection,
 } from '../../src/data/seoEventSchema.js';
 import type { SEOEventPageData } from '../../src/data/seoEventPages.js';
+import { recapPathForEvent } from '../../src/content/recaps/pages.js';
 import {
   calendarAction,
   eventFacts,
@@ -98,6 +99,12 @@ function renderSecondary(page: SEOEventPageData, whatsappUrl: string): string {
     })
     .join('');
   return `<ul class="link-row">${items}</ul>`;
+}
+
+function renderRecapLink(page: SEOEventPageData): string {
+  const href = recapPathForEvent(page.slug);
+  if (!href) return '';
+  return `<p class="recap-link"><a href="${escapeHtml(href)}">Public notes and recap posts</a> from this meeting.</p>`;
 }
 
 function renderFacts(page: SEOEventPageData): string {
@@ -308,6 +315,7 @@ export function renderEventGuideDocument(page: SEOEventPageData, whatsappUrl: st
       </nav>
       <h1>${escapeHtml(headline)}</h1>
       <p class="lede">${escapeHtml(lede)}</p>
+      ${renderRecapLink(page)}
       ${renderFacts(page)}
       <div class="hero-actions">
         ${renderPrimary(page, googleCalendarUrl)}

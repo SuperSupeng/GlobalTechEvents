@@ -4,6 +4,7 @@ import { renderEventGuideDocument } from '../api/_lib/event-guide-html.ts';
 import { ensureGuidesInExistingSitemap, indexableAuthorUrls, indexableGuideUrls, writeGuideStaticPages } from './generate-guide-static.mjs';
 import { writeHubStaticPages } from './generate-hub-static.mjs';
 import { ensureShellsInExistingSitemap, indexableShellUrls, writeIndexableShells } from './generate-indexable-shells.mjs';
+import { indexableRecapUrls } from '../src/content/recaps/pages.ts';
 
 const SOURCE = path.resolve('src/data/seoEventPages.ts');
 const GENERATED_SOURCE = path.resolve('src/data/generatedSEOEventPages.json');
@@ -105,6 +106,7 @@ function generateSitemap(pages, guides = []) {
     ...indexableGuideUrls(guides),
     ...indexableAuthorUrls(),
     ...indexableShellUrls(),
+    ...indexableRecapUrls(),
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -119,10 +121,11 @@ ${urls
     const isAuthorPage = url.includes('/authors/');
     const isDirectoryIndex = /\/(cities|topics|tracks|authors)$/.test(url);
     const isIndexableShell = url.includes('/cities/') || url.includes('/tracks/') || url.includes('/topics/');
-    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell || isDirectoryIndex ? 'weekly' : 'monthly';
+    const isRecapPage = url.includes('/recaps/');
+    const changefreq = isHome ? 'daily' : isEventPage || isGuidePage || isGuidesHub || isAuthorPage || isIndexableShell || isDirectoryIndex || isRecapPage ? 'weekly' : 'monthly';
     const priority = isHome
       ? '1.0'
-      : isEventPage || isGuidePage
+      : isEventPage || isGuidePage || isRecapPage
         ? '0.8'
         : isAuthorPage
           ? '0.6'
